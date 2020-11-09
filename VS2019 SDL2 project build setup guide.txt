@@ -1,0 +1,44 @@
+
+-------------------------LOCAL SETUP-------------------------
+
+1• Create a new directory and name it 'build'. This will store the solution files.
+	The build directory is mentioned in the .gitignore, which is interpreted by GitHub
+	as a list of folders to exclude from each push to the repository.
+	
+
+2• Using CMake, build a Visual Studio Solution file on EACH device.
+	You will be asked to provide the directory containing the source files, select the entire folder.
+	Specify build as the directory to store solution files.
+
+	or
+
+	Using a bash terminal, type in the following command whilst in the build directory:
+
+		cmake .. -G "Visual Studio 16 2019"
+
+	The VS files should now be produced.
+	If any files are missing, copy and paste them from a source.
+
+3• COPY the 'res' (resources) folder to the build directory, don't MOVE it.
+	res contains fonts which are required to play the application.
+	Moving it to the build directory would stop it from being pushed to the
+	repository, and cloned between devices.
+
+4• Open the solution and right click on MyGame.sln.
+	Select 'Set as startup project'.
+	Go to Properties > Linker > System and change the SubSystem to CONSOLE.
+
+
+---------------------------------------------------------------
+
+Possible issues:
+
+• The project may build fine, appear and then disappear suddenly.
+	This is caused by the 'res' folder being absent in the build folder.
+
+• The .gitignore specifies that compiled linker libraries (.dll, etc) are ignored.
+This means you will have to import SDL2 manually on each device, its libraries will not
+be included from a pull!
+
+• There may be merging issues when trying to clone a repo, such that changes on the device must be
+submitted before a clone can take place.

@@ -1,8 +1,5 @@
 #include "PESO_demo.h"
 #include <map>
-#define _DEFAULT_WINDOW_WIDTH_ (600)
-#define _DEFAULT_WINDOW_HEIGHT_ (600)
-#define _DEFAULT_MASS_ (20)
 
 class Object;
 
@@ -69,15 +66,6 @@ public:
 	void setPressed_f(Key key) {
 		keyBooleans[key] = true;
 	};
-};
-
-struct Vector3d {
-	double x;
-	double y;
-	double z;
-
-	Vector3d() : Vector3d(0, 0, 0) {}
-	Vector3d(double x, double y, double z) : x(x), y(y), z(z) {}
 };
 
 class Object {
@@ -211,8 +199,8 @@ int main(int argc, char* args[]) {
 	SDL_Rect rectangle = {
 		(float)(_DEFAULT_WINDOW_WIDTH_/2.f), 
 		(float)(_DEFAULT_WINDOW_HEIGHT_/2.f),
-		10.f ,
-		10.f
+		30.f ,
+		30.f
 	};
 
 	SDL_Window* simulationWindow = SDL_CreateWindow(

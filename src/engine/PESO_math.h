@@ -1,3 +1,8 @@
+/*
+	Physics Engine for Simulating Orbits.
+	Copyright (C) 2020-2021 Elliot R. Walker <berw96@gmail.com>
+*/
+
 #ifndef _MATH_
 #define _MATH_
 
@@ -11,16 +16,7 @@ static const double _180_OVER_PI_ = (double)(180 / 3.14159265358979323846);
 static const double _PI_ = 3.14159265358979323846;
 #pragma endregion
 
-#pragma region TRANSFORM
-struct Vector3d {
-	double x;
-	double y;
-	double z;
-
-	Vector3d() : Vector3d(0, 0, 0) {}
-	Vector3d(double x, double y, double z) : x(x), y(y), z(z) {}
-};
-
+#pragma region GEOMETRY
 struct Point2i {
 	double x;
 	double y;
@@ -28,9 +24,7 @@ struct Point2i {
 	Point2i() : Point2i(0, 0) {}
 	Point2i(double x, double y) : x(x), y(y) {}
 };
-#pragma endregion
 
-#pragma region GEOMETRY
 struct Line2i {
 	Point2i startPoint;
 	Point2i endPoint;
@@ -47,7 +41,7 @@ struct Rectangle2d {
 
 	Rectangle2d(double x, double y, double width, double height) : x(x), y(y), width(width), height(height) {}
 
-	SDL_Rect getSDLRect() const {
+	SDL_Rect getSDLRectFrom() const {
 		SDL_Rect rectangle = {x, y, width, height};
 		return rectangle;
 	}
@@ -60,9 +54,10 @@ struct Rectangle2d {
 			point.y <= y + height;
 	}
 
+
 	inline bool intersects(const Rectangle2d& other) {
-		SDL_Rect rectangleA = getSDLRect();
-		SDL_Rect rectangleB = other.getSDLRect();
+		SDL_Rect rectangleA = getSDLRectFrom();
+		SDL_Rect rectangleB = other.getSDLRectFrom();
 
 		return SDL_HasIntersection(&rectangleA, &rectangleB) == SDL_TRUE;
 	}
@@ -78,8 +73,5 @@ struct Rectangle2d {
 	}
 };
 #pragma endregion
-
-
-
 
 #endif

@@ -83,7 +83,7 @@ protected:
 
 public:
 	Object() :
-		mass(_DEFAULT_MASS_),
+		mass(20),
 		transform(Vector3d()),
 		acceleration(Vector3d()),
 		velocity(Vector3d()),
@@ -232,6 +232,7 @@ int main(int argc, char* args[]) {
 		//check what the user has entered and correlate it with the command name
 		for (auto arg : commands) {
 			for (auto input : inputs) {
+				std::cout << "You typed " << input << "\n";
 				//condition preventing negative index
 				if (inputs.size() > 0) {
 					//compare the most recent input with a valid command
@@ -245,6 +246,9 @@ int main(int argc, char* args[]) {
 						case START:
 							paused = false;
 							inputs.clear();
+							break;
+						default:
+							std::cout << "Invalid command.\n";
 							break;
 						}
 					}

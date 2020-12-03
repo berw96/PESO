@@ -5,13 +5,14 @@
 
 #ifndef _PHYSICS_
 #define _PHYSICS_
+#define _UNIVERSAL_CONST_GRAVITATION_ (0.00000000006674000000f)
+#define _DEFAULT_INIT_MASS_ (1.f)
+#define _DEFAULT_RADIUS_ (10.f)
 
 #include <vector>
 #include <string>
 #include <memory>
 #include "PESO_math.h"
-
-#define _DEFAULT_MASS_ (20)
 
 struct Vector3d {
 	double x;

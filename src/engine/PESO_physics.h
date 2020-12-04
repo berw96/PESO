@@ -7,6 +7,7 @@
 #define _PHYSICS_
 #define _UNIVERSAL_CONST_GRAVITATION_ (0.00000000006674000000f)
 #define _DEFAULT_INIT_MASS_ (1.f)
+#define _DEFAULT_TAG_ ("")
 #define _DEFAULT_RADIUS_ (10.f)
 
 #include <vector>
@@ -43,7 +44,8 @@ class PESO_Physics {
 
 public:
 	void PESO_registerObject(std::shared_ptr<PESO_Object> object);
-	void PESO_ApplyMechanics();
+	void PESO_ApplyLinearMechanics();
+	void PESO_ApplyRotationMechanics();
 #pragma endregion
 
 #pragma region FORMULA
@@ -52,11 +54,15 @@ public:
 
 	double PESO_CalculateResultant(Vector3d v);
 	double PESO_CalculateRange(PESO_Object& a, PESO_Object& b);
-
-	void PESO_CalculateOrbitalPeriod(PESO_Object& target, PESO_Object& satellite);
-	void PESO_CalculateReqVelocity(PESO_Object& target, PESO_Object& satllite);
-	void PESO_CalculateMomentum(PESO_Object& object);
-	void PESO_CalculateNetForce(PESO_Object& object);
+	double PESO_CalculateEccentricity(PESO_Object& target, PESO_Object& satellite);
+	double PESO_CalculuateOrbitArea(PESO_Object& target, PESO_Object& satellite);
+	
+	void PESO_CalculateOrbitPeriod(PESO_Object& target, PESO_Object& satellite);
+	void PESO_CalculateReqLinVelocity(PESO_Object& target, PESO_Object& satllite);
+	void PESO_CalculateLinMomentum(PESO_Object& object);
+	void PESO_CalculateNetLinForce(PESO_Object& object);
+	void PESO_CalculateNetAngForce(PESO_Object& object);
+	void PESO_CalculateCentreOfMass(PESO_Object& object);
 #pragma endregion
 };
 
@@ -64,53 +70,72 @@ class PESO_Object {
 	friend class PESO_Physics;
 protected:
 	std::string tag;
+	//each object may possess a number of components.
+	std::vector<std::shared_ptr<PESO_Object>> components;
 #pragma region FIELDS
-	Point2i centre;
-	Point2i pivotPoint;
+	Vector3d centre;
+	Vector3d pivotPoint;
 
 	PESO_Transform transform;
 
-	Vector3d netForce;
+	Vector3d netLinForce;
 	Vector3d gravForce;
 	Vector3d thrust;
-	Vector3d acceleration;
-	Vector3d velocity;
-	Vector3d reqVelocity;
-	Vector3d speed;
-	Vector3d momentum;
+	Vector3d linSpeed;
+	Vector3d linAcceleration;
+	Vector3d linVelocity;
+	Vector3d linMomentum;
+	Vector3d reqLinVelocity;
+
+	Vector3d torque;
+	Vector3d netAngForce;
+	Vector3d angSpeed;
+	Vector3d angAcceleration;
+	Vector3d angVelocity;
+	Vector3d angMomentum;
+
+	Vector3d centreOfMass;
 
 	double mass;
+	double inertia;
 	double period;
 	double radius;
 #pragma endregion
 
 #pragma region CONSTRUCTORS
-	PESO_Object(const Point2i& center);
-	PESO_Object(const Point2i& center, Point2i pivotPoint);
-	PESO_Object(const Point2i& center, Point2i pivotPoint, float mass);
-	PESO_Object(const Point2i& center, Point2i pivotPoint, float mass, PESO_Transform transform);
-	PESO_Object(const Point2i& center, Point2i pivotPoint, float mass, PESO_Transform transform, float radius);
-	PESO_Object(const Point2i& center, Point2i pivotPoint, float mass, PESO_Transform transform, float radius, std::string tag);
-	PESO_Object(const Point2i& center, Point2i pivotPoint, float mass, PESO_Transform transform, float radius, std::string tag, Vector3d thrust);
+	PESO_Object();
+	PESO_Object(const Vector3d& centre);
+	PESO_Object(const Vector3d& centre, Vector3d pivotPoint);
+	PESO_Object(const Vector3d& centre, Vector3d pivotPoint, float mass);
+	PESO_Object(const Vector3d& centre, Vector3d pivotPoint, float mass, PESO_Transform transform);
+	PESO_Object(const Vector3d& centre, Vector3d pivotPoint, float mass, PESO_Transform transform, float radius);
+	PESO_Object(const Vector3d& centre, Vector3d pivotPoint, float mass, PESO_Transform transform, float radius, std::string tag);
+	PESO_Object(const Vector3d& centre, Vector3d pivotPoint, float mass, PESO_Transform transform, float radius, std::string tag, Vector3d thrust);
 #pragma endregion
 
 #pragma region GETTERS
 	std::string getTag()			const { return tag; };
 
-	Point2i getCentre()				const { return centre; };
-	Point2i getPivotPoint()			const { return pivotPoint; };
+	Vector3d getCentre()			const { return centre; };
+	Vector3d getCentreOfMass()		const { return centreOfMass; };
+	Vector3d getPivotPoint()		const { return pivotPoint; };
 
 	PESO_Transform getTransform()	const { return transform; };
 
 	Vector3d getPosition()			const { return transform.position; };
 	Vector3d getRotation()			const { return transform.rotation; };
-	Vector3d getNetForce()			const { return netForce; };
+	Vector3d getNetLinForce()		const { return netLinForce; };
+	Vector3d getNetAngForce()		const { return netAngForce; };
 	Vector3d getGravForce()			const { return gravForce; };
 	Vector3d getThrust()			const { return thrust; };
-	Vector3d getAcceleration()		const { return acceleration; };
-	Vector3d getVelocity()			const { return velocity; };
-	Vector3d getSpeed()				const { return speed; };
-	Vector3d getMomentum()			const { return momentum; };
+	Vector3d getlinAcceleration()	const { return linAcceleration; };
+	Vector3d getAngAcceleration()	const { return angAcceleration; };
+	Vector3d getlinVelocity()		const { return linVelocity; };
+	Vector3d getAngVelocity()		const { return angVelocity; };
+	Vector3d getLinSpeed()			const { return linSpeed; };
+	Vector3d getAngSpeed()			const { return angSpeed; };
+	Vector3d getlinMomentum()		const { return linMomentum; };
+	Vector3d getAngMomentum()		const { return angMomentum; };
 
 	double getMass()				const { return mass; };
 	double getPeriod()				const { return period; };

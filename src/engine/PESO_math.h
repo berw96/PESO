@@ -17,20 +17,20 @@ static const double _PI_ = 3.14159265358979323846;
 #pragma endregion
 
 #pragma region GEOMETRY
-struct Point2i {
+struct Point2d {
 	double x;
 	double y;
 
-	Point2i() : Point2i(0, 0) {}
-	Point2i(double x, double y) : x(x), y(y) {}
+	Point2d() : Point2d(0, 0) {}
+	Point2d(double x, double y) : x(x), y(y) {}
 };
 
 struct Line2i {
-	Point2i startPoint;
-	Point2i endPoint;
+	Point2d startPoint;
+	Point2d endPoint;
 
-	Line2i() : Line2i(Point2i(), Point2i()) {}
-	Line2i(const Point2i& startPoint, const Point2i& endPoint) : startPoint(startPoint), endPoint(endPoint) {}
+	Line2i() : Line2i(Point2d(), Point2d()) {}
+	Line2i(const Point2d& startPoint, const Point2d& endPoint) : startPoint(startPoint), endPoint(endPoint) {}
 };
 
 struct Rectangle2d {
@@ -46,7 +46,7 @@ struct Rectangle2d {
 		return rectangle;
 	}
 
-	inline bool contains(const Point2i& point) {
+	inline bool contains(const Point2d& point) {
 		return
 			point.x >= x &&
 			point.x <= x + width &&

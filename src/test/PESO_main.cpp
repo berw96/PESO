@@ -68,92 +68,6 @@ public:
 	};
 };
 
-class Object {
-	friend class Physics;
-
-protected:
-	double mass;
-	Vector3d transform;
-	Vector3d acceleration;
-	Vector3d speed;
-	Vector3d velocity;
-	Vector3d netForce;
-	Vector3d gravitationalForce;
-	Vector3d thrust;
-
-public:
-	Object() :
-		mass(20),
-		transform(Vector3d()),
-		acceleration(Vector3d()),
-		velocity(Vector3d()),
-		gravitationalForce(Vector3d()),
-		thrust({0.001, 0.0, 0.0})
-	{}
-	~Object() {};
-
-	double getObjectMass_f()			const { return mass; }
-	Vector3d getObjectTransform_f()		const { return transform; }
-	Vector3d getObjectAcceleration_f()	const { return acceleration; }
-	Vector3d getObjectNetForce_f()		const { return netForce; }
-	Vector3d getObjectGravForce_f()		const { return gravitationalForce; }
-	Vector3d getObjectThrust_f()		const { return thrust; }
-};
-
-class Physics {
-	friend class Object;
-	std::vector<std::shared_ptr<Object>> objects;
-
-public:
-	Physics() {};
-	~Physics() {};
-
-	void registerObject_f(std::shared_ptr<Object> object) {
-		objects.push_back(object);
-	}
-
-	void mechanics_f(std::vector<std::shared_ptr<Object>> objects) {
-		for (auto obj : objects) {
-			calculateNetForce_f(*obj);
-			calculuateAcceleration_f(*obj);
-			accelerate_f(*obj);
-			setVelocityMagnitude_f(*obj);
-			translateObject_f(*obj);
-		}
-	}
-
-	void calculateNetForce_f(Object& body) {
-		body.netForce.x = body.gravitationalForce.x + body.thrust.x;
-		body.netForce.y = body.gravitationalForce.y + body.thrust.y;
-		body.netForce.z = body.gravitationalForce.z + body.thrust.z;
-	}
-
-	void calculuateAcceleration_f(Object& body) {
-		body.acceleration.x = body.netForce.x / body.mass;
-		body.acceleration.y = body.netForce.y / body.mass;
-		body.acceleration.z = body.netForce.z / body.mass;
-	}
-
-	void accelerate_f(Object& body) {
-		body.speed.x += body.acceleration.x;
-		body.speed.y += body.acceleration.y;
-		body.speed.z += body.acceleration.z;
-	}
-
-	void setVelocityMagnitude_f(Object& body) {
-		body.velocity.x = body.speed.x;
-		body.velocity.y = body.speed.y;
-		body.velocity.z = body.speed.z;
-	}
-
-	void translateObject_f(Object& body) {
-		body.transform.x += body.velocity.x;
-		body.transform.y += body.velocity.y;
-		body.transform.z += body.velocity.z;
-	}
-
-	auto getRegisteredObjects_f()		const { return objects; }
-};
 
 int main(int argc, char* args[]) {
 	/*std::string in_file_name = "../saves/testProject.peso";
@@ -184,15 +98,16 @@ int main(int argc, char* args[]) {
 	bool running = true;
 	bool paused = true;
 	Event* events = new Event();
-	Physics* physics = new Physics();
-	std::shared_ptr<Object> object { new Object() };
+	PESO_Physics* physics = new PESO_Physics();
+	std::shared_ptr<PESO_Object> object{ new PESO_Object(Vector3d(), Vector3d(), 1.0, PESO_Transform(), 1.0, "Object 1", Vector3d(0.0001, 0.0, 0.0)) };
+
 	std::vector<std::string> inputs;
 	std::vector<Command> commands{
 		Command(CommandName::FOO, "FOO"),
 		Command(CommandName::START, "START")
 	};
 
-	physics->registerObject_f(object);
+	physics->PESO_RegisterObject(object);
 
 	SDL_Init(SDL_INIT_EVERYTHING);
 	
@@ -265,9 +180,12 @@ int main(int argc, char* args[]) {
 		
 		if (!paused) {
 			//apply mechanics of physics engine to all objects registered with it.
-			physics->mechanics_f(physics->getRegisteredObjects_f());
+			/*physics->mechanics_f(physics->getRegisteredObjects_f());
 			rectangle.x = object->getObjectTransform_f().x;
-			rectangle.y = object->getObjectTransform_f().y;
+			rectangle.y = object->getObjectTransform_f().y;*/
+			physics->PESO_ApplyLinearMechanics();
+			rectangle.x = object->getTransform().position.x;
+			rectangle.y = object->getTransform().position.y;
 		}
 		//draw geometry of provided specs
 		SDL_RenderDrawRect(simulationRenderer, &rectangle);

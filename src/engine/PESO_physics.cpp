@@ -10,17 +10,17 @@
 PESO_Object::PESO_Object() { setMass(_DEFAULT_INIT_MASS_); setTag(_DEFAULT_TAG_); };
 PESO_Object::PESO_Object(const Vector3d& centre) : centre(centre) { setMass(_DEFAULT_INIT_MASS_); setTag(_DEFAULT_TAG_); };
 PESO_Object::PESO_Object(const Vector3d& centre, Vector3d pivotPoint) : centre(centre), pivotPoint(pivotPoint) { setMass(_DEFAULT_INIT_MASS_); };
-PESO_Object::PESO_Object(const Vector3d& centre, Vector3d pivotPoint, float mass) : centre(centre), pivotPoint(pivotPoint) { setMass(mass); setTag(_DEFAULT_TAG_); };
-PESO_Object::PESO_Object(const Vector3d& centre, Vector3d pivotPoint, float mass, PESO_Transform transform) : centre(centre), pivotPoint(pivotPoint), transform(transform) { setMass(mass); setTag(_DEFAULT_TAG_); };
-PESO_Object::PESO_Object(const Vector3d& centre, Vector3d pivotPoint, float mass, PESO_Transform transform, float radius) : centre(centre), pivotPoint(pivotPoint), transform(transform), radius(radius) { setMass(mass); setTag(_DEFAULT_TAG_); };
-PESO_Object::PESO_Object(const Vector3d& centre, Vector3d pivotPoint, float mass, PESO_Transform transform, float radius, std::string tag) : centre(centre), pivotPoint(pivotPoint), transform(transform), radius(radius) { setMass(mass); setTag(tag); };
-PESO_Object::PESO_Object(const Vector3d& centre, Vector3d pivotPoint, float mass, PESO_Transform transform, float radius, std::string tag, Vector3d thrust) : centre(centre), pivotPoint(pivotPoint), transform(transform), radius(radius), thrust(thrust) { setMass(mass); setTag(tag); };
+PESO_Object::PESO_Object(const Vector3d& centre, Vector3d pivotPoint, double mass) : centre(centre), pivotPoint(pivotPoint) { setMass(mass); setTag(_DEFAULT_TAG_); };
+PESO_Object::PESO_Object(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform) : centre(centre), pivotPoint(pivotPoint), transform(transform) { setMass(mass); setTag(_DEFAULT_TAG_); };
+PESO_Object::PESO_Object(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform, double radius) : centre(centre), pivotPoint(pivotPoint), transform(transform), radius(radius) { setMass(mass); setTag(_DEFAULT_TAG_); };
+PESO_Object::PESO_Object(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform, double radius, std::string tag) : centre(centre), pivotPoint(pivotPoint), transform(transform), radius(radius) { setMass(mass); setTag(tag); };
+PESO_Object::PESO_Object(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform, double radius, std::string tag, Vector3d thrust) : centre(centre), pivotPoint(pivotPoint), transform(transform), radius(radius), thrust(thrust) { setMass(mass); setTag(tag); };
 #pragma endregion
 
 #pragma region PESO_PHYSICS
 PESO_Physics::PESO_Physics() {};
 
-void PESO_Physics::PESO_registerObject(std::shared_ptr<PESO_Object> obj) {
+void PESO_Physics::PESO_RegisterObject(std::shared_ptr<PESO_Object> obj) {
 	objects.push_back(obj);
 };
 

@@ -39,11 +39,11 @@ class PESO_Physics {
 	friend class PESO_Object;
 
 #pragma region IMPLEMENTATION
-	PESO_Physics();
 	std::vector<std::shared_ptr<PESO_Object>> objects;
 
 public:
-	void PESO_registerObject(std::shared_ptr<PESO_Object> object);
+	PESO_Physics();
+	void PESO_RegisterObject(std::shared_ptr<PESO_Object> object);
 	void PESO_ApplyLinearMechanics();
 	void PESO_ApplyRotationMechanics();
 #pragma endregion
@@ -103,14 +103,15 @@ protected:
 #pragma endregion
 
 #pragma region CONSTRUCTORS
+public:
 	PESO_Object();
 	PESO_Object(const Vector3d& centre);
 	PESO_Object(const Vector3d& centre, Vector3d pivotPoint);
-	PESO_Object(const Vector3d& centre, Vector3d pivotPoint, float mass);
-	PESO_Object(const Vector3d& centre, Vector3d pivotPoint, float mass, PESO_Transform transform);
-	PESO_Object(const Vector3d& centre, Vector3d pivotPoint, float mass, PESO_Transform transform, float radius);
-	PESO_Object(const Vector3d& centre, Vector3d pivotPoint, float mass, PESO_Transform transform, float radius, std::string tag);
-	PESO_Object(const Vector3d& centre, Vector3d pivotPoint, float mass, PESO_Transform transform, float radius, std::string tag, Vector3d thrust);
+	PESO_Object(const Vector3d& centre, Vector3d pivotPoint, double mass);
+	PESO_Object(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform);
+	PESO_Object(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform, double radius);
+	PESO_Object(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform, double radius, std::string tag);
+	PESO_Object(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform, double radius, std::string tag, Vector3d thrust);
 #pragma endregion
 
 #pragma region GETTERS

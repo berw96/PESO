@@ -70,7 +70,7 @@ class PESO_Object {
 	friend class PESO_Physics;
 protected:
 	std::string tag;
-	//each object may possess a number of components.
+	//each object may possess a number of other objects as components.
 	std::vector<std::shared_ptr<PESO_Object>> components;
 #pragma region FIELDS
 	Vector3d centre;

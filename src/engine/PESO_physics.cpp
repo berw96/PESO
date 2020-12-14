@@ -62,7 +62,25 @@ void PESO_Physics::PESO_ApplyLinearMechanics() {
 };
 
 void PESO_Physics::PESO_ApplyRotationMechanics() {
+	for (auto obj : objects) {
+		PESO_CalculateNetAngForce(*obj);
 
+		obj->angAcceleration.x = obj->netAngForce.x;
+		obj->angAcceleration.y = obj->netAngForce.y;
+		obj->angAcceleration.z = obj->netAngForce.z;
+
+		obj->angSpeed.x += obj->angAcceleration.x;
+		obj->angSpeed.y += obj->angAcceleration.y;
+		obj->angSpeed.z += obj->angAcceleration.z;
+
+		obj->angVelocity.x = obj->angSpeed.x;
+		obj->angVelocity.y = obj->angSpeed.y;
+		obj->angVelocity.z = obj->angSpeed.z;
+
+		obj->transform.rotation.x += obj->angVelocity.x;
+		obj->transform.rotation.y += obj->angVelocity.y;
+		obj->transform.rotation.z += obj->angVelocity.z;
+	}
 };
 
 Vector3d PESO_Physics::PESO_CalculateGravForce(PESO_Object& target, PESO_Object& satellite) {
@@ -96,7 +114,9 @@ void PESO_Physics::PESO_CalculateNetLinForce(PESO_Object& object) {
 };
 
 void PESO_Physics::PESO_CalculateNetAngForce(PESO_Object& object) {
-
+	object.netAngForce.x = object.torque.x;
+	object.netAngForce.y = object.torque.y;
+	object.netAngForce.z = object.torque.z;
 };
 
 double PESO_Physics::PESO_CalculateRange(PESO_Object& target, PESO_Object& satellite) {

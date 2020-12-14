@@ -3,72 +3,6 @@
 
 class Object;
 
-enum Key {
-	T, ESC, QUIT, LAST
-};
-
-enum CommandName {
-	FOO, EXIT, STOP, START
-};
-
-struct Command {
-	CommandName name;
-	std::string value;
-
-	Command(CommandName name, std::string value) : name(name), value(value) {}
-};
-
-class Event {
-	std::map<int, std::string> commands;
-	bool running;
-	SDL_Event event;
-	bool keyBooleans[Key::LAST];
-	
-	void updateKeyBooleans_f(const SDL_Keycode& key, bool keyDown) {
-		Key index;
-
-		switch (key) {
-		case SDLK_t:
-			index = Key::T;
-			break;
-		case SDLK_ESCAPE:
-			index = Key::ESC;
-			break;
-		case SDL_QUIT:
-			index = Key::QUIT;
-		default:
-			return;
-		}
-		keyBooleans[index] = keyDown;
-	};
-
-public:
-	Event() : running(true) {
-		for (int i = 0; i < Key::LAST; ++i) {
-			//ensure that all keys are by default not triggered on startup
-			keyBooleans[i] = false;
-		}
-	};
-	~Event() {};
-
-	void pollEvents_f() {
-		while (SDL_PollEvent(&event)) {
-			if ((event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) && event.key.repeat == 0) {
-				updateKeyBooleans_f(event.key.keysym.sym, event.type == SDL_KEYDOWN);
-			}
-		}
-	};
-
-	bool isPressed_f(Key key) {
-		return keyBooleans[key];
-	};
-
-	void setPressed_f(Key key) {
-		keyBooleans[key] = true;
-	};
-};
-
-
 int main(int argc, char* args[]) {
 	/*std::string in_file_name = "../saves/testProject.peso";
 	std::ifstream in_file {in_file_name, std::ios::in | std::ios::binary};
@@ -97,100 +31,143 @@ int main(int argc, char* args[]) {
 
 	bool running = true;
 	bool paused = true;
-	Event* events = new Event();
+	PESO_Events* events = new PESO_Events();
 	PESO_Physics* physics = new PESO_Physics();
-	std::shared_ptr<PESO_Object> object{ new PESO_Object(Vector3d(), Vector3d(), 1.0, PESO_Transform(), 1.0, "Object 1", Vector3d(0.0001, 0.0, 0.0)) };
-
-	std::vector<std::string> inputs;
-	std::vector<Command> commands{
-		Command(CommandName::FOO, "FOO"),
-		Command(CommandName::START, "START")
-	};
+	std::shared_ptr<PESO_Object> object{ new PESO_Object(Vector3d(), Vector3d(), 1.0, PESO_Transform(), 1.0, "Object 1", Vector3d(0.0001, 0.0, 0.0001)) };
 
 	physics->PESO_RegisterObject(object);
 
-	SDL_Init(SDL_INIT_EVERYTHING);
+	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+		SDL_Log("Could not init SDL %s\n", SDL_GetError());
+		return 1;
+	};
 	
-	SDL_Rect rectangle = {
+	SDL_Rect XYRectangle = {
 		(float)(_DEFAULT_WINDOW_WIDTH_/2.f), 
 		(float)(_DEFAULT_WINDOW_HEIGHT_/2.f),
 		30.f ,
 		30.f
 	};
 
-	SDL_Window* simulationWindow = SDL_CreateWindow(
-		"PESO",
-		SDL_WINDOWPOS_CENTERED,
-		SDL_WINDOWPOS_CENTERED,
-		_DEFAULT_WINDOW_WIDTH_,
-		_DEFAULT_WINDOW_HEIGHT_,
-		SDL_WINDOW_SHOWN);
+	SDL_Rect XZRectangle = {
+		(float)(_DEFAULT_WINDOW_WIDTH_ / 2.f),
+		(float)(_DEFAULT_WINDOW_HEIGHT_ / 2.f),
+		30.f ,
+		30.f
+	};
 	
-	SDL_Renderer* simulationRenderer = SDL_CreateRenderer(
-		simulationWindow, 
+	SDL_Rect YZRectangle = {
+		(float)(_DEFAULT_WINDOW_WIDTH_ / 2.f),
+		(float)(_DEFAULT_WINDOW_HEIGHT_ / 2.f),
+		30.f ,
+		30.f
+	};
+
+	SDL_Window* XYViewport = SDL_CreateWindow(
+		"XY Viewport",
+		_DEFAULT_WINDOW_POS_X_,
+		_DEFAULT_WINDOW_POS_Y_,
+		_DEFAULT_WINDOW_WIDTH_ / 6,
+		_DEFAULT_WINDOW_HEIGHT_ / 6,
+		SDL_WINDOW_SHOWN
+		);
+
+	SDL_Window* XZViewport = SDL_CreateWindow(
+		"XZ Viewport",
+		_DEFAULT_WINDOW_POS_X_,
+		_DEFAULT_WINDOW_POS_Y_ + _DEFAULT_WINDOW_HEIGHT_ / 6,
+		_DEFAULT_WINDOW_WIDTH_ / 6,
+		_DEFAULT_WINDOW_HEIGHT_ / 6,
+		SDL_WINDOW_SHOWN | SDL_WINDOW_INPUT_GRABBED
+	);
+
+	SDL_Window* YZViewport = SDL_CreateWindow(
+		"YZ Viewport",
+		_DEFAULT_WINDOW_POS_X_,
+		_DEFAULT_WINDOW_POS_Y_ + 2 * (_DEFAULT_WINDOW_HEIGHT_ / 6),
+		_DEFAULT_WINDOW_WIDTH_ / 6,
+		_DEFAULT_WINDOW_HEIGHT_ / 6,
+		SDL_WINDOW_SHOWN
+	);
+
+	SDL_Renderer* XYRenderer = SDL_CreateRenderer(
+		XYViewport, 
 		-1, 
 		SDL_RENDERER_ACCELERATED);
+
+	SDL_Renderer* XZRenderer = SDL_CreateRenderer(
+		XZViewport,
+		-1,
+		SDL_RENDERER_ACCELERATED
+	);
+	
+	SDL_Renderer* YZRenderer = SDL_CreateRenderer(
+		YZViewport,
+		-1,
+		SDL_RENDERER_ACCELERATED
+	);
 	
 	std::cout << "Welcome to PESO! Press T to use console input." << std::endl;
 
 	while (running) {
-		events->pollEvents_f();
+		events->PESO_PollEvents();
 
-		if (events->isPressed_f(Key::T)) {
-			//write directly to input variable with buffered console input
-			std::string input;
-			std::cout << "Enter command: ";
-			std::cin >> input;
-			//add input to history
-			inputs.push_back(input);
-		}
-		//check what the user has entered and correlate it with the command name
-		for (auto arg : commands) {
-			for (auto input : inputs) {
-				std::cout << "You typed " << input << "\n";
-				//condition preventing negative index
-				if (inputs.size() > 0) {
-					//compare the most recent input with a valid command
-					if (inputs.at(inputs.size() - 1) == arg.value) {
-						//check which command has been given
-						switch (arg.name) {
-						case FOO:
-							std::cout << "BAR" << std::endl;
-							inputs.clear();
-							break;
-						case START:
-							paused = false;
-							inputs.clear();
-							break;
-						default:
-							std::cout << "Invalid command.\n";
-							break;
-						}
-					}
-				}
+		if (events->PESO_KeyIsPressed(Key::P)) {
+			if (!paused) {
+				paused = true;
+				std::cout << "PAUSED\n";
 			}
+		}
+		if (events->PESO_KeyIsPressed(Key::R)) {
+			if (paused) {
+				paused = false;
+				std::cout << "PLAYING...\n";
+			}
+		}
+		if (events->PESO_KeyIsPressed(Key::ESC)) {
+			std::cout << "Exiting PESO...";
+			//should clear resources before exiting.
+			exit(0);
 		}
 		
 		//choose color to clear screen with.
-		SDL_SetRenderDrawColor(simulationRenderer, 0, 0, 0, 255);
+		SDL_SetRenderDrawColor(XYRenderer, 0, 0, 0, 255);
+		SDL_SetRenderDrawColor(XZRenderer, 0, 0, 0, 255);
+		SDL_SetRenderDrawColor(YZRenderer, 0, 0, 0, 255);
 		//clear screen
-		SDL_RenderClear(simulationRenderer);
+		SDL_RenderClear(XYRenderer);
+		SDL_RenderClear(XZRenderer);
+		SDL_RenderClear(YZRenderer);
 		//choose color to draw geometry with.
-		SDL_SetRenderDrawColor(simulationRenderer, 255, 255, 255, 255);
+		SDL_SetRenderDrawColor(XYRenderer, 255, 255, 255, 255);
+		SDL_SetRenderDrawColor(XZRenderer, 255, 255, 255, 255);
+		SDL_SetRenderDrawColor(YZRenderer, 255, 255, 255, 255);
 		
 		if (!paused) {
 			//apply mechanics of physics engine to all objects registered with it.
-			/*physics->mechanics_f(physics->getRegisteredObjects_f());
-			rectangle.x = object->getObjectTransform_f().x;
-			rectangle.y = object->getObjectTransform_f().y;*/
 			physics->PESO_ApplyLinearMechanics();
-			rectangle.x = object->getTransform().position.x;
-			rectangle.y = object->getTransform().position.y;
+			XYRectangle.x = object->getTransform().position.x;
+			XYRectangle.y = object->getTransform().position.y;
+			XZRectangle.x = object->getTransform().position.x;
+			XZRectangle.y = object->getTransform().position.z;
+			YZRectangle.x = object->getTransform().position.y;
+			YZRectangle.y = object->getTransform().position.z;
 		}
 		//draw geometry of provided specs
-		SDL_RenderDrawRect(simulationRenderer, &rectangle);
+		SDL_RenderDrawRect(XYRenderer, &XYRectangle);
+		SDL_RenderDrawRect(XZRenderer, &XZRectangle);
+		SDL_RenderDrawRect(YZRenderer, &YZRectangle);
 		//show results
-		SDL_RenderPresent(simulationRenderer);
+		SDL_RenderPresent(XYRenderer);
+		SDL_RenderPresent(XZRenderer);
+		SDL_RenderPresent(YZRenderer);
 	}
+	SDL_DestroyRenderer(XYRenderer);
+	SDL_DestroyRenderer(XZRenderer);
+	SDL_DestroyRenderer(YZRenderer);
+	SDL_DestroyWindow(XYViewport);
+	SDL_DestroyWindow(XZViewport);
+	SDL_DestroyWindow(YZViewport);
+	SDL_Quit();
 	return 0;
 }

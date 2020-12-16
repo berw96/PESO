@@ -36,7 +36,11 @@ void PESO_Events::PESO_UpdateKeyBooleans(const SDL_Keycode& key, bool triggered)
 	case SDLK_ESCAPE:
 		keyIndex = Key::ESC;
 		break;
+	case SDLK_RIGHT:
+		keyIndex = Key::RIGHT_ARROW;
+		break;
 	default:
+		keyIndex = Key::LAST;
 		break;
 	}
 	keyBooleans[keyIndex] = triggered;

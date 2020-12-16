@@ -9,10 +9,9 @@
 #include <string>
 #include <thread>
 #include <SDL.h>
-#include "PESO_debug.h"
 
 enum Key {
-	P, R, ESC, QUIT, LAST
+	P, R, ESC, QUIT, RIGHT_ARROW, LEFT_ARROW, UP_ARROW, DOWN_ARROW, LAST
 };
 
 enum CommandName {

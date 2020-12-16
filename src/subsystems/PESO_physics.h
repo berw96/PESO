@@ -78,28 +78,31 @@ protected:
 
 	PESO_Transform transform;
 
-	Vector3d netLinForce;
-	Vector3d gravForce;
-	Vector3d thrust;
-	Vector3d linSpeed;
-	Vector3d linAcceleration;
-	Vector3d linVelocity;
-	Vector3d linMomentum;
-	Vector3d reqLinVelocity;
+	Vector3d netLinForce;			//Net force enacted on the object
+	Vector3d gravForce;				//Gravitational force experienced by the object
+	Vector3d thrust;				//Thrust produced by the object
+	Vector3d drag;					//Aerodynamic drag experienced by the object
+	Vector3d lift;					//Aerodynamic lift experienced by the object
+	Vector3d downforce;				//Aerodynamic downforce experienced by the object
+	Vector3d linSpeed;				//Linear speed of object (magnitude of linVelocity)
+	Vector3d linAcceleration;		//Linear acceleration of object
+	Vector3d linVelocity;			//Linear velocity of object
+	Vector3d linMomentum;			//Linear momentum of object
+	Vector3d reqLinVelocity;		//Linear velocity required to maintain orbit radius at point
 
-	Vector3d torque;
-	Vector3d netAngForce;
-	Vector3d angSpeed;
-	Vector3d angAcceleration;
-	Vector3d angVelocity;
-	Vector3d angMomentum;
+	Vector3d torque;				//Turning force of object
+	Vector3d netAngForce;			//Net angular force experienced by object
+	Vector3d angSpeed;				//Angular speed of object (magnitude of angVelocity)
+	Vector3d angAcceleration;		//Angular acceleration of object
+	Vector3d angVelocity;			//Angular velcoty of object
+	Vector3d angMomentum;			//Angular momentum of object
 
-	Vector3d centreOfMass;
+	Vector3d centreOfMass;			//Equivalent to centre of balance
 
-	double mass;
-	double inertia;
-	double period;
-	double radius;
+	double mass;					//Mass of object
+	double inertia;					//Object's resistance to changes in rotational motion
+	double period;					//Object's orbital period
+	double radius;					//Object's geometric radius (if applicable)
 #pragma endregion
 
 #pragma region CONSTRUCTORS
@@ -129,13 +132,13 @@ public:
 	Vector3d getNetAngForce()		const { return netAngForce; };
 	Vector3d getGravForce()			const { return gravForce; };
 	Vector3d getThrust()			const { return thrust; };
-	Vector3d getlinAcceleration()	const { return linAcceleration; };
+	Vector3d getLinAcceleration()	const { return linAcceleration; };
 	Vector3d getAngAcceleration()	const { return angAcceleration; };
-	Vector3d getlinVelocity()		const { return linVelocity; };
+	Vector3d getLinVelocity()		const { return linVelocity; };
 	Vector3d getAngVelocity()		const { return angVelocity; };
 	Vector3d getLinSpeed()			const { return linSpeed; };
 	Vector3d getAngSpeed()			const { return angSpeed; };
-	Vector3d getlinMomentum()		const { return linMomentum; };
+	Vector3d getLinMomentum()		const { return linMomentum; };
 	Vector3d getAngMomentum()		const { return angMomentum; };
 
 	double getMass()				const { return mass; };
@@ -144,6 +147,8 @@ public:
 #pragma endregion
 
 #pragma region SETTERS
+	void setPosition(Vector3d pos) { this->transform.position = pos; }
+	void setRotation(Vector3d rot) { this->transform.rotation = rot; }
 	void setMass(double mass) {
 		if (mass <= 0) {
 			mass = DBL_MIN;

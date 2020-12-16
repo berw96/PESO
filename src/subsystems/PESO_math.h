@@ -39,6 +39,7 @@ struct Rectangle2d {
 	double width;
 	double height;
 
+	Rectangle2d() : Rectangle2d(0.0, 0.0, 1.0, 1.0) {}
 	Rectangle2d(double x, double y, double width, double height) : x(x), y(y), width(width), height(height) {}
 
 	SDL_Rect getSDLRectFrom() const {

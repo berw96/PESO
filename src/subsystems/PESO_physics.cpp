@@ -109,7 +109,7 @@ Vector3d PESO_Physics::PESO_CalculateNetGravForce(PESO_Object& satellite) {
 
 void PESO_Physics::PESO_CalculateNetLinForce(PESO_Object& object) {
 	object.netLinForce.x = PESO_CalculateNetGravForce(object).x + object.thrust.x;
-	object.netLinForce.y = PESO_CalculateNetGravForce(object).x + object.thrust.y;
+	object.netLinForce.y = PESO_CalculateNetGravForce(object).y + object.thrust.y;
 	object.netLinForce.z = PESO_CalculateNetGravForce(object).z + object.thrust.z;
 };
 
@@ -129,7 +129,7 @@ double PESO_Physics::PESO_CalculateRange(PESO_Object& target, PESO_Object& satel
 	if (res_range == 0.0) {
 		res_range = DBL_MIN;
 	}
-	return res_range;
+	return abs(res_range);
 };
 
 double PESO_Physics::PESO_CalculateResultant(Vector3d v) {

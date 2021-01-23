@@ -137,12 +137,6 @@ double PESO_Physics::PESO_CalculateResultant(Vector3d v) {
 	return res;
 };
 
-void PESO_Physics::PESO_CalculateCentreOfMass(PESO_Object& object) {
-	for (auto comp : object.components) {
-
-	}
-};
-
 void PESO_Physics::PESO_CalculateLinMomentum(PESO_Object& object) {
 	object.linMomentum.x = object.linVelocity.x * object.mass;
 	object.linMomentum.y = object.linVelocity.y * object.mass;

@@ -9,7 +9,6 @@
 #define _MINUTE_	(60 * _SECOND_)
 #define _HOUR_		(60 * _MINUTE_)
 #define _DAY_		(24 * _HOUR_)
-#define _SOL_		(0.9723435226 * _DAY_)
 
 #include <SDL.h>
 
@@ -22,6 +21,5 @@ public:
 	Uint32 PESO_GetTimestamp();
 	Uint32 PESO_GetElapsedTime();
 };
-
 
 #endif

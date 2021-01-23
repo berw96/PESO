@@ -5,18 +5,17 @@
 
 #include "PESO_graphics.h"
 
-PESO_Graphics::PESO_Graphics() : framerateAverage(0), frameratePrevious(0), framerateStart(0), framerateEnd(0), drawColor({ WHITE }), highlightColor({ RED }), clearingColor({ BLACK }) {
-	if ((IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG) != IMG_INIT_PNG) {
-		printf("Could not init SDL_image - PNG.");
-	}
-
+PESO_Graphics::PESO_Graphics() : drawColor({ WHITE }), highlightColor({ RED }), clearingColor({ BLACK }) {
 	if (TTF_Init() < 0) {
 		printf("Could not init SDL_ttf.");
 	}
-	PESO_UseFont(TTF_OpenFont("res/fonts/arial.ttf", 15));
-	
+	else {
+		PESO_UseFont(TTF_OpenFont("res/fonts/arial.ttf", 15));
+	}
+
+#pragma region XY
 	xyViewport = SDL_CreateWindow(
-		"PESO Simulation Visual",
+		"PESO Simulation XY",
 		_DEFAULT_WINDOW_POS_X_,
 		_DEFAULT_WINDOW_POS_Y_,
 		_DEFAULT_WINDOW_WIDTH_,
@@ -24,12 +23,48 @@ PESO_Graphics::PESO_Graphics() : framerateAverage(0), frameratePrevious(0), fram
 		SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
 	);
 
-	orbitRenderer = SDL_CreateRenderer(
+	xyRenderer = SDL_CreateRenderer(
 		xyViewport,
 		-1,
 		SDL_RENDERER_ACCELERATED
 	);
+#pragma endregion
 
+#pragma region XZ
+	/*xzViewport = SDL_CreateWindow(
+		"PESO Simulation XZ",
+		_DEFAULT_WINDOW_POS_X_,
+		_DEFAULT_WINDOW_POS_Y_,
+		_DEFAULT_WINDOW_WIDTH_,
+		_DEFAULT_WINDOW_HEIGHT_,
+		SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
+	);
+
+	xzRenderer = SDL_CreateRenderer(
+		xzViewport,
+		-1,
+		SDL_RENDERER_ACCELERATED
+	);*/
+#pragma endregion
+
+#pragma region YZ
+	/*yzViewport = SDL_CreateWindow(
+		"PESO Simulation YZ",
+		_DEFAULT_WINDOW_POS_X_,
+		_DEFAULT_WINDOW_POS_Y_,
+		_DEFAULT_WINDOW_WIDTH_,
+		_DEFAULT_WINDOW_HEIGHT_,
+		SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
+	);
+
+	yzRenderer = SDL_CreateRenderer(
+		yzViewport,
+		-1,
+		SDL_RENDERER_ACCELERATED
+	);*/
+#pragma endregion
+
+#pragma region DATA
 	dataViewport = SDL_CreateWindow(
 		"PESO Simulation Data",
 		(_DEFAULT_WINDOW_POS_X_ + 1100),
@@ -44,52 +79,37 @@ PESO_Graphics::PESO_Graphics() : framerateAverage(0), frameratePrevious(0), fram
 		-1,
 		SDL_RENDERER_ACCELERATED
 	);
+#pragma endregion
 }
 
 PESO_Graphics::~PESO_Graphics() {
 	printf("Graphics shutting down...");
-	IMG_Quit();
 	TTF_Quit();
-	SDL_DestroyRenderer(orbitRenderer);
+	SDL_DestroyRenderer(xyRenderer);
+	SDL_DestroyRenderer(xzRenderer);
+	SDL_DestroyRenderer(yzRenderer);
 	SDL_DestroyRenderer(dataRenderer);
 	SDL_DestroyWindow(xyViewport);
+	SDL_DestroyWindow(xzViewport);
+	SDL_DestroyWindow(yzViewport);
 	SDL_DestroyWindow(dataViewport);
 	SDL_Quit();
 	printf("Graphics shut down.");
 }
 
-void PESO_Graphics::PESO_DrawPoint(const Point2d& point) {
-	SDL_SetRenderDrawColor(orbitRenderer, drawColor.r, drawColor.g, drawColor.b, drawColor.a);
-	SDL_RenderDrawPoint(orbitRenderer, point.x, point.y);
-}
-
-void PESO_Graphics::PESO_DrawLineSegment(const Line2i& line) {
-	SDL_SetRenderDrawColor(orbitRenderer, drawColor.r, drawColor.g, drawColor.b, drawColor.a);
-	SDL_RenderDrawLine(orbitRenderer, line.startPoint.x, line.startPoint.y, line.endPoint.x, line.endPoint.y);
-}
-
-void PESO_Graphics::PESO_DrawRectangle(const Rectangle2d& rectangle) {
-	SDL_SetRenderDrawColor(orbitRenderer, drawColor.r, drawColor.g, drawColor.b, drawColor.a);
-	SDL_RenderDrawRect(orbitRenderer, &rectangle.getSDLRectFrom());
-}
-
 void PESO_Graphics::PESO_DrawEllipse(const Point2d& centre, const double& radiusX, const double& radiusY) {
-	SDL_SetRenderDrawColor(orbitRenderer, drawColor.r, drawColor.g, drawColor.b, drawColor.a);
+	SDL_SetRenderDrawColor(xyRenderer, drawColor.r, drawColor.g, drawColor.b, drawColor.a);
 	for (float theta = 0.f; theta < 2 * M_PI; theta += _PI_OVER_180_) {
 		int x = (int)(centre.x + radiusX * cos(theta));
 		int y = (int)(centre.y + radiusY * sin(theta));
-		SDL_RenderDrawPoint(orbitRenderer, x, y);
+		SDL_RenderDrawPoint(xyRenderer, x, y);
 	}
-}
-
-void PESO_Graphics::PESO_DrawTexture(SDL_Texture* texture, SDL_Rect* src, SDL_Rect* dst, const double& angle, const SDL_Point* centre, SDL_RendererFlip flip) {
-	SDL_RenderCopyEx(orbitRenderer, texture, src, dst, angle, centre, flip);
 }
 
 void PESO_Graphics::PESO_DrawText(const std::string& text, const double& x, const double& y) {
 	SDL_Surface* textSurface = TTF_RenderText_Blended(font, text.c_str(), drawColor);
 	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(dataRenderer, textSurface);
-
+	
 	int width;
 	int height;
 	SDL_QueryTexture(textTexture, NULL, NULL, &width, &height);
@@ -100,6 +120,8 @@ void PESO_Graphics::PESO_DrawText(const std::string& text, const double& x, cons
 		height
 	};
 	SDL_RenderCopy(dataRenderer, textTexture, NULL, &dst);
+	SDL_DestroyTexture(textTexture);
+	SDL_FreeSurface(textSurface);
 }
 
 void PESO_Graphics::PESO_DrawSimulationData(std::shared_ptr<PESO_Object> obj) {
@@ -113,7 +135,7 @@ void PESO_Graphics::PESO_DrawSimulationData(std::shared_ptr<PESO_Object> obj) {
 	PESO_DrawText("Position:", 10.0 , 40.0);	
 	PESO_DrawText(std::to_string(obj->getPosition().x - width/2), 150.0 , 40.0);
 	PESO_DrawText(std::to_string(obj->getPosition().y - height/2), 250.0, 40.0);
-	PESO_DrawText(std::to_string(obj->getPosition().z), 350.0 , 40.0);
+	PESO_DrawText(std::to_string(obj->getPosition().z - height/2), 350.0 , 40.0);
 	PESO_DrawText("Rotation:", 10.0 , 70.0);	
 	PESO_DrawText(std::to_string(obj->getRotation().x), 150.0 , 70.0);
 	PESO_DrawText(std::to_string(obj->getRotation().y), 250.0 , 70.0);
@@ -132,14 +154,20 @@ void PESO_Graphics::PESO_DrawSimulationData(std::shared_ptr<PESO_Object> obj) {
 }
 
 void PESO_Graphics::PESO_ClearScreen() {
-	SDL_SetRenderDrawColor(orbitRenderer, clearingColor.r, clearingColor.g, clearingColor.b, clearingColor.a);
+	SDL_SetRenderDrawColor(xyRenderer, clearingColor.r, clearingColor.g, clearingColor.b, clearingColor.a);
+	SDL_SetRenderDrawColor(xzRenderer, clearingColor.r, clearingColor.g, clearingColor.b, clearingColor.a);
+	SDL_SetRenderDrawColor(yzRenderer, clearingColor.r, clearingColor.g, clearingColor.b, clearingColor.a);
 	SDL_SetRenderDrawColor(dataRenderer, clearingColor.r, clearingColor.g, clearingColor.b, clearingColor.a);
-	SDL_RenderClear(orbitRenderer);
+	SDL_RenderClear(xyRenderer);
+	SDL_RenderClear(xzRenderer);
+	SDL_RenderClear(yzRenderer);
 	SDL_RenderClear(dataRenderer);
 }
 
 void PESO_Graphics::PESO_ShowScreen() {
-	SDL_RenderPresent(orbitRenderer);
+	SDL_RenderPresent(xyRenderer);
+	SDL_RenderPresent(xzRenderer);
+	SDL_RenderPresent(yzRenderer);
 	SDL_RenderPresent(dataRenderer);
 }
 
@@ -179,7 +207,3 @@ SDL_Texture* PESO_Graphics::PESO_CreateTextureFromString(SDL_Renderer* rdr, cons
 	}
 	return textTexture;
 }
-
-Uint32 PESO_Graphics::PESO_GetAverageFramerate() {
-	return this->framerateAverage;
-};

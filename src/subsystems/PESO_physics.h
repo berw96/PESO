@@ -5,15 +5,16 @@
 
 #ifndef _PHYSICS_
 #define _PHYSICS_
-#define _UNIVERSAL_CONST_GRAVITATION_ (0.00000000006674000000f)
-#define _DEFAULT_INIT_MASS_ (1.f)
-#define _DEFAULT_TAG_ ("")
-#define _DEFAULT_RADIUS_ (10.f)
+#define _UNIVERSAL_CONST_GRAVITATION_	(0.00000000006674000000f)
+#define _DEFAULT_INIT_MASS_				(1.f)
+#define _DEFAULT_TAG_					("")
+#define _DEFAULT_RADIUS_				(10.f)
 
 #include <vector>
 #include <string>
 #include <memory>
 #include "PESO_math.h"
+#include "PESO_timer.h"
 
 struct Vector3d {
 	double x;
@@ -70,8 +71,6 @@ class PESO_Object {
 	friend class PESO_Physics;
 protected:
 	std::string tag;
-	//each object may possess a number of other objects as components.
-	std::vector<std::shared_ptr<PESO_Object>> components;
 #pragma region FIELDS
 	Vector3d centre;
 	Vector3d pivotPoint;
@@ -103,6 +102,7 @@ protected:
 	double inertia;					//Object's resistance to changes in rotational motion
 	double period;					//Object's orbital period
 	double radius;					//Object's geometric radius (if applicable)
+	bool burning;					//Object thrust toggle
 #pragma endregion
 
 #pragma region CONSTRUCTORS

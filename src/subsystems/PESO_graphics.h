@@ -33,24 +33,21 @@ static const SDL_Color BLACK	= {0, 0, 0};
 class PESO_Graphics {
 private:
 #pragma region DISPLAY
-	SDL_Window* xyViewport;
-	SDL_Window* dataViewport;
+	SDL_Window* xyViewport		= nullptr;
+	SDL_Window* xzViewport		= nullptr;
+	SDL_Window* yzViewport		= nullptr;
+	SDL_Window* dataViewport	= nullptr;
 
-	SDL_Renderer* orbitRenderer;
-	SDL_Renderer* dataRenderer;
+	SDL_Renderer* xyRenderer	= nullptr;
+	SDL_Renderer* xzRenderer	= nullptr;
+	SDL_Renderer* yzRenderer	= nullptr;
+	SDL_Renderer* dataRenderer	= nullptr;
 
 	SDL_Color drawColor;
 	SDL_Color highlightColor;
 	SDL_Color clearingColor;
 
-	TTF_Font* font;
-	Uint32 framerateAverage, frameratePrevious, framerateStart, framerateEnd;
-#pragma endregion
-
-#pragma region CONTENTS
-	Line2i animationTimeline;
-	Point2d animationMarker;
-	Point2d objectPoint;
+	TTF_Font* font				= nullptr;
 #pragma endregion
 	
 
@@ -71,13 +68,10 @@ public:
 	static SDL_Texture* PESO_CreateTextureFromString(SDL_Renderer* rdr, const std::string& textureString, TTF_Font* font, SDL_Color color);
 	
 	void PESO_DrawSimulationData(std::shared_ptr<PESO_Object> obj);
-	void PESO_DrawTexture(SDL_Texture* texture, SDL_Rect* src, SDL_Rect* dst, const double& angle, const SDL_Point* centre, SDL_RendererFlip flip);
 	void PESO_DrawText(const std::string& text, const double& x, const double& y);
 	void PESO_SetDrawColor(const SDL_Color& color);
 	void PESO_SetHighlightColor(const SDL_Color& color);
 	void PESO_SetClearingColor(const SDL_Color& color);
-	
-	Uint32 PESO_GetAverageFramerate();
 };
 
 #endif

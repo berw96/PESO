@@ -6,15 +6,20 @@
 #include "PESO_physics.h"
 #include <iostream>
 
+#pragma region PESO_DATA
+PESO_Data::PESO_Data() : mass(_DEFAULT_INIT_MASS_), tag(_DEFAULT_TAG_), radius(_DEFAULT_RADIUS_) {};
+PESO_Data::PESO_Data(const Vector3d& centre) : centre(centre), mass(_DEFAULT_INIT_MASS_), tag(_DEFAULT_TAG_), radius(_DEFAULT_RADIUS_) {};
+PESO_Data::PESO_Data(const Vector3d& centre, Vector3d pivotPoint) : centre(centre), pivotPoint(pivotPoint), mass(_DEFAULT_INIT_MASS_), tag(_DEFAULT_TAG_), radius(_DEFAULT_RADIUS_) {};
+PESO_Data::PESO_Data(const Vector3d& centre, Vector3d pivotPoint, double mass) : centre(centre), pivotPoint(pivotPoint), mass(mass), tag(_DEFAULT_TAG_), radius(_DEFAULT_RADIUS_) {};
+PESO_Data::PESO_Data(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform) : centre(centre), pivotPoint(pivotPoint), transform(transform), mass(mass), tag(_DEFAULT_TAG_), radius(_DEFAULT_RADIUS_) {};
+PESO_Data::PESO_Data(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform, double radius) : centre(centre), pivotPoint(pivotPoint), transform(transform), radius(radius), mass(mass), tag(_DEFAULT_TAG_) {};
+PESO_Data::PESO_Data(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform, double radius, std::string tag) : centre(centre), pivotPoint(pivotPoint), transform(transform), radius(radius), mass(mass), tag(tag) {};
+PESO_Data::PESO_Data(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform, double radius, std::string tag, Vector3d thrust) : centre(centre), pivotPoint(pivotPoint), transform(transform), radius(radius), thrust(thrust), mass(mass), tag(tag) {};
+#pragma endregion
+
 #pragma region PESO_OBJECT
-PESO_Object::PESO_Object() { setMass(_DEFAULT_INIT_MASS_); setTag(_DEFAULT_TAG_); };
-PESO_Object::PESO_Object(const Vector3d& centre) : centre(centre) { setMass(_DEFAULT_INIT_MASS_); setTag(_DEFAULT_TAG_); };
-PESO_Object::PESO_Object(const Vector3d& centre, Vector3d pivotPoint) : centre(centre), pivotPoint(pivotPoint) { setMass(_DEFAULT_INIT_MASS_); };
-PESO_Object::PESO_Object(const Vector3d& centre, Vector3d pivotPoint, double mass) : centre(centre), pivotPoint(pivotPoint) { setMass(mass); setTag(_DEFAULT_TAG_); };
-PESO_Object::PESO_Object(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform) : centre(centre), pivotPoint(pivotPoint), transform(transform) { setMass(mass); setTag(_DEFAULT_TAG_); };
-PESO_Object::PESO_Object(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform, double radius) : centre(centre), pivotPoint(pivotPoint), transform(transform), radius(radius) { setMass(mass); setTag(_DEFAULT_TAG_); };
-PESO_Object::PESO_Object(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform, double radius, std::string tag) : centre(centre), pivotPoint(pivotPoint), transform(transform), radius(radius) { setMass(mass); setTag(tag); };
-PESO_Object::PESO_Object(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform, double radius, std::string tag, Vector3d thrust) : centre(centre), pivotPoint(pivotPoint), transform(transform), radius(radius), thrust(thrust) { setMass(mass); setTag(tag); };
+PESO_Object::PESO_Object() {};
+PESO_Object::PESO_Object(PESO_Data data) : objectData(data){};
 #pragma endregion
 
 #pragma region PESO_PHYSICS
@@ -29,35 +34,35 @@ void PESO_Physics::PESO_ApplyLinearMechanics() {
 		PESO_CalculateNetLinForce(*obj);
 
 		//calculate linear acceleration
-		obj->linAcceleration.x = obj->netLinForce.x / obj->mass;
-		obj->linAcceleration.y = obj->netLinForce.y / obj->mass;
-		obj->linAcceleration.z = obj->netLinForce.z / obj->mass;
+		obj->objectData.linAcceleration.x = obj->objectData.netLinForce.x / obj->objectData.mass;
+		obj->objectData.linAcceleration.y = obj->objectData.netLinForce.y / obj->objectData.mass;
+		obj->objectData.linAcceleration.z = obj->objectData.netLinForce.z / obj->objectData.mass;
 
 		//accelerate
-		obj->linSpeed.x += obj->linAcceleration.x;
-		obj->linSpeed.y += obj->linAcceleration.y;
-		obj->linSpeed.z += obj->linAcceleration.z;
+		obj->objectData.linSpeed.x += obj->objectData.linAcceleration.x;
+		obj->objectData.linSpeed.y += obj->objectData.linAcceleration.y;
+		obj->objectData.linSpeed.z += obj->objectData.linAcceleration.z;
 
 		//set magnitude of linear velocity
-		obj->linVelocity.x = obj->linSpeed.x;
-		obj->linVelocity.y = obj->linSpeed.y;
-		obj->linVelocity.z = obj->linSpeed.z;
+		obj->objectData.linVelocity.x = obj->objectData.linSpeed.x;
+		obj->objectData.linVelocity.y = obj->objectData.linSpeed.y;
+		obj->objectData.linVelocity.z = obj->objectData.linSpeed.z;
 
 		//move
-		obj->transform.position.x += obj->linVelocity.x;
-		obj->transform.position.y += obj->linVelocity.y;
-		obj->transform.position.z += obj->linVelocity.z;
+		obj->objectData.transform.position.x += obj->objectData.linVelocity.x;
+		obj->objectData.transform.position.y += obj->objectData.linVelocity.y;
+		obj->objectData.transform.position.z += obj->objectData.linVelocity.z;
 
 		//geometric attributes follow position
-		obj->centre.x		+= obj->transform.position.x;
-		obj->centre.y		+= obj->transform.position.y;
-		obj->centre.z		+= obj->transform.position.z;
-		obj->pivotPoint.x	+= obj->transform.position.x;
-		obj->pivotPoint.y	+= obj->transform.position.y;
-		obj->pivotPoint.z	+= obj->transform.position.z;
-		obj->centreOfMass.x += obj->transform.position.x;
-		obj->centreOfMass.y += obj->transform.position.y;
-		obj->centreOfMass.z += obj->transform.position.z;
+		obj->objectData.centre.x		+= obj->objectData.transform.position.x;
+		obj->objectData.centre.y		+= obj->objectData.transform.position.y;
+		obj->objectData.centre.z		+= obj->objectData.transform.position.z;
+		obj->objectData.pivotPoint.x	+= obj->objectData.transform.position.x;
+		obj->objectData.pivotPoint.y	+= obj->objectData.transform.position.y;
+		obj->objectData.pivotPoint.z	+= obj->objectData.transform.position.z;
+		obj->objectData.centreOfMass.x	+= obj->objectData.transform.position.x;
+		obj->objectData.centreOfMass.y	+= obj->objectData.transform.position.y;
+		obj->objectData.centreOfMass.z	+= obj->objectData.transform.position.z;
 	}
 };
 
@@ -65,30 +70,30 @@ void PESO_Physics::PESO_ApplyRotationMechanics() {
 	for (auto obj : objects) {
 		PESO_CalculateNetAngForce(*obj);
 
-		obj->angAcceleration.x = obj->netAngForce.x;
-		obj->angAcceleration.y = obj->netAngForce.y;
-		obj->angAcceleration.z = obj->netAngForce.z;
+		obj->objectData.angAcceleration.x = obj->objectData.netAngForce.x;
+		obj->objectData.angAcceleration.y = obj->objectData.netAngForce.y;
+		obj->objectData.angAcceleration.z = obj->objectData.netAngForce.z;
 
-		obj->angSpeed.x += obj->angAcceleration.x;
-		obj->angSpeed.y += obj->angAcceleration.y;
-		obj->angSpeed.z += obj->angAcceleration.z;
+		obj->objectData.angSpeed.x += obj->objectData.angAcceleration.x;
+		obj->objectData.angSpeed.y += obj->objectData.angAcceleration.y;
+		obj->objectData.angSpeed.z += obj->objectData.angAcceleration.z;
 
-		obj->angVelocity.x = obj->angSpeed.x;
-		obj->angVelocity.y = obj->angSpeed.y;
-		obj->angVelocity.z = obj->angSpeed.z;
+		obj->objectData.angVelocity.x = obj->objectData.angSpeed.x;
+		obj->objectData.angVelocity.y = obj->objectData.angSpeed.y;
+		obj->objectData.angVelocity.z = obj->objectData.angSpeed.z;
 
-		obj->transform.rotation.x += obj->angVelocity.x;
-		obj->transform.rotation.y += obj->angVelocity.y;
-		obj->transform.rotation.z += obj->angVelocity.z;
+		obj->objectData.transform.rotation.x += obj->objectData.angVelocity.x;
+		obj->objectData.transform.rotation.y += obj->objectData.angVelocity.y;
+		obj->objectData.transform.rotation.z += obj->objectData.angVelocity.z;
 	}
 };
 
 Vector3d PESO_Physics::PESO_CalculateGravForce(PESO_Object& target, PESO_Object& satellite) {
-	double gravForce = ((target.mass * satellite.mass * _UNIVERSAL_CONST_GRAVITATION_) / pow(PESO_CalculateRange(target, satellite), 2));
+	double gravForce = ((target.objectData.mass * satellite.objectData.mass * _UNIVERSAL_CONST_GRAVITATION_) / pow(PESO_CalculateRange(target, satellite), 2));
 	Vector3d satellite_to_target (
-		(target.transform.position.x - satellite.transform.position.x) * gravForce,
-		(target.transform.position.y - satellite.transform.position.y) * gravForce,
-		(target.transform.position.z - satellite.transform.position.z) * gravForce
+		(target.objectData.transform.position.x - satellite.objectData.transform.position.x) * gravForce,
+		(target.objectData.transform.position.y - satellite.objectData.transform.position.y) * gravForce,
+		(target.objectData.transform.position.z - satellite.objectData.transform.position.z) * gravForce
 	);
 	return satellite_to_target;
 };
@@ -98,32 +103,32 @@ Vector3d PESO_Physics::PESO_CalculateNetGravForce(PESO_Object& satellite) {
 	Vector3d satellite_to_target = Vector3d();
 	for (auto obj : objects) {
 		if (obj->getTag() != satellite.getTag()) {
-			gravForce += ((obj->mass * satellite.mass * _UNIVERSAL_CONST_GRAVITATION_) / pow(PESO_CalculateRange(*obj, satellite), 2));
-			satellite_to_target.x += (obj->transform.position.x - satellite.transform.position.x) * gravForce;
-			satellite_to_target.y += (obj->transform.position.y - satellite.transform.position.y) * gravForce;
-			satellite_to_target.z += (obj->transform.position.z - satellite.transform.position.z) * gravForce;
+			gravForce += ((obj->objectData.mass * satellite.objectData.mass * _UNIVERSAL_CONST_GRAVITATION_) / pow(PESO_CalculateRange(*obj, satellite), 2));
+			satellite_to_target.x += (obj->objectData.transform.position.x - satellite.objectData.transform.position.x) * gravForce;
+			satellite_to_target.y += (obj->objectData.transform.position.y - satellite.objectData.transform.position.y) * gravForce;
+			satellite_to_target.z += (obj->objectData.transform.position.z - satellite.objectData.transform.position.z) * gravForce;
 		}
 	}
 	return satellite_to_target;
 };
 
 void PESO_Physics::PESO_CalculateNetLinForce(PESO_Object& object) {
-	object.netLinForce.x = PESO_CalculateNetGravForce(object).x + object.thrust.x;
-	object.netLinForce.y = PESO_CalculateNetGravForce(object).y + object.thrust.y;
-	object.netLinForce.z = PESO_CalculateNetGravForce(object).z + object.thrust.z;
+	object.objectData.netLinForce.x = PESO_CalculateNetGravForce(object).x + object.objectData.thrust.x;
+	object.objectData.netLinForce.y = PESO_CalculateNetGravForce(object).y + object.objectData.thrust.y;
+	object.objectData.netLinForce.z = PESO_CalculateNetGravForce(object).z + object.objectData.thrust.z;
 };
 
 void PESO_Physics::PESO_CalculateNetAngForce(PESO_Object& object) {
-	object.netAngForce.x = object.torque.x;
-	object.netAngForce.y = object.torque.y;
-	object.netAngForce.z = object.torque.z;
+	object.objectData.netAngForce.x = object.objectData.torque.x;
+	object.objectData.netAngForce.y = object.objectData.torque.y;
+	object.objectData.netAngForce.z = object.objectData.torque.z;
 };
 
 double PESO_Physics::PESO_CalculateRange(PESO_Object& target, PESO_Object& satellite) {
 	Vector3d range(
-		target.transform.position.x - satellite.transform.position.x,
-		target.transform.position.y - satellite.transform.position.y,
-		target.transform.position.z - satellite.transform.position.z
+		target.objectData.transform.position.x - satellite.objectData.transform.position.x,
+		target.objectData.transform.position.y - satellite.objectData.transform.position.y,
+		target.objectData.transform.position.z - satellite.objectData.transform.position.z
 	);
 	double res_range = PESO_CalculateResultant(range);
 	if (res_range == 0.0) {
@@ -138,21 +143,21 @@ double PESO_Physics::PESO_CalculateResultant(Vector3d v) {
 };
 
 void PESO_Physics::PESO_CalculateLinMomentum(PESO_Object& object) {
-	object.linMomentum.x = object.linVelocity.x * object.mass;
-	object.linMomentum.y = object.linVelocity.y * object.mass;
-	object.linMomentum.z = object.linVelocity.z * object.mass;
+	object.objectData.linMomentum.x = object.objectData.linVelocity.x * object.objectData.mass;
+	object.objectData.linMomentum.y = object.objectData.linVelocity.y * object.objectData.mass;
+	object.objectData.linMomentum.z = object.objectData.linVelocity.z * object.objectData.mass;
 };
 
 void PESO_Physics::PESO_CalculateOrbitPeriod(PESO_Object& satellite, PESO_Object& target) {
-	satellite.period = sqrt(2 * _PI_ * pow(PESO_CalculateRange(satellite, target), 3) / _UNIVERSAL_CONST_GRAVITATION_ * satellite.mass);
+	satellite.objectData.period = sqrt(2 * _PI_ * pow(PESO_CalculateRange(satellite, target), 3) / _UNIVERSAL_CONST_GRAVITATION_ * satellite.objectData.mass);
 };
 
 void PESO_Physics::PESO_CalculateReqLinVelocity(PESO_Object& satellite, PESO_Object& target) {
-	double reqVelocity = sqrt(_UNIVERSAL_CONST_GRAVITATION_ * target.mass / PESO_CalculateRange(satellite, target));
-	satellite.reqLinVelocity = Vector3d(
-		(target.transform.position.x - satellite.transform.position.x) * reqVelocity,
-		(target.transform.position.y - satellite.transform.position.y) * reqVelocity,
-		(target.transform.position.z - satellite.transform.position.z) * reqVelocity
+	double reqVelocity = sqrt(_UNIVERSAL_CONST_GRAVITATION_ * target.objectData.mass / PESO_CalculateRange(satellite, target));
+	satellite.objectData.reqLinVelocity = Vector3d(
+		(target.objectData.transform.position.x - satellite.objectData.transform.position.x) * reqVelocity,
+		(target.objectData.transform.position.y - satellite.objectData.transform.position.y) * reqVelocity,
+		(target.objectData.transform.position.z - satellite.objectData.transform.position.z) * reqVelocity
 	);
 };
 #pragma endregion

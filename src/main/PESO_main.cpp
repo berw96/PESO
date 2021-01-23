@@ -31,26 +31,33 @@ int main(int argc, char* args[]) {
 #pragma endregion
 
 	std::shared_ptr<PESO_Object> Satellite{
-		new PESO_Object(Vector3d(),
-		Vector3d(),
-		10000.0,
-		PESO_Transform(Vector3d(x, y, z),
-		Vector3d()),
-		1.0,
-		SatelliteName,
-		Vector3d())
+		new PESO_Object(PESO_Data(
+			Vector3d(),
+			Vector3d(),
+			10.f,
+			PESO_Transform(
+				Vector3d(x,y,z),
+				Vector3d()
+			),
+			10.f,
+			SatelliteName
+		))
 	};
-	
+
 	std::shared_ptr<PESO_Object> Earth{
-		new PESO_Object(Vector3d(),
-		Vector3d(),
-		200000000.0,
-		PESO_Transform(Vector3d(500.0, 500.0, 500.0),
-		Vector3d()),
-		1.0,
-		"Earth",
-		Vector3d())
+		new PESO_Object(PESO_Data(
+			Vector3d(),
+			Vector3d(),
+			100000.f,
+			PESO_Transform(
+				Vector3d(800.f,800.f,800.f),
+				Vector3d()
+			),
+			100.f,
+			"Earth"
+		))
 	};
+
 	physics->PESO_RegisterObject(Satellite);
 	physics->PESO_RegisterObject(Earth);
 
@@ -91,6 +98,7 @@ int main(int argc, char* args[]) {
 		if (!paused) {
 			//apply mechanics of physics engine to all objects registered with it
 			physics->PESO_ApplyLinearMechanics();
+			physics->PESO_ApplyRotationMechanics();
 			//graphical representation mimics object physics
 			SatellitePointXY.x = Satellite->getTransform().position.x;
 			SatellitePointXY.y = Satellite->getTransform().position.y;
@@ -100,8 +108,8 @@ int main(int argc, char* args[]) {
 		}
 		graphics->PESO_DrawSimulationData(Satellite);
 
-		graphics->PESO_DrawEllipse(SatellitePointXY, 10.0, 10.0);
-		graphics->PESO_DrawEllipse(EarthPointXY, 15.0, 15.0);
+		graphics->PESO_DrawEllipse(SatellitePointXY, Satellite->getRadius(), Satellite->getRadius());
+		graphics->PESO_DrawEllipse(EarthPointXY, Earth->getRadius(), Earth->getRadius());
 
 		//show results
 		graphics->PESO_ShowScreen();

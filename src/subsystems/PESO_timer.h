@@ -10,6 +10,7 @@
 #define _MINUTE_		(60 * _SECOND_)
 #define _HOUR_			(60 * _MINUTE_)
 
+#include <ctime>
 #include <SDL.h>
 
 class PESO_Timer {

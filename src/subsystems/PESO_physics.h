@@ -76,6 +76,7 @@ public:
 
 struct PESO_Data {
 	std::string tag;
+	time_t timestamp;
 #pragma region FIELDS
 	Vector3d centre;
 	Vector3d pivotPoint;
@@ -120,6 +121,8 @@ struct PESO_Data {
 	PESO_Data(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform, double radius, std::string tag);
 	PESO_Data(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform, double radius, std::string tag, Vector3d thrust);
 #pragma endregion
+
+	time_t getTimestamp()	const { return timestamp; };
 };
 
 class PESO_Object {
@@ -127,7 +130,7 @@ class PESO_Object {
 protected:
 	//object's physical data is stored in its PESO_Data instance
 	PESO_Data objectData;
-	Uint32 timestamp;
+
 public:
 #pragma region CONSTRUCTORS
 	PESO_Object();

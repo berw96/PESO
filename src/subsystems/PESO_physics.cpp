@@ -30,8 +30,9 @@ void PESO_Physics::PESO_RegisterObject(std::shared_ptr<PESO_Object> obj) {
 };
 
 void PESO_Physics::PESO_LogData(PESO_Data objectData) {
+	objectData.timestamp = time(NULL);
 	sessionData.push_back(objectData);
-	std::cout << "Data Logged\n";
+	std::cout << "Data Logged: " << ctime(&objectData.timestamp);
 };
 
 void PESO_Physics::PESO_ApplyLinearMechanics() {

@@ -19,6 +19,22 @@ Uint32 PESO_Timer::PESO_GetElapsedTime() {
 	return SDL_GetTicks() - time;
 }
 
-void PESO_Timer::PESO_MeasureCurrentTime() {
+void PESO_Timer::PESO_MeasureSessionTime() {
 	time = SDL_GetTicks();
+}
+
+void PESO_Timer::PESO_ElapseOneMillisecond() {
+	time += _MILLISECOND_;
+}
+
+void PESO_Timer::PESO_ElapseOneSecond() {
+	time += _SECOND_;
+}
+
+void PESO_Timer::PESO_ElapseOneMinute() {
+	time += _MINUTE_;
+}
+
+void PESO_Timer::PESO_ElapseOneHour() {
+	time += _HOUR_;
 }

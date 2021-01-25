@@ -29,6 +29,11 @@ void PESO_Physics::PESO_RegisterObject(std::shared_ptr<PESO_Object> obj) {
 	objects.push_back(obj);
 };
 
+void PESO_Physics::PESO_LogData(PESO_Data objectData) {
+	sessionData.push_back(objectData);
+	std::cout << "Data Logged\n";
+};
+
 void PESO_Physics::PESO_ApplyLinearMechanics() {
 	for (auto obj : objects) {
 		PESO_CalculateNetLinForce(*obj);

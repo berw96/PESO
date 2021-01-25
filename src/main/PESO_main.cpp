@@ -8,19 +8,15 @@ int main(int argc, char* args[]) {
 		return 1;
 	};
 
-	bool running = true;
-	bool paused = true;
-	//declare pointers to PESO subsystems
-	PESO_Events* events		= new PESO_Events();
-	PESO_Graphics* graphics = new PESO_Graphics();
-	PESO_Physics* physics	= new PESO_Physics();
+	bool running	= true;
+	bool paused		= true;
 
 #pragma region INPUT_DEMO
 	std::string SatelliteName;
 	double x;
 	double y;
 	double z;
-	std::cout << "Name the your satellite (no spaces): ";
+	std::cout << "Name your satellite (no spaces): ";
 	std::cin >> SatelliteName;
 	std::cout << "Set init x position: ";
 	std::cin >> x;
@@ -28,6 +24,14 @@ int main(int argc, char* args[]) {
 	std::cin >> y;
 	std::cout << "Set init z position: ";
 	std::cin >> z;
+#pragma endregion
+
+#pragma region INIT_SUBSYSTEMS
+	//declare pointers to PESO subsystems
+	PESO_Events* events		= new PESO_Events();
+	PESO_Graphics* graphics = new PESO_Graphics();
+	PESO_Physics* physics	= new PESO_Physics();
+	PESO_Timer* timer		= new PESO_Timer();
 #pragma endregion
 
 #pragma region OBJECT_DEF
@@ -124,6 +128,7 @@ int main(int argc, char* args[]) {
 			//apply mechanics of physics engine to all objects registered with it
 			physics->PESO_ApplyLinearMechanics();
 			physics->PESO_ApplyRotationMechanics();
+
 			//graphical representation mimics object physics
 			SatellitePointXY.horizontal = Satellite->getTransform().position.x;
 			SatellitePointXY.vertical	= Satellite->getTransform().position.y;
@@ -138,6 +143,13 @@ int main(int argc, char* args[]) {
 			EarthPointXZ.vertical		= Earth->getTransform().position.z;
 			EarthPointYZ.horizontal		= Earth->getTransform().position.y;
 			EarthPointYZ.vertical		= Earth->getTransform().position.z;
+
+			//TODO: refactor into physics engine, it should use the timer
+			timer->PESO_ElapseOneMillisecond();
+			if ((Uint32)(timer->PESO_GetTimestamp() / 1000) >= 1) {
+				timer->PESO_ResetTimer();
+				physics->PESO_LogData(Satellite->getObjectData());
+			}
 		}
 		graphics->PESO_DrawSimulationData(Satellite);
 

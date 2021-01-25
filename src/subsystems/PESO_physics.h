@@ -10,6 +10,8 @@
 #define _DEFAULT_TAG_					("")
 #define _DEFAULT_RADIUS_				(10.f)
 #define _EARTH_MASS_					(5972000000000000000000000.f)
+#define _PIXEL_TO_METER_				(3846.153846f)
+#define _METER_TO_PIXEL_				(float)(1.f / 3846.153846f)
 
 #include <vector>
 #include <string>
@@ -34,7 +36,9 @@ struct PESO_Transform {
 	PESO_Transform(Vector3d position, Vector3d rotation) : position(position), rotation(rotation) {}
 };
 
+//prototypes
 class PESO_Object;
+struct PESO_Data;
 
 class PESO_Physics {
 	friend class PESO;
@@ -42,10 +46,12 @@ class PESO_Physics {
 
 #pragma region IMPLEMENTATION
 	std::vector<std::shared_ptr<PESO_Object>> objects;
+	std::vector<PESO_Data> sessionData;
 
 public:
 	PESO_Physics();
 	void PESO_RegisterObject(std::shared_ptr<PESO_Object> object);
+	void PESO_LogData(PESO_Data objectData);
 	void PESO_ApplyLinearMechanics();
 	void PESO_ApplyRotationMechanics();
 #pragma endregion
@@ -129,6 +135,7 @@ public:
 #pragma endregion
 
 #pragma region GETTERS
+	PESO_Data getObjectData()		const { return objectData; };
 	std::string getTag()			const { return objectData.tag; };
 
 	Vector3d getCentre()			const { return objectData.centre; };

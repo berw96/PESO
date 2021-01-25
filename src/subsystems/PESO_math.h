@@ -18,11 +18,11 @@ static const double _PI_ = 3.14159265358979323846;
 
 #pragma region GEOMETRY
 struct Point2d {
-	double x;
-	double y;
+	double horizontal;
+	double vertical;
 
 	Point2d() : Point2d(0, 0) {}
-	Point2d(double x, double y) : x(x), y(y) {}
+	Point2d(double horizontal, double vertical) : horizontal(horizontal), vertical(vertical) {}
 };
 
 struct Line2i {
@@ -49,10 +49,10 @@ struct Rectangle2d {
 
 	inline bool contains(const Point2d& point) {
 		return
-			point.x >= x &&
-			point.x <= x + width &&
-			point.y >= y &&
-			point.y <= y + height;
+			point.horizontal >= x &&
+			point.horizontal <= x + width &&
+			point.vertical >= y &&
+			point.vertical <= y + height;
 	}
 
 
@@ -65,10 +65,10 @@ struct Rectangle2d {
 
 	inline bool intersects(const Line2i& line) {
 		SDL_Rect rectangle = {x, y, width, height};
-		int x1 = line.startPoint.x;
-		int y1 = line.startPoint.y;
-		int x2 = line.endPoint.x;
-		int y2 = line.endPoint.y;
+		int x1 = line.startPoint.horizontal;
+		int y1 = line.startPoint.vertical;
+		int x2 = line.endPoint.horizontal;
+		int y2 = line.endPoint.vertical;
 
 		return SDL_IntersectRectAndLine(&rectangle, &x1, &y1, &x2, &y2) == SDL_TRUE;
 	}

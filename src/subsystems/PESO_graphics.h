@@ -62,7 +62,9 @@ public:
 	void PESO_DrawRectangle(const Rectangle2d& rectangle);
 	void PESO_DrawPoint(const Point2d& point);
 	void PESO_DrawLineSegment(const Line2i& line);
-	void PESO_DrawEllipse(const Point2d& centre, const double& radiusX, const double& radiusY);
+	void PESO_DrawEllipseXY(const Point2d& centre, const double& radiusX, const double& radiusY);
+	void PESO_DrawEllipseXZ(const Point2d& centre, const double& radiusX, const double& radiusZ);
+	void PESO_DrawEllipseYZ(const Point2d& centre, const double& radiusY, const double& radiusZ);
 
 	static SDL_Texture* PESO_CreateTextureFromSurface(SDL_Renderer* rdr, SDL_Surface* surface);
 	static SDL_Texture* PESO_CreateTextureFromString(SDL_Renderer* rdr, const std::string& textureString, TTF_Font* font, SDL_Color color);

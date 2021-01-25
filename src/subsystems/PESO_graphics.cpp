@@ -18,9 +18,9 @@ PESO_Graphics::PESO_Graphics() : drawColor({ WHITE }), highlightColor({ RED }), 
 		"PESO Simulation XY",
 		_DEFAULT_WINDOW_POS_X_,
 		_DEFAULT_WINDOW_POS_Y_,
-		_DEFAULT_WINDOW_WIDTH_,
-		_DEFAULT_WINDOW_HEIGHT_,
-		SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
+		_DEFAULT_WINDOW_WIDTH_ / 2,
+		_DEFAULT_WINDOW_HEIGHT_ / 2,
+		SDL_WINDOW_SHOWN
 	);
 
 	xyRenderer = SDL_CreateRenderer(
@@ -31,37 +31,37 @@ PESO_Graphics::PESO_Graphics() : drawColor({ WHITE }), highlightColor({ RED }), 
 #pragma endregion
 
 #pragma region XZ
-	/*xzViewport = SDL_CreateWindow(
+	xzViewport = SDL_CreateWindow(
 		"PESO Simulation XZ",
 		_DEFAULT_WINDOW_POS_X_,
-		_DEFAULT_WINDOW_POS_Y_,
-		_DEFAULT_WINDOW_WIDTH_,
-		_DEFAULT_WINDOW_HEIGHT_,
-		SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
+		_DEFAULT_WINDOW_POS_Y_ + _DEFAULT_WINDOW_HEIGHT_ / 2,
+		_DEFAULT_WINDOW_WIDTH_ / 2,
+		_DEFAULT_WINDOW_HEIGHT_ / 2,
+		SDL_WINDOW_SHOWN
 	);
 
 	xzRenderer = SDL_CreateRenderer(
 		xzViewport,
 		-1,
 		SDL_RENDERER_ACCELERATED
-	);*/
+	);
 #pragma endregion
 
 #pragma region YZ
-	/*yzViewport = SDL_CreateWindow(
+	yzViewport = SDL_CreateWindow(
 		"PESO Simulation YZ",
 		_DEFAULT_WINDOW_POS_X_,
-		_DEFAULT_WINDOW_POS_Y_,
-		_DEFAULT_WINDOW_WIDTH_,
-		_DEFAULT_WINDOW_HEIGHT_,
-		SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
+		_DEFAULT_WINDOW_POS_Y_ + _DEFAULT_WINDOW_HEIGHT_,
+		_DEFAULT_WINDOW_WIDTH_ / 2,
+		_DEFAULT_WINDOW_HEIGHT_ / 2,
+		SDL_WINDOW_SHOWN
 	);
 
 	yzRenderer = SDL_CreateRenderer(
 		yzViewport,
 		-1,
 		SDL_RENDERER_ACCELERATED
-	);*/
+	);
 #pragma endregion
 
 #pragma region DATA
@@ -97,12 +97,30 @@ PESO_Graphics::~PESO_Graphics() {
 	printf("Graphics shut down.");
 }
 
-void PESO_Graphics::PESO_DrawEllipse(const Point2d& centre, const double& radiusX, const double& radiusY) {
-	SDL_SetRenderDrawColor(xyRenderer, drawColor.r, drawColor.g, drawColor.b, drawColor.a);
+void PESO_Graphics::PESO_DrawEllipseXY(const Point2d& centre, const double& radiusX, const double& radiusY) {
+	SDL_SetRenderDrawColor(xyRenderer, 0xFF, 0x00, 0x00, 0xFF);
 	for (float theta = 0.f; theta < 2 * M_PI; theta += _PI_OVER_180_) {
-		int x = (int)(centre.x + radiusX * cos(theta));
-		int y = (int)(centre.y + radiusY * sin(theta));
-		SDL_RenderDrawPoint(xyRenderer, x, y);
+		int width = (int)(centre.horizontal + radiusX * cos(theta));
+		int height = (int)(centre.vertical + radiusY * sin(theta));
+		SDL_RenderDrawPoint(xyRenderer, width, height);
+	}
+}
+
+void PESO_Graphics::PESO_DrawEllipseXZ(const Point2d& centre, const double& radiusX, const double& radiusZ) {
+	SDL_SetRenderDrawColor(xzRenderer, 0x00, 0xFF, 0x00, 0xFF);
+	for (float theta = 0.f; theta < 2 * M_PI; theta += _PI_OVER_180_) {
+		int width = (int)(centre.horizontal + radiusX * cos(theta));
+		int height = (int)(centre.vertical + radiusZ * sin(theta));
+		SDL_RenderDrawPoint(xzRenderer, width, height);
+	}
+}
+
+void PESO_Graphics::PESO_DrawEllipseYZ(const Point2d& centre, const double& radiusY, const double& radiusZ) {
+	SDL_SetRenderDrawColor(yzRenderer, 0x00, 0x00, 0xFF, 0xFF);
+	for (float theta = 0.f; theta < 2 * M_PI; theta += _PI_OVER_180_) {
+		int width = (int)(centre.horizontal + radiusY * cos(theta));
+		int height = (int)(centre.vertical + radiusZ * sin(theta));
+		SDL_RenderDrawPoint(yzRenderer, width, height);
 	}
 }
 

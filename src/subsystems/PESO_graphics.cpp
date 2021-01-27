@@ -15,7 +15,7 @@ PESO_Graphics::PESO_Graphics() : drawColor({ WHITE }), highlightColor({ RED }), 
 
 #pragma region XY
 	xyViewport = SDL_CreateWindow(
-		"PESO Simulation XY",
+		"PESO Simulation XY (SIDE VIEW)",
 		_DEFAULT_WINDOW_POS_X_,
 		_DEFAULT_WINDOW_POS_Y_,
 		_DEFAULT_WINDOW_WIDTH_ / 2,
@@ -32,7 +32,7 @@ PESO_Graphics::PESO_Graphics() : drawColor({ WHITE }), highlightColor({ RED }), 
 
 #pragma region XZ
 	xzViewport = SDL_CreateWindow(
-		"PESO Simulation XZ",
+		"PESO Simulation XZ (TOP-DOWN VIEW)",
 		_DEFAULT_WINDOW_POS_X_,
 		_DEFAULT_WINDOW_POS_Y_ + _DEFAULT_WINDOW_HEIGHT_ / 2,
 		_DEFAULT_WINDOW_WIDTH_ / 2,
@@ -49,7 +49,7 @@ PESO_Graphics::PESO_Graphics() : drawColor({ WHITE }), highlightColor({ RED }), 
 
 #pragma region YZ
 	yzViewport = SDL_CreateWindow(
-		"PESO Simulation YZ",
+		"PESO Simulation YZ (FRONT VIEW)",
 		_DEFAULT_WINDOW_POS_X_,
 		_DEFAULT_WINDOW_POS_Y_ + _DEFAULT_WINDOW_HEIGHT_,
 		_DEFAULT_WINDOW_WIDTH_ / 2,

@@ -5,36 +5,51 @@
 
 #include "PESO_timer.h"
 
-PESO_Timer::PESO_Timer() : time(0) {};
+PESO_Timer::PESO_Timer() : currentTime(0), previousTime(0) {};
 
 void PESO_Timer::PESO_ResetTimer(){
-	time = 0;
+	previousTime	= 0;
+	currentTime		= 0;
 }
 
-Uint32 PESO_Timer::PESO_GetTimestamp() {
-	return time;
+void PESO_Timer::PESO_SetPreviousTime() {
+	previousTime = currentTime;
+}
+
+Uint32 PESO_Timer::PESO_GetCurrentTime() {
+	return currentTime;
+}
+
+Uint32 PESO_Timer::PESO_GetPreviousTime() {
+	return previousTime;
+}
+
+bool PESO_Timer::PESO_ComparePreviousAndCurrentTime() {
+	if (currentTime > previousTime + _SECOND_)
+		return true;
+	return false;
 }
 
 Uint32 PESO_Timer::PESO_GetElapsedTime() {
-	return SDL_GetTicks() - time;
+	return SDL_GetTicks() - currentTime;
 }
 
 void PESO_Timer::PESO_MeasureSessionTime() {
-	time = SDL_GetTicks();
+	currentTime = SDL_GetTicks();
 }
 
 void PESO_Timer::PESO_ElapseOneMillisecond() {
-	time += _MILLISECOND_;
+	currentTime += _MILLISECOND_;
 }
 
 void PESO_Timer::PESO_ElapseOneSecond() {
-	time += _SECOND_;
+	currentTime += _SECOND_;
 }
 
 void PESO_Timer::PESO_ElapseOneMinute() {
-	time += _MINUTE_;
+	currentTime += _MINUTE_;
 }
 
 void PESO_Timer::PESO_ElapseOneHour() {
-	time += _HOUR_;
+	currentTime += _HOUR_;
 }

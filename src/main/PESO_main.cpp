@@ -13,17 +13,22 @@ int main(int argc, char* args[]) {
 
 #pragma region INPUT_DEMO
 	std::string SatelliteName;
-	double x;
-	double y;
-	double z;
+	double xDistance, yDistance, zDistance;
+	double roll, yaw, pitch;
 	std::cout << "Name your satellite (no spaces): ";
 	std::cin >> SatelliteName;
-	std::cout << "Set init x position: ";
-	std::cin >> x;
-	std::cout << "Set init y position: ";
-	std::cin >> y;
-	std::cout << "Set init z position: ";
-	std::cin >> z;
+	std::cout << "Set X distance from Earth: ";
+	std::cin >> xDistance;
+	std::cout << "Set Y distance from Earth: ";
+	std::cin >> yDistance;
+	std::cout << "Set Z distance from Earth: ";
+	std::cin >> zDistance;
+	std::cout << "Set Roll (X angle): ";
+	std::cin >> roll;
+	std::cout << "Set Yaw (Y angle): ";
+	std::cin >> yaw;
+	std::cout << "Set Pitch (Z angle): ";
+	std::cin >> pitch;
 #pragma endregion
 
 #pragma region INIT_SUBSYSTEMS
@@ -35,33 +40,38 @@ int main(int argc, char* args[]) {
 #pragma endregion
 
 #pragma region OBJECT_DEF
-	std::shared_ptr<PESO_Object> Satellite{
-		new PESO_Object(PESO_Data(
-			Vector3d(),
-			Vector3d(),
-			1000.f,
-			PESO_Transform(
-				Vector3d(x, y, z),
-				Vector3d()
-			),
-			10.f,
-			SatelliteName
-		))
-	};
-
 	std::shared_ptr<PESO_Object> Earth{
 		new PESO_Object(PESO_Data(
 			Vector3d(),
 			Vector3d(),
-			100000.f,
+			100000.0,
 			PESO_Transform(
-				Vector3d(450.f, 450.f, 450.f),
+				Vector3d(225.0, 225.0, 225.0),
 				Vector3d()
 			),
-			100.f,
+			50.0,
 			"Planet"
 		))
 	};
+
+	std::shared_ptr<PESO_Object> Satellite{
+		new PESO_Object(PESO_Data(
+			Vector3d(),
+			Vector3d(),
+			1000.0,
+			PESO_Transform(
+				Vector3d(
+					Earth->getPosition().x + xDistance, 
+					Earth->getPosition().y + yDistance, 
+					Earth->getPosition().z + zDistance
+				),
+				Vector3d(roll, yaw, pitch)
+			),
+			5.0,
+			SatelliteName
+		))
+	};
+
 
 	physics->PESO_RegisterObject(Satellite);
 	physics->PESO_RegisterObject(Earth);
@@ -79,8 +89,8 @@ int main(int argc, char* args[]) {
 	};
 
 	Point2d SatellitePointYZ = {
-		Satellite->getPosition().y,
-		Satellite->getPosition().z
+		Satellite->getPosition().z,
+		Satellite->getPosition().y
 	};
 	
 	Point2d EarthPointXY = {
@@ -94,8 +104,8 @@ int main(int argc, char* args[]) {
 	};
 
 	Point2d EarthPointYZ = {
-		Earth->getPosition().y,
-		Earth->getPosition().z
+		Earth->getPosition().z,
+		Earth->getPosition().y
 	};
 #pragma endregion
 
@@ -134,21 +144,20 @@ int main(int argc, char* args[]) {
 			SatellitePointXY.vertical	= Satellite->getTransform().position.y;
 			SatellitePointXZ.horizontal = Satellite->getTransform().position.x;
 			SatellitePointXZ.vertical	= Satellite->getTransform().position.z;
-			SatellitePointYZ.horizontal = Satellite->getTransform().position.y;
-			SatellitePointYZ.vertical	= Satellite->getTransform().position.z;
+			SatellitePointYZ.horizontal = Satellite->getTransform().position.z;
+			SatellitePointYZ.vertical	= Satellite->getTransform().position.y;
 			
 			EarthPointXY.horizontal		= Earth->getTransform().position.x;
 			EarthPointXY.vertical		= Earth->getTransform().position.y;
 			EarthPointXZ.horizontal		= Earth->getTransform().position.x;
 			EarthPointXZ.vertical		= Earth->getTransform().position.z;
-			EarthPointYZ.horizontal		= Earth->getTransform().position.y;
-			EarthPointYZ.vertical		= Earth->getTransform().position.z;
+			EarthPointYZ.horizontal		= Earth->getTransform().position.z;
+			EarthPointYZ.vertical		= Earth->getTransform().position.y;
 
-			//TODO: refactor into physics engine, it should use the timer
-			timer->PESO_ElapseOneMillisecond();
-			if ((Uint32)(timer->PESO_GetTimestamp() / 1000) >= 1) {
-				timer->PESO_ResetTimer();
+			timer->PESO_MeasureSessionTime();
+			if (timer->PESO_ComparePreviousAndCurrentTime()) {
 				physics->PESO_LogData(Satellite->getObjectData());
+				timer->PESO_SetPreviousTime();
 			}
 		}
 		graphics->PESO_DrawSimulationData(Satellite);

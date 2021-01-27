@@ -14,17 +14,21 @@
 #include <SDL.h>
 
 class PESO_Timer {
-	Uint32 time;
+	Uint32 currentTime;
+	Uint32 previousTime;
 public:
 	PESO_Timer();
+	void PESO_SetPreviousTime();
 	void PESO_MeasureSessionTime();
 	void PESO_ResetTimer();
 	void PESO_ElapseOneMillisecond();
 	void PESO_ElapseOneSecond();
 	void PESO_ElapseOneMinute();
 	void PESO_ElapseOneHour();
-	Uint32 PESO_GetTimestamp();
+	Uint32 PESO_GetCurrentTime();
+	Uint32 PESO_GetPreviousTime();
 	Uint32 PESO_GetElapsedTime();
+	bool PESO_ComparePreviousAndCurrentTime();
 };
 
 #endif

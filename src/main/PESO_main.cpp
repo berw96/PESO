@@ -1,8 +1,6 @@
 #include "../subsystems/PESO.h"
 
 int main(int argc, char* args[]) {
-	std::cout << "Welcome to PESO! Press R to play, P to pause or ESCAPE to quit." << std::endl;
-
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
 		SDL_Log("Could not init SDL %s\n", SDL_GetError());
 		return 1;
@@ -15,6 +13,7 @@ int main(int argc, char* args[]) {
 	std::string SatelliteName;
 	double xDistance, yDistance, zDistance;
 	double roll, yaw, pitch;
+	std::cout << "Welcome to PESO!" << std::endl;
 	std::cout << "Name your satellite (no spaces): ";
 	std::cin >> SatelliteName;
 	std::cout << "Set X distance from Earth: ";
@@ -29,6 +28,7 @@ int main(int argc, char* args[]) {
 	std::cin >> yaw;
 	std::cout << "Set Pitch (Z angle): ";
 	std::cin >> pitch;
+	std::cout << "Press R to play, P to pause or ESCAPE to quit." << std::endl;
 #pragma endregion
 
 #pragma region INIT_SUBSYSTEMS
@@ -50,7 +50,7 @@ int main(int argc, char* args[]) {
 				Vector3d()
 			),
 			50.0,
-			"Planet"
+			"Earth"
 		))
 	};
 
@@ -161,6 +161,8 @@ int main(int argc, char* args[]) {
 			}
 		}
 		graphics->PESO_DrawSimulationData(Satellite);
+		graphics->PESO_DrawTag(Satellite);
+		graphics->PESO_DrawTag(Earth);
 
 		graphics->PESO_DrawEllipseXY(SatellitePointXY, Satellite->getRadius(), Satellite->getRadius());
 		graphics->PESO_DrawEllipseXZ(SatellitePointXZ, Satellite->getRadius(), Satellite->getRadius());

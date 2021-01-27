@@ -124,50 +124,115 @@ void PESO_Graphics::PESO_DrawEllipseYZ(const Point2d& centre, const double& radi
 	}
 }
 
-void PESO_Graphics::PESO_DrawText(const std::string& text, const double& x, const double& y) {
+void PESO_Graphics::PESO_DrawData(const std::string& text, const double& x, const double& y) {
 	SDL_Surface* textSurface = TTF_RenderText_Blended(font, text.c_str(), drawColor);
 	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(dataRenderer, textSurface);
 	
 	int width;
 	int height;
+
 	SDL_QueryTexture(textTexture, NULL, NULL, &width, &height);
+
 	SDL_Rect dst = {
-		x,
-		y,
+		(int)x,
+		(int)y,
 		width,
 		height
 	};
+
 	SDL_RenderCopy(dataRenderer, textTexture, NULL, &dst);
 	SDL_DestroyTexture(textTexture);
 	SDL_FreeSurface(textSurface);
 }
 
-void PESO_Graphics::PESO_DrawSimulationData(std::shared_ptr<PESO_Object> obj) {
-	int width;
-	int height;
-	SDL_GetWindowSize(xyViewport, &width, &height);
+void PESO_Graphics::PESO_DrawTagXY(const std::string& text, const double& horz, const double& vert) {
+	SDL_Surface* textSurfaceXY = TTF_RenderText_Blended(font, text.c_str(), drawColor);
+	SDL_Texture* textTextureXY = SDL_CreateTextureFromSurface(xyRenderer, textSurfaceXY);
+	
+	int widthXY, heightXY;
+	
+	SDL_QueryTexture(textTextureXY, NULL, NULL, &widthXY, &heightXY);
+	
+	SDL_Rect dstXY = {
+		(int)horz,
+		(int)vert,
+		widthXY,
+		heightXY
+	};
+	
+	SDL_RenderCopy(xyRenderer, textTextureXY, NULL, &dstXY);
+	SDL_DestroyTexture(textTextureXY);
+	SDL_FreeSurface(textSurfaceXY);
+}
 
-	PESO_DrawText("Object Tag:", 10.0 , 10.0);
-	PESO_DrawText(obj->getTag(), 150.0 , 10.0);
+void PESO_Graphics::PESO_DrawTagXZ(const std::string& text, const double& horz, const double& vert) {
+	SDL_Surface* textSurfaceXZ = TTF_RenderText_Blended(font, text.c_str(), drawColor);
+	SDL_Texture* textTextureXZ = SDL_CreateTextureFromSurface(xzRenderer, textSurfaceXZ);
+
+	int widthXZ, heightXZ;
+
+	SDL_QueryTexture(textTextureXZ, NULL, NULL, &widthXZ, &heightXZ);
+
+	SDL_Rect dstXZ = {
+		(int)horz,
+		(int)vert,
+		widthXZ,
+		heightXZ
+	};
+
+	SDL_RenderCopy(xzRenderer, textTextureXZ, NULL, &dstXZ);
+	SDL_DestroyTexture(textTextureXZ);
+	SDL_FreeSurface(textSurfaceXZ);
+}
+
+void PESO_Graphics::PESO_DrawTagYZ(const std::string& text, const double& horz, const double& vert) {
+	SDL_Surface* textSurfaceYZ = TTF_RenderText_Blended(font, text.c_str(), drawColor);
+	SDL_Texture* textTextureYZ = SDL_CreateTextureFromSurface(yzRenderer, textSurfaceYZ);
+
+	int widthYZ, heightYZ;
+
+	SDL_QueryTexture(textTextureYZ, NULL, NULL, &widthYZ, &heightYZ);
+
+	SDL_Rect dstYZ = {
+		(int)horz,
+		(int)vert,
+		widthYZ,
+		heightYZ
+	};
+
+	SDL_RenderCopy(yzRenderer, textTextureYZ, NULL, &dstYZ);
+	SDL_DestroyTexture(textTextureYZ);
+	SDL_FreeSurface(textSurfaceYZ);
+}
+
+void PESO_Graphics::PESO_DrawTag(std::shared_ptr<PESO_Object> obj) {
+	PESO_DrawTagXY(obj->getTag(), obj->getPosition().x + _TAG_OFFSET_ + obj->getRadius(), obj->getPosition().y);
+	PESO_DrawTagXZ(obj->getTag(), obj->getPosition().x + _TAG_OFFSET_ + obj->getRadius(), obj->getPosition().z);
+	PESO_DrawTagYZ(obj->getTag(), obj->getPosition().z + _TAG_OFFSET_ + obj->getRadius(), obj->getPosition().y);
+}
+
+void PESO_Graphics::PESO_DrawSimulationData(std::shared_ptr<PESO_Object> obj) {
+	PESO_DrawData("Object Tag:", 10.0 , 10.0);
+	PESO_DrawData(obj->getTag(), 150.0 , 10.0);
 #pragma region TRANSFORM
-	PESO_DrawText("Position:", 10.0 , 40.0);	
-	PESO_DrawText(std::to_string(obj->getPosition().x - width/2), 150.0 , 40.0);
-	PESO_DrawText(std::to_string(obj->getPosition().y - height/2), 250.0, 40.0);
-	PESO_DrawText(std::to_string(obj->getPosition().z - height/2), 350.0 , 40.0);
-	PESO_DrawText("Rotation:", 10.0 , 70.0);	
-	PESO_DrawText(std::to_string(obj->getRotation().x), 150.0 , 70.0);
-	PESO_DrawText(std::to_string(obj->getRotation().y), 250.0 , 70.0);
-	PESO_DrawText(std::to_string(obj->getRotation().z), 350.0 , 70.0);
+	PESO_DrawData("Position:", 10.0 , 40.0);	
+	PESO_DrawData(std::to_string(obj->getPosition().x - _DEFAULT_WINDOW_WIDTH_ /2), 150.0 , 40.0);
+	PESO_DrawData(std::to_string(obj->getPosition().y - _DEFAULT_WINDOW_WIDTH_ /2), 250.0, 40.0);
+	PESO_DrawData(std::to_string(obj->getPosition().z - _DEFAULT_WINDOW_WIDTH_ /2), 350.0 , 40.0);
+	PESO_DrawData("Rotation:", 10.0 , 70.0);	
+	PESO_DrawData(std::to_string(obj->getRotation().x), 150.0 , 70.0);
+	PESO_DrawData(std::to_string(obj->getRotation().y), 250.0 , 70.0);
+	PESO_DrawData(std::to_string(obj->getRotation().z), 350.0 , 70.0);
 #pragma endregion
 #pragma region DYNAMICS
-	PESO_DrawText("Linear Velocity:", 10.0, 110.0);
-	PESO_DrawText(std::to_string(obj->getLinVelocity().x), 150.0, 110.0);
-	PESO_DrawText(std::to_string(obj->getLinVelocity().y), 250.0, 110.0);
-	PESO_DrawText(std::to_string(obj->getLinVelocity().z), 350.0, 110.0);
-	PESO_DrawText("Linear Acceleration:", 10.0, 150.0);
-	PESO_DrawText(std::to_string(obj->getLinAcceleration().x), 150.0, 150.0);
-	PESO_DrawText(std::to_string(obj->getLinAcceleration().y), 250.0, 150.0);
-	PESO_DrawText(std::to_string(obj->getLinAcceleration().z), 350.0, 150.0);
+	PESO_DrawData("Linear Velocity:", 10.0, 110.0);
+	PESO_DrawData(std::to_string(obj->getLinVelocity().x), 150.0, 110.0);
+	PESO_DrawData(std::to_string(obj->getLinVelocity().y), 250.0, 110.0);
+	PESO_DrawData(std::to_string(obj->getLinVelocity().z), 350.0, 110.0);
+	PESO_DrawData("Linear Acceleration:", 10.0, 150.0);
+	PESO_DrawData(std::to_string(obj->getLinAcceleration().x), 150.0, 150.0);
+	PESO_DrawData(std::to_string(obj->getLinAcceleration().y), 250.0, 150.0);
+	PESO_DrawData(std::to_string(obj->getLinAcceleration().z), 350.0, 150.0);
 #pragma endregion
 }
 

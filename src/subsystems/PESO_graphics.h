@@ -22,6 +22,7 @@
 #define _DEFAULT_WINDOW_POS_Y_		(50)
 #define _DEFAULT_WINDOW_WIDTH_		(900)
 #define _DEFAULT_WINDOW_HEIGHT_		(900)
+#define _TAG_OFFSET_				(10.0)
 
 static const SDL_Color RED		= {0xFF, 0, 0};
 static const SDL_Color GREEN	= {0, 0xFF, 0};
@@ -70,7 +71,11 @@ public:
 	static SDL_Texture* PESO_CreateTextureFromString(SDL_Renderer* rdr, const std::string& textureString, TTF_Font* font, SDL_Color color);
 	
 	void PESO_DrawSimulationData(std::shared_ptr<PESO_Object> obj);
-	void PESO_DrawText(const std::string& text, const double& x, const double& y);
+	void PESO_DrawTag(std::shared_ptr<PESO_Object> obj);
+	void PESO_DrawTagXY(const std::string& text, const double& horz, const double& vert);
+	void PESO_DrawTagXZ(const std::string& text, const double& horz, const double& vert);
+	void PESO_DrawTagYZ(const std::string& text, const double& horz, const double& vert);
+	void PESO_DrawData(const std::string& text, const double& x, const double& y);
 	void PESO_SetDrawColor(const SDL_Color& color);
 	void PESO_SetHighlightColor(const SDL_Color& color);
 	void PESO_SetClearingColor(const SDL_Color& color);

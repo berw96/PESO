@@ -97,6 +97,48 @@ PESO_Graphics::~PESO_Graphics() {
 	printf("Graphics shut down.");
 }
 
+void PESO_Graphics::PESO_DrawPointXY(const Point2d& point) {
+	SDL_RenderDrawPoint(xyRenderer, point.horizontal, point.vertical);
+}
+
+void PESO_Graphics::PESO_DrawPointXZ(const Point2d& point) {
+	SDL_RenderDrawPoint(xzRenderer, point.horizontal, point.vertical);
+}
+
+void PESO_Graphics::PESO_DrawPointYZ(const Point2d& point) {
+	SDL_RenderDrawPoint(yzRenderer, point.horizontal, point.vertical);
+}
+
+void PESO_Graphics::PESO_DrawLineSegmentXY(const Line2i& line) {
+	SDL_RenderDrawLine(
+		xyRenderer,
+		line.startPoint.horizontal,
+		line.startPoint.vertical,
+		line.endPoint.horizontal,
+		line.endPoint.vertical
+	);
+}
+
+void PESO_Graphics::PESO_DrawLineSegmentXZ(const Line2i& line) {
+	SDL_RenderDrawLine(
+		xzRenderer,
+		line.startPoint.horizontal,
+		line.startPoint.vertical,
+		line.endPoint.horizontal,
+		line.endPoint.vertical
+	);
+}
+
+void PESO_Graphics::PESO_DrawLineSegmentYZ(const Line2i& line) {
+	SDL_RenderDrawLine(
+		yzRenderer,
+		line.startPoint.vertical,
+		line.startPoint.horizontal,
+		line.endPoint.vertical,
+		line.endPoint.horizontal
+	);
+}
+
 void PESO_Graphics::PESO_DrawEllipseXY(const Point2d& centre, const double& radiusX, const double& radiusY) {
 	SDL_SetRenderDrawColor(xyRenderer, 0xFF, 0x00, 0x00, 0xFF);
 	for (float theta = 0.f; theta < 2 * M_PI; theta += _PI_OVER_180_) {

@@ -60,9 +60,14 @@ public:
 	void PESO_ClearScreen();
 	void PESO_ShowScreen();
 	
-	void PESO_DrawRectangle(const Rectangle2d& rectangle);
-	void PESO_DrawPoint(const Point2d& point);
-	void PESO_DrawLineSegment(const Line2i& line);
+	void PESO_DrawPointXY(const Point2d& point);
+	void PESO_DrawPointXZ(const Point2d& point);
+	void PESO_DrawPointYZ(const Point2d& point);
+
+	void PESO_DrawLineSegmentXY(const Line2i& line);
+	void PESO_DrawLineSegmentXZ(const Line2i& line);
+	void PESO_DrawLineSegmentYZ(const Line2i& line);
+
 	void PESO_DrawEllipseXY(const Point2d& centre, const double& radiusX, const double& radiusY);
 	void PESO_DrawEllipseXZ(const Point2d& centre, const double& radiusX, const double& radiusZ);
 	void PESO_DrawEllipseYZ(const Point2d& centre, const double& radiusY, const double& radiusZ);

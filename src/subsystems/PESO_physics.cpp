@@ -4,7 +4,6 @@
 */
 
 #include "PESO_physics.h"
-#include <iostream>
 
 #pragma region PESO_DATA
 PESO_Data::PESO_Data() : mass(_DEFAULT_INIT_MASS_), tag(_DEFAULT_TAG_), radius(_DEFAULT_RADIUS_) {};

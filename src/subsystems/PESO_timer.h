@@ -5,13 +5,14 @@
 
 #ifndef _TIMER_
 #define _TIMER_
+
+#include <ctime>
+#include <SDL.h>
+
 #define _MILLISECOND_	(1)
 #define _SECOND_		(1000)
 #define _MINUTE_		(60 * _SECOND_)
 #define _HOUR_			(60 * _MINUTE_)
-
-#include <ctime>
-#include <SDL.h>
 
 class PESO_Timer {
 	Uint32 currentTime;

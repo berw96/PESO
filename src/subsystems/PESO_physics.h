@@ -13,6 +13,7 @@
 #define _PIXEL_TO_METER_				(3846.153846f)
 #define _METER_TO_PIXEL_				(float)(1.f / 3846.153846f)
 
+#include <iostream>
 #include <vector>
 #include <string>
 #include <memory>

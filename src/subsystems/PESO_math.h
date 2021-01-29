@@ -32,47 +32,6 @@ struct Line2i {
 	Line2i() : Line2i(Point2d(), Point2d()) {}
 	Line2i(const Point2d& startPoint, const Point2d& endPoint) : startPoint(startPoint), endPoint(endPoint) {}
 };
-
-struct Rectangle2d {
-	double x;
-	double y;
-	double width;
-	double height;
-
-	Rectangle2d() : Rectangle2d(0.0, 0.0, 1.0, 1.0) {}
-	Rectangle2d(double x, double y, double width, double height) : x(x), y(y), width(width), height(height) {}
-
-	SDL_Rect getSDLRectFrom() const {
-		SDL_Rect rectangle = {x, y, width, height};
-		return rectangle;
-	}
-
-	inline bool contains(const Point2d& point) {
-		return
-			point.horizontal >= x &&
-			point.horizontal <= x + width &&
-			point.vertical >= y &&
-			point.vertical <= y + height;
-	}
-
-
-	inline bool intersects(const Rectangle2d& other) {
-		SDL_Rect rectangleA = getSDLRectFrom();
-		SDL_Rect rectangleB = other.getSDLRectFrom();
-
-		return SDL_HasIntersection(&rectangleA, &rectangleB) == SDL_TRUE;
-	}
-
-	inline bool intersects(const Line2i& line) {
-		SDL_Rect rectangle = {x, y, width, height};
-		int x1 = line.startPoint.horizontal;
-		int y1 = line.startPoint.vertical;
-		int x2 = line.endPoint.horizontal;
-		int y2 = line.endPoint.vertical;
-
-		return SDL_IntersectRectAndLine(&rectangle, &x1, &y1, &x2, &y2) == SDL_TRUE;
-	}
-};
 #pragma endregion
 
 #endif

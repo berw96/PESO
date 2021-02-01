@@ -9,37 +9,11 @@ int main(int argc, char* args[]) {
 	bool running	= true;
 	bool paused		= true;
 
-#pragma region INPUT_DEMO
-	std::string SatelliteName;
-	double xDistance, yDistance, zDistance;
-	double roll, yaw, pitch;
-	std::cout << "Welcome to PESO!" << std::endl;
-	std::cout << "Name your satellite (no spaces): ";
-	std::cin >> SatelliteName;
-	std::cout << "Set X distance from Earth: ";
-	std::cin >> xDistance;
-	std::cout << "Set Y distance from Earth: ";
-	std::cin >> yDistance;
-	std::cout << "Set Z distance from Earth: ";
-	std::cin >> zDistance;
-	std::cout << "Set Roll (X angle): ";
-	std::cin >> roll;
-	std::cout << "Set Yaw (Y angle): ";
-	std::cin >> yaw;
-	std::cout << "Set Pitch (Z angle): ";
-	std::cin >> pitch;
-	std::cout << "Press R to play, P to pause or ESCAPE to quit." << std::endl;
-#pragma endregion
-
-#pragma region INIT_SUBSYSTEMS
-	//declare pointers to PESO subsystems
+#pragma region OBJECT_DEF
 	PESO_Events* events		= new PESO_Events();
-	PESO_Graphics* graphics = new PESO_Graphics();
 	PESO_Physics* physics	= new PESO_Physics();
 	PESO_Timer* timer		= new PESO_Timer();
-#pragma endregion
 
-#pragma region OBJECT_DEF
 	std::shared_ptr<PESO_Object> Earth{
 		new PESO_Object(PESO_Data(
 			Vector3d(),
@@ -54,24 +28,7 @@ int main(int argc, char* args[]) {
 		))
 	};
 
-	std::shared_ptr<PESO_Object> Satellite{
-		new PESO_Object(PESO_Data(
-			Vector3d(),
-			Vector3d(),
-			1000.0,
-			PESO_Transform(
-				Vector3d(
-					Earth->getPosition().x + xDistance, 
-					Earth->getPosition().y + yDistance, 
-					Earth->getPosition().z + zDistance
-				),
-				Vector3d(roll, yaw, pitch)
-			),
-			5.0,
-			SatelliteName
-		))
-	};
-
+	std::shared_ptr<PESO_Object> Satellite{ new PESO_Object(events->PESO_CreateObjectData(Earth)) };
 
 	physics->PESO_RegisterObject(Satellite);
 	physics->PESO_RegisterObject(Earth);
@@ -107,10 +64,15 @@ int main(int argc, char* args[]) {
 		Earth->getPosition().z,
 		Earth->getPosition().y
 	};
+
+	//init graphics subsystem
+	PESO_Graphics* graphics = new PESO_Graphics();
 #pragma endregion
 
-#pragma region MAIN_LOOP
+	std::cout << "Press R to play, P to pause or ESCAPE to quit." << std::endl;
+
 	while (running) {
+#pragma region KEY_INPUT
 		events->PESO_PollEvents();
 
 		if (events->PESO_KeyIsPressed(Key::P)) {
@@ -127,14 +89,15 @@ int main(int argc, char* args[]) {
 		}
 		if (events->PESO_KeyIsPressed(Key::ESC)) {
 			std::cout << "Exiting PESO...";
-			//should clear resources before exiting.
+			SDL_Quit();
 			exit(0);
 		}
-		
+#pragma endregion
 		//clear screen
 		graphics->PESO_ClearScreen();
-		
+
 		if (!paused) {
+#pragma region PHYSICS
 			//apply mechanics of physics engine to all objects registered with it
 			physics->PESO_ApplyLinearMechanics();
 			physics->PESO_ApplyRotationMechanics();
@@ -153,13 +116,18 @@ int main(int argc, char* args[]) {
 			EarthPointXZ.vertical		= Earth->getTransform().position.z;
 			EarthPointYZ.horizontal		= Earth->getTransform().position.z;
 			EarthPointYZ.vertical		= Earth->getTransform().position.y;
+#pragma endregion
 
+#pragma region TIMER
 			timer->PESO_MeasureSessionTime();
 			if (timer->PESO_ComparePreviousAndCurrentTime()) {
 				physics->PESO_LogData(Satellite->getObjectData());
 				timer->PESO_SetPreviousTime();
 			}
+#pragma endregion
 		}
+
+#pragma region GRAPHICS
 		graphics->PESO_DrawSimulationData(Satellite);
 		graphics->PESO_DrawTag(Satellite);
 		graphics->PESO_DrawTag(Earth);
@@ -171,11 +139,11 @@ int main(int argc, char* args[]) {
 		graphics->PESO_DrawEllipseXY(EarthPointXY, Earth->getRadius(), Earth->getRadius());
 		graphics->PESO_DrawEllipseXZ(EarthPointXZ, Earth->getRadius(), Earth->getRadius());
 		graphics->PESO_DrawEllipseYZ(EarthPointYZ, Earth->getRadius(), Earth->getRadius());
+#pragma endregion
 
 		//show results
 		graphics->PESO_ShowScreen();
 	}
-#pragma endregion
 	SDL_Quit();
 	return 0;
 }

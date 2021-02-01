@@ -5,7 +5,7 @@
 
 #include "PESO_graphics.h"
 
-PESO_Graphics::PESO_Graphics() : drawColor({ WHITE }), highlightColor({ RED }), clearingColor({ BLACK }) {
+PESO_Graphics::PESO_Graphics() : drawColor({ WHITE }), clearingColor({ BLACK }) {
 	if (TTF_Init() < 0) {
 		printf("Could not init SDL_ttf.");
 	}
@@ -306,10 +306,6 @@ void PESO_Graphics::PESO_UseFont(TTF_Font* font) {
 
 void PESO_Graphics::PESO_SetDrawColor(const SDL_Color& color) {
 	this->drawColor = color;
-}
-
-void PESO_Graphics::PESO_SetHighlightColor(const SDL_Color& color) {
-	this->highlightColor = color;
 }
 
 void PESO_Graphics::PESO_SetClearingColor(const SDL_Color& color) {

@@ -10,19 +10,10 @@
 #include <thread>
 #include <SDL.h>
 
+#include "PESO_physics.h"
+
 enum Key {
-	P, R, ESC, QUIT, RIGHT_ARROW, LEFT_ARROW, UP_ARROW, DOWN_ARROW, LAST
-};
-
-enum CommandName {
-	FOO, EXIT, STOP, START, RESET, LOAD, SAVE
-};
-
-struct PESO_Command {
-	CommandName name;
-	std::string value;
-
-	PESO_Command(CommandName name, std::string value);
+	P, R, ESC, LAST
 };
 
 class PESO_Events {
@@ -36,10 +27,10 @@ public:
 	~PESO_Events();
 
 	void PESO_PollEvents();
+	PESO_Data PESO_CreateObjectData(std::shared_ptr<PESO_Object> Earth);
 
 	bool PESO_KeyIsPressed(Key key)	const { return keyBooleans[key]; }
 	void PESO_KeySetPressed(Key key) { keyBooleans[key] = true; }
 };
-
 
 #endif

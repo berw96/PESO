@@ -57,14 +57,22 @@ public:
 	void PESO_ApplyRotationMechanics();
 #pragma endregion
 
-#pragma region FORMULA
+#pragma region FORMULAE
 	Vector3d PESO_CalculateGravForce(PESO_Object& target, PESO_Object& satellite);
 	Vector3d PESO_CalculateNetGravForce(PESO_Object& satellite);
 
+	Vector3d PESO_CalculateNetAero(PESO_Object& satellite);
+
 	double PESO_CalculateResultant(Vector3d v);
 	double PESO_CalculateRange(PESO_Object& a, PESO_Object& b);
-	double PESO_CalculateEccentricity(PESO_Object& target, PESO_Object& satellite);
-	double PESO_CalculuateOrbitArea(PESO_Object& target, PESO_Object& satellite);
+
+	double PESO_CalculateEccentricityXY(PESO_Object& target, PESO_Object& satellite);
+	double PESO_CalculateEccentricityXZ(PESO_Object& target, PESO_Object& satellite);
+	double PESO_CalculateEccentricityYZ(PESO_Object& target, PESO_Object& satellite);
+
+	double PESO_CalculuateOrbitAreaXY(PESO_Object& target, PESO_Object& satellite);
+	double PESO_CalculuateOrbitAreaXZ(PESO_Object& target, PESO_Object& satellite);
+	double PESO_CalculuateOrbitAreaYZ(PESO_Object& target, PESO_Object& satellite);
 	
 	void PESO_CalculateOrbitPeriod(PESO_Object& target, PESO_Object& satellite);
 	void PESO_CalculateReqLinVelocity(PESO_Object& target, PESO_Object& satllite);
@@ -86,7 +94,7 @@ struct PESO_Data {
 
 	Vector3d netLinForce;			//Net force enacted on the object
 	Vector3d gravForce;				//Gravitational force experienced by the object
-	Vector3d thrust;				//Thrust produced by the object
+	Vector3d thrust;				//Aerodynamic thrust produced by the object
 	Vector3d drag;					//Aerodynamic drag experienced by the object
 	Vector3d lift;					//Aerodynamic lift experienced by the object
 	Vector3d downforce;				//Aerodynamic downforce experienced by the object
@@ -94,7 +102,7 @@ struct PESO_Data {
 	Vector3d linAcceleration;		//Linear acceleration of object
 	Vector3d linVelocity;			//Linear velocity of object
 	Vector3d linMomentum;			//Linear momentum of object
-	Vector3d reqLinVelocity;		//Linear velocity required to maintain orbit radius at point
+	Vector3d reqVelocity;			//Linear velocity required to maintain orbit radius at point
 
 	Vector3d torque;				//Turning force of object
 	Vector3d netAngForce;			//Net angular force experienced by object
@@ -109,6 +117,7 @@ struct PESO_Data {
 	double inertia;					//Object's resistance to changes in rotational motion
 	double period;					//Object's orbital period
 	double radius;					//Object's geometric radius (if applicable)
+	double fuel;					//Object's fuel count
 	bool burning;					//Object thrust toggle
 #pragma endregion
 
@@ -123,7 +132,9 @@ struct PESO_Data {
 	PESO_Data(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform, double radius, std::string tag, Vector3d thrust);
 #pragma endregion
 
+#pragma region GETTERS
 	time_t getTimestamp()	const { return timestamp; };
+#pragma endregion
 };
 
 class PESO_Object {
@@ -131,6 +142,9 @@ class PESO_Object {
 protected:
 	//object's physical data is stored in its PESO_Data instance
 	PESO_Data objectData;
+
+	//an object may have others as components
+	std::vector<PESO_Object> children;
 
 public:
 #pragma region CONSTRUCTORS

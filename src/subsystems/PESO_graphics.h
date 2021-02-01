@@ -45,7 +45,6 @@ private:
 	SDL_Renderer* dataRenderer	= nullptr;
 
 	SDL_Color drawColor;
-	SDL_Color highlightColor;
 	SDL_Color clearingColor;
 
 	TTF_Font* font				= nullptr;
@@ -82,7 +81,6 @@ public:
 	void PESO_DrawTagYZ(const std::string& text, const double& horz, const double& vert);
 	void PESO_DrawData(const std::string& text, const double& x, const double& y);
 	void PESO_SetDrawColor(const SDL_Color& color);
-	void PESO_SetHighlightColor(const SDL_Color& color);
 	void PESO_SetClearingColor(const SDL_Color& color);
 };
 

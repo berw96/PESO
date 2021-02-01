@@ -38,6 +38,7 @@ void PESO_Physics::PESO_LogData(PESO_Data objectData) {
 void PESO_Physics::PESO_ApplyLinearMechanics() {
 	for (auto obj : objects) {
 		PESO_CalculateNetLinForce(*obj);
+		PESO_CalculateLinMomentum(*obj);
 
 		//calculate linear acceleration
 		obj->objectData.linAcceleration.x = obj->objectData.netLinForce.x / obj->objectData.mass;
@@ -63,9 +64,11 @@ void PESO_Physics::PESO_ApplyLinearMechanics() {
 		obj->objectData.centre.x		+= obj->objectData.transform.position.x;
 		obj->objectData.centre.y		+= obj->objectData.transform.position.y;
 		obj->objectData.centre.z		+= obj->objectData.transform.position.z;
+
 		obj->objectData.pivotPoint.x	+= obj->objectData.transform.position.x;
 		obj->objectData.pivotPoint.y	+= obj->objectData.transform.position.y;
 		obj->objectData.pivotPoint.z	+= obj->objectData.transform.position.z;
+
 		obj->objectData.centreOfMass.x	+= obj->objectData.transform.position.x;
 		obj->objectData.centreOfMass.y	+= obj->objectData.transform.position.y;
 		obj->objectData.centreOfMass.z	+= obj->objectData.transform.position.z;
@@ -160,7 +163,7 @@ void PESO_Physics::PESO_CalculateOrbitPeriod(PESO_Object& satellite, PESO_Object
 
 void PESO_Physics::PESO_CalculateReqLinVelocity(PESO_Object& satellite, PESO_Object& target) {
 	double reqVelocity = sqrt(_UNIVERSAL_CONST_GRAVITATION_ * target.objectData.mass / PESO_CalculateRange(satellite, target));
-	satellite.objectData.reqLinVelocity = Vector3d(
+	satellite.objectData.reqVelocity = Vector3d(
 		(target.objectData.transform.position.x - satellite.objectData.transform.position.x) * reqVelocity,
 		(target.objectData.transform.position.y - satellite.objectData.transform.position.y) * reqVelocity,
 		(target.objectData.transform.position.z - satellite.objectData.transform.position.z) * reqVelocity

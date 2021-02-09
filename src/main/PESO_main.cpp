@@ -88,9 +88,9 @@ int main(int argc, char* args[]) {
 			}
 		}
 		if (events->PESO_KeyIsPressed(Key::ESC)) {
-			std::cout << "Exiting PESO...";
+			std::cout << "Exiting PESO...\n";
 			SDL_Quit();
-			exit(0);
+			running = false;
 		}
 #pragma endregion
 		//clear screen
@@ -144,6 +144,45 @@ int main(int argc, char* args[]) {
 		//show results
 		graphics->PESO_ShowScreen();
 	}
-	SDL_Quit();
+#pragma region FILES
+	// save session data to a text file if it exists
+	if (physics->PESO_GetSessionData().size() > 0) {
+		FILE* output_file	= nullptr;
+
+		if ((output_file = fopen("../out/session_data.peso", "w+")) != NULL) {
+			fprintf(stdout, "Opened file successfully.\n");
+			if ((fprintf(output_file, "Simulation data of: %s" "\n", Satellite->getTag().c_str()) == -1)) { 
+				fprintf(stderr, "Error writing \"%s\"" " to file.\n", Satellite->getTag().c_str()); 
+			}
+			// iterate through contents of session data and print to output file.
+			for (auto data_set : physics->PESO_GetSessionData()) {
+				if ((fprintf(output_file, "\n" "%s", ctime(&data_set.timestamp))) == -1) {
+					fprintf(stderr, "Error writing timestamp to file.\n"); 
+				}
+				if ((fprintf(output_file, "x-pos: %+Ls" "\n", std::to_string(data_set.transform.position.x).c_str())) == -1) {
+					fprintf(stderr, "Error writing x-pos to file.\n");
+				}
+				if ((fprintf(output_file, "y-pos: %+Ls" "\n", std::to_string(data_set.transform.position.y).c_str())) == -1) {
+					fprintf(stderr, "Error writing y-pos to file.\n");
+				}
+				if ((fprintf(output_file, "z-pos: %+Ls" "\n", std::to_string(data_set.transform.position.z).c_str())) == -1) {
+					fprintf(stderr, "Error writing z-pos to file.\n");
+				}
+			}
+			fprintf(stdout, "Simulation data logged.\n");
+		}
+		else {
+			fprintf(stderr, "Error opening file.\n");
+			exit(EXIT_FAILURE);
+		}
+		if ((fclose(output_file)) != EOF) {
+			fprintf(stdout, "Closed file successfully.\n");
+		}
+		else {
+			fprintf(stderr, "Error closing file.\n");
+			exit(EXIT_FAILURE);
+		}
+	}
+#pragma endregion
 	return 0;
 }

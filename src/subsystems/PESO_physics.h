@@ -53,6 +53,7 @@ public:
 	PESO_Physics();
 	void PESO_RegisterObject(std::shared_ptr<PESO_Object> object);
 	void PESO_LogData(PESO_Data objectData);
+	std::vector<PESO_Data> PESO_GetSessionData() const { return this->sessionData; };
 	void PESO_ApplyLinearMechanics();
 	void PESO_ApplyRotationMechanics();
 #pragma endregion

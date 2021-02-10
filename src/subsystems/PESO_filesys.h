@@ -8,7 +8,18 @@
 
 #include <stdio.h>
 #include <iostream>
-#include <fstream>
+#include "../subsystems/PESO_physics.h"
 
+class PESO_FileManager {
+	FILE* output_file = nullptr;
+	const char* directory = "../out/session_data.peso";
+	const char* mode = "w+";
+
+public:
+	PESO_FileManager();
+	~PESO_FileManager();
+
+	void PESO_WriteFile(std::vector<PESO_Data>& sessionData, PESO_Object& satellite);
+};
 
 #endif

@@ -13,6 +13,7 @@ int main(int argc, char* args[]) {
 	PESO_Events* events		= new PESO_Events();
 	PESO_Physics* physics	= new PESO_Physics();
 	PESO_Timer* timer		= new PESO_Timer();
+	PESO_FileManager* files	= new PESO_FileManager();
 
 	std::shared_ptr<PESO_Object> Earth{
 		new PESO_Object(PESO_Data(
@@ -145,44 +146,7 @@ int main(int argc, char* args[]) {
 		graphics->PESO_ShowScreen();
 	}
 #pragma region FILES
-	// save session data to a text file if it exists
-	if (physics->PESO_GetSessionData().size() > 0) {
-		FILE* output_file	= nullptr;
-
-		if ((output_file = fopen("../out/session_data.peso", "w+")) != NULL) {
-			fprintf(stdout, "Opened file successfully.\n");
-			if ((fprintf(output_file, "Simulation data of: %s" "\n", Satellite->getTag().c_str()) == -1)) { 
-				fprintf(stderr, "Error writing \"%s\"" " to file.\n", Satellite->getTag().c_str()); 
-			}
-			// iterate through contents of session data and print to output file.
-			for (auto data_set : physics->PESO_GetSessionData()) {
-				if ((fprintf(output_file, "\n" "%s", ctime(&data_set.timestamp))) == -1) {
-					fprintf(stderr, "Error writing timestamp to file.\n"); 
-				}
-				if ((fprintf(output_file, "x-pos: %+Ls" "\n", std::to_string(data_set.transform.position.x).c_str())) == -1) {
-					fprintf(stderr, "Error writing x-pos to file.\n");
-				}
-				if ((fprintf(output_file, "y-pos: %+Ls" "\n", std::to_string(data_set.transform.position.y).c_str())) == -1) {
-					fprintf(stderr, "Error writing y-pos to file.\n");
-				}
-				if ((fprintf(output_file, "z-pos: %+Ls" "\n", std::to_string(data_set.transform.position.z).c_str())) == -1) {
-					fprintf(stderr, "Error writing z-pos to file.\n");
-				}
-			}
-			fprintf(stdout, "Simulation data logged.\n");
-		}
-		else {
-			fprintf(stderr, "Error opening file.\n");
-			exit(EXIT_FAILURE);
-		}
-		if ((fclose(output_file)) != EOF) {
-			fprintf(stdout, "Closed file successfully.\n");
-		}
-		else {
-			fprintf(stderr, "Error closing file.\n");
-			exit(EXIT_FAILURE);
-		}
-	}
+	files->PESO_WriteFile(physics->PESO_GetSessionData(), *Satellite);
 #pragma endregion
 	return 0;
 }

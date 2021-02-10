@@ -100,8 +100,8 @@ struct PESO_Data {
 	Vector3d lift;					//Aerodynamic lift experienced by the object
 	Vector3d downforce;				//Aerodynamic downforce experienced by the object
 	Vector3d linSpeed;				//Linear speed of object (magnitude of linVelocity)
-	Vector3d linAcceleration;		//Linear acceleration of object
 	Vector3d linVelocity;			//Linear velocity of object
+	Vector3d linAcceleration;		//Linear acceleration of object
 	Vector3d linMomentum;			//Linear momentum of object
 	Vector3d reqVelocity;			//Linear velocity required to maintain orbit radius at point
 

@@ -45,9 +45,12 @@ PESO_Data PESO_Events::PESO_CreateObjectData(std::shared_ptr<PESO_Object> Earth)
 	std::string SatelliteName;
 	double xDistance, yDistance, zDistance;
 	double roll, yaw, pitch;
+	double xThrust, yThrust, zThrust;
+	double xTorque, yTorque, zTorque;
+
 	std::cout << "Welcome to PESO!" << std::endl;
-	std::cout << "Name your satellite (no spaces): ";
-	std::cin >> SatelliteName;
+	std::cout << "Name your satellite: ";
+	std::getline(std::cin, SatelliteName);
 	std::cout << "Set X distance from Earth: ";
 	std::cin >> xDistance;
 	std::cout << "Set Y distance from Earth: ";
@@ -60,6 +63,18 @@ PESO_Data PESO_Events::PESO_CreateObjectData(std::shared_ptr<PESO_Object> Earth)
 	std::cin >> yaw;
 	std::cout << "Set Pitch (Z angle): ";
 	std::cin >> pitch;
+	std::cout << "Set X thrust: ";
+	std::cin >> xThrust;
+	std::cout << "Set Y thrust: ";
+	std::cin >> yThrust;
+	std::cout << "Set Z thrust: ";
+	std::cin >> zThrust;
+	std::cout << "Set X torque: ";
+	std::cin >> xTorque;
+	std::cout << "Set Y torque: ";
+	std::cin >> yTorque;
+	std::cout << "Set Z torque: ";
+	std::cin >> zTorque;
 
 	return PESO_Data(
 		Vector3d(),
@@ -74,6 +89,8 @@ PESO_Data PESO_Events::PESO_CreateObjectData(std::shared_ptr<PESO_Object> Earth)
 			Vector3d(roll, yaw, pitch)
 		),
 		5.0,
-		SatelliteName
+		SatelliteName,
+		Vector3d(xThrust, yThrust, zThrust),
+		Vector3d(xTorque, yTorque, zTorque)
 	);
 }

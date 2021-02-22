@@ -5,13 +5,13 @@
 
 #ifndef _PHYSICS_
 #define _PHYSICS_
-#define _UNIVERSAL_CONST_GRAVITATION_	(0.00000000006674000000f)
-#define _DEFAULT_INIT_MASS_				(1.f)
+#define _UNIVERSAL_CONST_GRAVITATION_	(0.00000000006674000000)
+#define _DEFAULT_INIT_MASS_				(1)
 #define _DEFAULT_TAG_					("")
-#define _DEFAULT_RADIUS_				(10.f)
-#define _EARTH_MASS_					(5972000000000000000000000.f)
-#define _PIXEL_TO_METER_				(3846.153846f)
-#define _METER_TO_PIXEL_				(float)(1.f / 3846.153846f)
+#define _DEFAULT_RADIUS_				(10)
+#define _DEFAULT_PIVOT_POINT_			(Vector3d())
+#define _DEFUALT_TORQUE_				(Vector3d())
+#define _DEFAULT_THRUST_				(Vector3d())
 
 #include <iostream>
 #include <vector>
@@ -118,8 +118,6 @@ struct PESO_Data {
 	double inertia;					//Object's resistance to changes in rotational motion
 	double period;					//Object's orbital period
 	double radius;					//Object's geometric radius (if applicable)
-	double fuel;					//Object's fuel count
-	bool burning;					//Object thrust toggle
 #pragma endregion
 
 #pragma region CONSTRUCTORS
@@ -131,6 +129,7 @@ struct PESO_Data {
 	PESO_Data(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform, double radius);
 	PESO_Data(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform, double radius, std::string tag);
 	PESO_Data(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform, double radius, std::string tag, Vector3d thrust);
+	PESO_Data(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform, double radius, std::string tag, Vector3d thrust, Vector3d torque);
 #pragma endregion
 
 #pragma region GETTERS

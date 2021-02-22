@@ -6,14 +6,15 @@
 #include "PESO_physics.h"
 
 #pragma region PESO_DATA
-PESO_Data::PESO_Data() : mass(_DEFAULT_INIT_MASS_), tag(_DEFAULT_TAG_), radius(_DEFAULT_RADIUS_) {};
-PESO_Data::PESO_Data(const Vector3d& centre) : centre(centre), mass(_DEFAULT_INIT_MASS_), tag(_DEFAULT_TAG_), radius(_DEFAULT_RADIUS_) {};
-PESO_Data::PESO_Data(const Vector3d& centre, Vector3d pivotPoint) : centre(centre), pivotPoint(pivotPoint), mass(_DEFAULT_INIT_MASS_), tag(_DEFAULT_TAG_), radius(_DEFAULT_RADIUS_) {};
-PESO_Data::PESO_Data(const Vector3d& centre, Vector3d pivotPoint, double mass) : centre(centre), pivotPoint(pivotPoint), mass(mass), tag(_DEFAULT_TAG_), radius(_DEFAULT_RADIUS_) {};
-PESO_Data::PESO_Data(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform) : centre(centre), pivotPoint(pivotPoint), transform(transform), mass(mass), tag(_DEFAULT_TAG_), radius(_DEFAULT_RADIUS_) {};
-PESO_Data::PESO_Data(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform, double radius) : centre(centre), pivotPoint(pivotPoint), transform(transform), radius(radius), mass(mass), tag(_DEFAULT_TAG_) {};
-PESO_Data::PESO_Data(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform, double radius, std::string tag) : centre(centre), pivotPoint(pivotPoint), transform(transform), radius(radius), mass(mass), tag(tag) {};
-PESO_Data::PESO_Data(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform, double radius, std::string tag, Vector3d thrust) : centre(centre), pivotPoint(pivotPoint), transform(transform), radius(radius), thrust(thrust), mass(mass), tag(tag) {};
+PESO_Data::PESO_Data() : mass(_DEFAULT_INIT_MASS_), tag(_DEFAULT_TAG_), radius(_DEFAULT_RADIUS_), pivotPoint(_DEFAULT_PIVOT_POINT_), thrust(_DEFAULT_THRUST_), torque(_DEFUALT_TORQUE_) {};
+PESO_Data::PESO_Data(const Vector3d& centre) : centre(centre), mass(_DEFAULT_INIT_MASS_), tag(_DEFAULT_TAG_), radius(_DEFAULT_RADIUS_), pivotPoint(_DEFAULT_PIVOT_POINT_), thrust(_DEFAULT_THRUST_), torque(_DEFUALT_TORQUE_) {};
+PESO_Data::PESO_Data(const Vector3d& centre, Vector3d pivotPoint) : centre(centre), pivotPoint(pivotPoint), mass(_DEFAULT_INIT_MASS_), tag(_DEFAULT_TAG_), radius(_DEFAULT_RADIUS_), thrust(_DEFAULT_THRUST_), torque(_DEFUALT_TORQUE_) {};
+PESO_Data::PESO_Data(const Vector3d& centre, Vector3d pivotPoint, double mass) : centre(centre), pivotPoint(pivotPoint), mass(mass), tag(_DEFAULT_TAG_), radius(_DEFAULT_RADIUS_), thrust(_DEFAULT_THRUST_), torque(_DEFUALT_TORQUE_) {};
+PESO_Data::PESO_Data(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform) : centre(centre), pivotPoint(pivotPoint), transform(transform), mass(mass), tag(_DEFAULT_TAG_), radius(_DEFAULT_RADIUS_), thrust(_DEFAULT_THRUST_), torque(_DEFUALT_TORQUE_) {};
+PESO_Data::PESO_Data(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform, double radius) : centre(centre), pivotPoint(pivotPoint), transform(transform), radius(radius), mass(mass), tag(_DEFAULT_TAG_), thrust(_DEFAULT_THRUST_), torque(_DEFUALT_TORQUE_) {};
+PESO_Data::PESO_Data(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform, double radius, std::string tag) : centre(centre), pivotPoint(pivotPoint), transform(transform), radius(radius), mass(mass), tag(tag), thrust(_DEFAULT_THRUST_), torque(_DEFUALT_TORQUE_) {};
+PESO_Data::PESO_Data(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform, double radius, std::string tag, Vector3d thrust) : centre(centre), pivotPoint(pivotPoint), transform(transform), radius(radius), thrust(thrust), mass(mass), tag(tag), torque(_DEFUALT_TORQUE_) {};
+PESO_Data::PESO_Data(const Vector3d& centre, Vector3d pivotPoint, double mass, PESO_Transform transform, double radius, std::string tag, Vector3d thrust, Vector3d torque) : centre(centre), pivotPoint(pivotPoint), transform(transform), radius(radius), thrust(thrust), mass(mass), tag(tag), torque(torque) {};
 #pragma endregion
 
 #pragma region PESO_OBJECT
@@ -78,6 +79,19 @@ void PESO_Physics::PESO_ApplyLinearMechanics() {
 void PESO_Physics::PESO_ApplyRotationMechanics() {
 	for (auto obj : objects) {
 		PESO_CalculateNetAngForce(*obj);
+
+		// Reset rotation if a full cycle has been achieved
+		if (obj->objectData.transform.rotation.x >= 360.0 ||
+			obj->objectData.transform.rotation.x <= -360.0)
+			obj->objectData.transform.rotation.x = 0.0;
+		
+		if (obj->objectData.transform.rotation.y >= 360.0 ||
+			obj->objectData.transform.rotation.y <= -360.0) 
+			obj->objectData.transform.rotation.y = 0.0;
+		
+		if (obj->objectData.transform.rotation.z >= 360.0 ||
+			obj->objectData.transform.rotation.z <= -360.0)
+			obj->objectData.transform.rotation.z = 0.0;
 
 		obj->objectData.angAcceleration.x = obj->objectData.netAngForce.x;
 		obj->objectData.angAcceleration.y = obj->objectData.netAngForce.y;

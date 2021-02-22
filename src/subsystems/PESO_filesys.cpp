@@ -24,12 +24,6 @@ void PESO_FileManager::PESO_WriteFile(std::vector<PESO_Data>& sessionData, PESO_
 				if ((fprintf(output_file, "Mass: %Ls" "\n", std::to_string(data_set.mass).c_str())) == -1) {
 					fprintf(stderr, "Error writing Mass to file.\n");
 				}
-				if ((fprintf(output_file, "Inertia: %Ls" "\n", std::to_string(data_set.inertia).c_str())) == -1) {
-					fprintf(stderr, "Error writing Inertia to file.\n");
-				}
-				if ((fprintf(output_file, "Fuel: %Ls" "\n", std::to_string(data_set.fuel).c_str())) == -1) {
-					fprintf(stderr, "Error writing Fuel to file.\n");
-				}
 #pragma endregion
 #pragma region TRANSFORM
 				if ((fprintf(output_file, "x-pos: %+Ls" "\n", std::to_string(data_set.transform.position.x).c_str())) == -1) {

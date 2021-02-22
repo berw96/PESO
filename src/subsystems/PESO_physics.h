@@ -81,6 +81,7 @@ public:
 	void PESO_CalculateNetLinForce(PESO_Object& object);
 	void PESO_CalculateNetAngForce(PESO_Object& object);
 	void PESO_CalculateCentreOfMass(PESO_Object& object);
+	void PESO_CalculateInertia(PESO_Object& object);
 #pragma endregion
 };
 
@@ -186,9 +187,9 @@ public:
 	void setPosition(Vector3d pos) { this->objectData.transform.position = pos; }
 	void setRotation(Vector3d rot) { this->objectData.transform.rotation = rot; }
 	void setMass(double mass) {
-		if (mass <= 0 || mass == NULL) {
+		if (mass <= 0 || mass == NULL)
 			mass = DBL_MIN;
-		}
+		
 		this->objectData.mass = mass;
 	}
 	void setTag(std::string tag)	{ this->objectData.tag = tag; }

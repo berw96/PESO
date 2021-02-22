@@ -78,6 +78,7 @@ void PESO_Physics::PESO_ApplyLinearMechanics() {
 
 void PESO_Physics::PESO_ApplyRotationMechanics() {
 	for (auto obj : objects) {
+		PESO_CalculateInertia(*obj);
 		PESO_CalculateNetAngForce(*obj);
 
 		// Reset rotation if a full cycle has been achieved
@@ -93,9 +94,9 @@ void PESO_Physics::PESO_ApplyRotationMechanics() {
 			obj->objectData.transform.rotation.z <= -360.0)
 			obj->objectData.transform.rotation.z = 0.0;
 
-		obj->objectData.angAcceleration.x = obj->objectData.netAngForce.x;
-		obj->objectData.angAcceleration.y = obj->objectData.netAngForce.y;
-		obj->objectData.angAcceleration.z = obj->objectData.netAngForce.z;
+		obj->objectData.angAcceleration.x = obj->objectData.netAngForce.x / obj->objectData.inertia;
+		obj->objectData.angAcceleration.y = obj->objectData.netAngForce.y / obj->objectData.inertia;
+		obj->objectData.angAcceleration.z = obj->objectData.netAngForce.z / obj->objectData.inertia;
 
 		obj->objectData.angSpeed.x += obj->objectData.angAcceleration.x;
 		obj->objectData.angSpeed.y += obj->objectData.angAcceleration.y;
@@ -170,6 +171,14 @@ void PESO_Physics::PESO_CalculateLinMomentum(PESO_Object& object) {
 	object.objectData.linMomentum.y = object.objectData.linVelocity.y * object.objectData.mass;
 	object.objectData.linMomentum.z = object.objectData.linVelocity.z * object.objectData.mass;
 };
+
+void PESO_Physics::PESO_CalculateCentreOfMass(PESO_Object& object) {
+	
+};
+
+void PESO_Physics::PESO_CalculateInertia(PESO_Object& object) {
+	object.objectData.inertia = object.objectData.mass * pow(object.objectData.radius, 2);
+}
 
 void PESO_Physics::PESO_CalculateOrbitPeriod(PESO_Object& satellite, PESO_Object& target) {
 	satellite.objectData.period = sqrt(2 * _PI_ * pow(PESO_CalculateRange(satellite, target), 3) / _UNIVERSAL_CONST_GRAVITATION_ * satellite.objectData.mass);

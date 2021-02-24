@@ -183,16 +183,20 @@ void PESO_FileManager::PESO_WriteFile(std::vector<PESO_Data>& sessionData, PESO_
 #pragma endregion
 			}
 			fprintf(stdout, "Simulation data logged.\n");
+			SDL_Delay(_SECOND_);
 		}
 		else {
-			fprintf(stderr, "Error opening file.\n");
+			fprintf(stderr, "Error opening file via directory.\n");
+			SDL_Delay(_SECOND_);
 			exit(EXIT_FAILURE);
 		}
 		if ((fclose(output_file)) != EOF) {
 			fprintf(stdout, "Closed file successfully.\n");
+			SDL_Delay(_SECOND_);
 		}
 		else {
 			fprintf(stderr, "Error closing file.\n");
+			SDL_Delay(_SECOND_);
 			exit(EXIT_FAILURE);
 		}
 	}

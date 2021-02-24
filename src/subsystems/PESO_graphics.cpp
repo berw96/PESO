@@ -83,7 +83,8 @@ PESO_Graphics::PESO_Graphics() : drawColor({ WHITE }), clearingColor({ BLACK }) 
 }
 
 PESO_Graphics::~PESO_Graphics() {
-	printf("Graphics shutting down...");
+	printf("PESO_Graphics shutting down...\n");
+	TTF_CloseFont(font);
 	TTF_Quit();
 	SDL_DestroyRenderer(xyRenderer);
 	SDL_DestroyRenderer(xzRenderer);
@@ -93,8 +94,8 @@ PESO_Graphics::~PESO_Graphics() {
 	SDL_DestroyWindow(xzViewport);
 	SDL_DestroyWindow(yzViewport);
 	SDL_DestroyWindow(dataViewport);
-	SDL_Quit();
-	printf("Graphics shut down.");
+	SDL_QuitSubSystem(SDL_INIT_VIDEO);
+	printf("PESO_Graphics shut down.\n");
 }
 
 void PESO_Graphics::PESO_DrawPointXY(const Point2d& point) {

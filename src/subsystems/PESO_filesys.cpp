@@ -11,7 +11,7 @@ PESO_FileManager::~PESO_FileManager() {};
 void PESO_FileManager::PESO_WriteFile(std::vector<PESO_Data>& sessionData, PESO_Object& satellite) {
 	if (sessionData.size() > 0) {
 		if ((output_file = fopen(directory, mode)) != NULL) {
-			fprintf(stdout, "Opened file successfully.\n");
+			fprintf(stdout, "Opened %s" " successfully.\n", directory);
 			if ((fprintf(output_file, "Simulation data of: %s" "\n", satellite.getTag().c_str()) == -1)) {
 				fprintf(stderr, "Error writing \"%s\"" " to file.\n", satellite.getTag().c_str());
 			}
@@ -182,11 +182,11 @@ void PESO_FileManager::PESO_WriteFile(std::vector<PESO_Data>& sessionData, PESO_
 				}
 #pragma endregion
 			}
-			fprintf(stdout, "Simulation data logged.\n");
+			fprintf(stdout, "Simulation data logged to %s" "\n", directory);
 			SDL_Delay(_SECOND_);
 		}
 		else {
-			fprintf(stderr, "Error opening file via directory.\n");
+			fprintf(stderr, "Error opening %s" "\n", directory);
 			SDL_Delay(_SECOND_);
 			exit(EXIT_FAILURE);
 		}

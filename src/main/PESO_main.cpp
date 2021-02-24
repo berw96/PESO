@@ -90,7 +90,9 @@ int main(int argc, char* args[]) {
 		}
 		if (events->PESO_KeyIsPressed(Key::ESC)) {
 			std::cout << "Exiting PESO...\n";
-			SDL_Quit();
+			// quit PESO subsystems using SDL
+			graphics->~PESO_Graphics();
+			events->~PESO_Events();
 			running = false;
 		}
 #pragma endregion
@@ -148,5 +150,6 @@ int main(int argc, char* args[]) {
 #pragma region FILES
 	files->PESO_WriteFile(physics->PESO_GetSessionData(), *Satellite);
 #pragma endregion
+	SDL_Quit();	// quit remaining subsystems
 	return 0;
 }

@@ -11,7 +11,11 @@ PESO_Events::PESO_Events() {
 	}
 }
 
-PESO_Events::~PESO_Events() {}
+PESO_Events::~PESO_Events() {
+	printf("PESO_Events shutting down...\n");
+	SDL_QuitSubSystem(SDL_INIT_EVENTS);
+	printf("PESO_Events shut down.\n");
+}
 
 void PESO_Events::PESO_PollEvents() {
 	while (SDL_PollEvent(&event)) {

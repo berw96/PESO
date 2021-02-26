@@ -22,6 +22,9 @@ class PESO_Events {
 	SDL_Event event;
 	bool keyBooleans[Key::LAST];
 
+	std::vector<char> input;
+	std::vector<int> digits;
+
 	int decimal_index		= 0;
 	bool decimal_index_set	= false;
 	bool isNegative			= false;
@@ -37,9 +40,9 @@ public:
 
 	bool PESO_KeyIsPressed(Key key)	const { return keyBooleans[key]; }
 	void PESO_KeySetPressed(Key key) { keyBooleans[key] = true; }
-	void PESO_CheckInput(std::vector<char>& input);
-	void PESO_ExtractDigitsFromInput(std::vector<int>& digits, std::vector<char>& input);
-	double PESO_CalculateValueFromDigits(std::vector<int>& digits);
+	void PESO_CheckInput();
+	void PESO_ExtractDigitsFromInput();
+	double PESO_CalculateValueFromDigits();
 };
 
 #endif

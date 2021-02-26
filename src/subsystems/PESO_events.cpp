@@ -108,14 +108,16 @@ double PESO_Events::PESO_CalculateValueFromDigits() {
 	double input_value = 0;
 
 	if (isNegative) {
+		int non_digits = 2;
 		for (int i = 0; i < digits.size(); i++) {
-			input_value += digits[i] * pow(10, decimal_index - (i + 2));
+			input_value += digits[i] * pow(10, decimal_index - (i + non_digits));
 		}
 		input_value *= -1;
 	}
 	else {
+		int non_digits = 1;
 		for (int i = 0; i < digits.size(); i++) {
-			input_value += digits[i] * pow(10, decimal_index - (i + 1));
+			input_value += digits[i] * pow(10, decimal_index - (i + non_digits));
 		}
 	}
 

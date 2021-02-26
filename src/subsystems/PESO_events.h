@@ -6,6 +6,8 @@
 #ifndef _EVENTS_
 #define _EVENTS_
 
+#define _ASCII_DISPLACEMENT_ (48)
+
 #include <string>
 #include <thread>
 #include <SDL.h>
@@ -20,6 +22,10 @@ class PESO_Events {
 	SDL_Event event;
 	bool keyBooleans[Key::LAST];
 
+	int decimal_index		= 0;
+	bool decimal_index_set	= false;
+	bool isNegative			= false;
+
 	void PESO_UpdateKeyBooleans(const SDL_Keycode& key, bool keyDown);
 
 public:
@@ -31,6 +37,9 @@ public:
 
 	bool PESO_KeyIsPressed(Key key)	const { return keyBooleans[key]; }
 	void PESO_KeySetPressed(Key key) { keyBooleans[key] = true; }
+	void PESO_CheckInput(std::vector<char>& input);
+	void PESO_ExtractDigitsFromInput(std::vector<int>& digits, std::vector<char>& input);
+	double PESO_CalculateValueFromDigits(std::vector<int>& digits);
 };
 
 #endif

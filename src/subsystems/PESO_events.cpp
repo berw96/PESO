@@ -45,8 +45,83 @@ void PESO_Events::PESO_UpdateKeyBooleans(const SDL_Keycode& key, bool triggered)
 	keyBooleans[keyIndex] = triggered;
 }
 
+void PESO_Events::PESO_CheckInput(std::vector<char>& input) {
+	char ch = '\0';
+	// iterate through contents of buffer until EOF and newline
+	for (;std::cin.peek() != EOF &&
+		std::cin.peek() != '\n';) {
+		// if buffer contains newline and is EOF, break from loop
+		if (std::cin.peek() == EOF &&
+			std::cin.peek() == '\n') {
+			break;
+		}
+		else {
+			// assign character from buffer to variable
+			ch = std::cin.peek();
+		}
+
+		// check if variable is a digit
+		if (!std::isdigit(ch) &&
+			ch != '-' &&
+			ch != '.') {
+			// ignore if not a digit, a negative flag, or a decimal
+			std::cin.ignore();
+			std::cout << "Removed " << ch << " from input\n";
+		}
+		else {
+			// keep if a digit, sign flag or decimal
+			input.push_back(ch);
+			std::cout << "Found: " << ch << "\n";
+			// dispose from buffer after use
+			std::cin.ignore();
+		}
+	}
+}
+
+void PESO_Events::PESO_ExtractDigitsFromInput(std::vector<int>& digits, std::vector<char>& input) {
+	// scan contents of input for digits
+	for (int i = 0; i < input.size(); i++) {
+		// if a digit, cast to integer
+		// taking into account its ascii value
+		if (std::isdigit(input[i])) {
+			digits.push_back((int)input[i] - _ASCII_DISPLACEMENT_);
+		}
+		if (input[i] == '.' && !decimal_index_set) {
+			decimal_index = i;
+			decimal_index_set = true;
+		}
+		// set isNegative flag to true if negative sign flag found
+		if (input[i] == '-')
+			isNegative = true;
+	}
+	// clear input buffer once valid contents have been registered to digits buffer
+	input.clear();
+}
+
+double PESO_Events::PESO_CalculateValueFromDigits(std::vector<int>& digits) {
+	double input_value = 0;
+
+	for (int i = 0; i < digits.size(); i++) {
+		input_value += digits[i] * pow(10, (decimal_index - (i + 1)));
+	}
+	if (isNegative)
+		input_value *= -1;
+
+	// clear digits buffer once contents have been used to set input_value
+	digits.clear();
+	isNegative = false;
+
+	std::cout << "Value entered was determined to be: " << input_value << "\n";
+
+	return input_value;
+}
+
 PESO_Data PESO_Events::PESO_CreateObjectData(std::shared_ptr<PESO_Object> Earth) {
+	std::vector<char> input;
+	std::vector<int> digits;
+
 	std::string SatelliteName;
+
 	double xDistance, yDistance, zDistance;
 	double roll, yaw, pitch;
 	double xThrust, yThrust, zThrust;
@@ -56,7 +131,11 @@ PESO_Data PESO_Events::PESO_CreateObjectData(std::shared_ptr<PESO_Object> Earth)
 	std::cout << "Name your satellite: ";
 	std::getline(std::cin, SatelliteName);
 	std::cout << "Set X distance from Earth: ";
-	std::cin >> xDistance;
+	//std::cin >> xDistance;
+	std::cin >> std::ws;
+	PESO_CheckInput(input);
+	PESO_ExtractDigitsFromInput(digits, input);
+	xDistance = PESO_CalculateValueFromDigits(digits);
 	std::cout << "Set Y distance from Earth: ";
 	std::cin >> yDistance;
 	std::cout << "Set Z distance from Earth: ";

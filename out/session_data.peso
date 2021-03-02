@@ -1,21 +1,21 @@
-Simulation data of: Satellite 56
+Simulation data of: Satellite 67
 
-Fri Feb 26 19:29:09 2021
+Tue Mar  2 12:57:31 2021
 Mass: 1000.000000
 Inertia: 25000.000000
-x-pos: 224.010100
-y-pos: 459.000000
-z-pos: 225.345000
-x-rot: -0.234000
+x-pos: 225.000000
+y-pos: 225.099934
+z-pos: 224.990007
+x-rot: 0.000000
 y-rot: 0.000000
 z-rot: 0.000000
-Net Linear Force (x): 0.100000
-Net Linear Force (y): -0.000029
-Net Linear Force (z): -0.000000
+Net Linear Force (x): 0.000000
+Net Linear Force (y): -0.066079
+Net Linear Force (z): 0.006608
 Gravitational Force (x): 0.000000
 Gravitational Force (y): 0.000000
 Gravitational Force (z): 0.000000
-Thrust (x): 0.100000
+Thrust (x): 0.000000
 Thrust (y): 0.000000
 Thrust (z): 0.000000
 Drag (x): 0.000000
@@ -27,12 +27,12 @@ Lift (z): 0.000000
 Downforce (x): 0.000000
 Downforce (y): 0.000000
 Downforce (z): 0.000000
-Linear Velocity (x): 0.000100
-Linear Velocity (y): -0.000000
-Linear Velocity (z): -0.000000
-Linear Acceleration (x): 0.000100
-Linear Acceleration (y): -0.000000
-Linear Acceleration (z): -0.000000
+Linear Velocity (x): 0.000000
+Linear Velocity (y): -0.000066
+Linear Velocity (z): 0.000007
+Linear Acceleration (x): 0.000000
+Linear Acceleration (y): -0.000066
+Linear Acceleration (z): 0.000007
 Linear Momentum (x): 0.000000
 Linear Momentum (y): 0.000000
 Linear Momentum (z): 0.000000
@@ -49,22 +49,22 @@ Angular Momentum (x): 0.000000
 Angular Momentum (y): 0.000000
 Angular Momentum (z): 0.000000
 
-Fri Feb 26 19:29:10 2021
+Tue Mar  2 12:57:32 2021
 Mass: 1000.000000
 Inertia: 25000.000000
-x-pos: 240.975262
-y-pos: 458.995163
-z-pos: 225.344993
-x-rot: -0.234000
+x-pos: 225.000000
+y-pos: 214.550764
+z-pos: 226.044924
+x-rot: 0.000000
 y-rot: 0.000000
 z-rot: 0.000000
-Net Linear Force (x): 0.099998
-Net Linear Force (y): -0.000028
-Net Linear Force (z): -0.000000
+Net Linear Force (x): 0.000000
+Net Linear Force (y): 0.000629
+Net Linear Force (z): -0.000063
 Gravitational Force (x): 0.000000
 Gravitational Force (y): 0.000000
 Gravitational Force (z): 0.000000
-Thrust (x): 0.100000
+Thrust (x): 0.000000
 Thrust (y): 0.000000
 Thrust (z): 0.000000
 Drag (x): 0.000000
@@ -76,15 +76,15 @@ Lift (z): 0.000000
 Downforce (x): 0.000000
 Downforce (y): 0.000000
 Downforce (z): 0.000000
-Linear Velocity (x): 0.058200
-Linear Velocity (y): -0.000017
-Linear Velocity (z): -0.000000
-Linear Acceleration (x): 0.000100
-Linear Acceleration (y): -0.000000
+Linear Velocity (x): 0.000000
+Linear Velocity (y): -0.021430
+Linear Velocity (z): 0.002143
+Linear Acceleration (x): 0.000000
+Linear Acceleration (y): 0.000001
 Linear Acceleration (z): -0.000000
-Linear Momentum (x): 58.099672
-Linear Momentum (y): -0.016557
-Linear Momentum (z): -0.000024
+Linear Momentum (x): 0.000000
+Linear Momentum (y): -21.430408
+Linear Momentum (z): 2.143041
 Torque (x): 0.000000
 Torque (y): 0.000000
 Torque (z): 0.000000
@@ -98,22 +98,22 @@ Angular Momentum (x): 0.000000
 Angular Momentum (y): 0.000000
 Angular Momentum (z): 0.000000
 
-Fri Feb 26 19:29:11 2021
+Tue Mar  2 12:57:33 2021
 Mass: 1000.000000
 Inertia: 25000.000000
-x-pos: 292.512645
-y-pos: 458.980563
-z-pos: 225.344971
-x-rot: -0.234000
+x-pos: 225.000000
+y-pos: 202.920878
+z-pos: 227.207912
+x-rot: 0.000000
 y-rot: 0.000000
 z-rot: 0.000000
-Net Linear Force (x): 0.099992
-Net Linear Force (y): -0.000026
-Net Linear Force (z): -0.000000
+Net Linear Force (x): 0.000000
+Net Linear Force (y): 0.000297
+Net Linear Force (z): -0.000030
 Gravitational Force (x): 0.000000
 Gravitational Force (y): 0.000000
 Gravitational Force (z): 0.000000
-Thrust (x): 0.100000
+Thrust (x): 0.000000
 Thrust (y): 0.000000
 Thrust (z): 0.000000
 Drag (x): 0.000000
@@ -125,15 +125,15 @@ Lift (z): 0.000000
 Downforce (x): 0.000000
 Downforce (y): 0.000000
 Downforce (z): 0.000000
-Linear Velocity (x): 0.116997
-Linear Velocity (y): -0.000033
-Linear Velocity (z): -0.000000
-Linear Acceleration (x): 0.000100
-Linear Acceleration (y): -0.000000
+Linear Velocity (x): 0.000000
+Linear Velocity (y): -0.021199
+Linear Velocity (z): 0.002120
+Linear Acceleration (x): 0.000000
+Linear Acceleration (y): 0.000000
 Linear Acceleration (z): -0.000000
-Linear Momentum (x): 116.897002
-Linear Momentum (y): -0.032824
-Linear Momentum (z): -0.000048
+Linear Momentum (x): 0.000000
+Linear Momentum (y): -21.199723
+Linear Momentum (z): 2.119972
 Torque (x): 0.000000
 Torque (y): 0.000000
 Torque (z): 0.000000
@@ -147,22 +147,22 @@ Angular Momentum (x): 0.000000
 Angular Momentum (y): 0.000000
 Angular Momentum (z): 0.000000
 
-Fri Feb 26 19:29:12 2021
+Tue Mar  2 12:57:34 2021
 Mass: 1000.000000
 Inertia: 25000.000000
-x-pos: 378.621803
-y-pos: 458.956995
-z-pos: 225.344937
-x-rot: -0.234000
+x-pos: 225.000000
+y-pos: 191.363106
+z-pos: 228.363689
+x-rot: 0.000000
 y-rot: 0.000000
 z-rot: 0.000000
-Net Linear Force (x): 0.099987
-Net Linear Force (y): -0.000020
-Net Linear Force (z): -0.000000
+Net Linear Force (x): 0.000000
+Net Linear Force (y): 0.000195
+Net Linear Force (z): -0.000020
 Gravitational Force (x): 0.000000
 Gravitational Force (y): 0.000000
 Gravitational Force (z): 0.000000
-Thrust (x): 0.100000
+Thrust (x): 0.000000
 Thrust (y): 0.000000
 Thrust (z): 0.000000
 Drag (x): 0.000000
@@ -174,15 +174,15 @@ Lift (z): 0.000000
 Downforce (x): 0.000000
 Downforce (y): 0.000000
 Downforce (z): 0.000000
-Linear Velocity (x): 0.175791
-Linear Velocity (y): -0.000047
-Linear Velocity (z): -0.000000
-Linear Acceleration (x): 0.000100
-Linear Acceleration (y): -0.000000
+Linear Velocity (x): 0.000000
+Linear Velocity (y): -0.021069
+Linear Velocity (z): 0.002107
+Linear Acceleration (x): 0.000000
+Linear Acceleration (y): 0.000000
 Linear Acceleration (z): -0.000000
-Linear Momentum (x): 175.690774
-Linear Momentum (y): -0.046636
-Linear Momentum (z): -0.000069
+Linear Momentum (x): 0.000000
+Linear Momentum (y): -21.068920
+Linear Momentum (z): 2.106892
 Torque (x): 0.000000
 Torque (y): 0.000000
 Torque (z): 0.000000
@@ -196,22 +196,22 @@ Angular Momentum (x): 0.000000
 Angular Momentum (y): 0.000000
 Angular Momentum (z): 0.000000
 
-Fri Feb 26 19:29:13 2021
+Tue Mar  2 12:57:35 2021
 Mass: 1000.000000
 Inertia: 25000.000000
-x-pos: 499.535660
-y-pos: 458.926525
-z-pos: 225.344892
-x-rot: -0.234000
+x-pos: 225.000000
+y-pos: 179.843907
+z-pos: 229.515609
+x-rot: 0.000000
 y-rot: 0.000000
 z-rot: 0.000000
-Net Linear Force (x): 0.099986
-Net Linear Force (y): -0.000012
-Net Linear Force (z): -0.000000
+Net Linear Force (x): 0.000000
+Net Linear Force (y): 0.000145
+Net Linear Force (z): -0.000015
 Gravitational Force (x): 0.000000
 Gravitational Force (y): 0.000000
 Gravitational Force (z): 0.000000
-Thrust (x): 0.100000
+Thrust (x): 0.000000
 Thrust (y): 0.000000
 Thrust (z): 0.000000
 Drag (x): 0.000000
@@ -223,162 +223,15 @@ Lift (z): 0.000000
 Downforce (x): 0.000000
 Downforce (y): 0.000000
 Downforce (z): 0.000000
-Linear Velocity (x): 0.234683
-Linear Velocity (y): -0.000056
-Linear Velocity (z): -0.000000
-Linear Acceleration (x): 0.000100
-Linear Acceleration (y): -0.000000
+Linear Velocity (x): 0.000000
+Linear Velocity (y): -0.020977
+Linear Velocity (z): 0.002098
+Linear Acceleration (x): 0.000000
+Linear Acceleration (y): 0.000000
 Linear Acceleration (z): -0.000000
-Linear Momentum (x): 234.582541
-Linear Momentum (y): -0.055994
-Linear Momentum (z): -0.000083
-Torque (x): 0.000000
-Torque (y): 0.000000
-Torque (z): 0.000000
-Angular Velocity (x): 0.000000
-Angular Velocity (y): 0.000000
-Angular Velocity (z): 0.000000
-Angular Acceleration (x): 0.000000
-Angular Acceleration (y): 0.000000
-Angular Acceleration (z): 0.000000
-Angular Momentum (x): 0.000000
-Angular Momentum (y): 0.000000
-Angular Momentum (z): 0.000000
-
-Fri Feb 26 19:29:14 2021
-Mass: 1000.000000
-Inertia: 25000.000000
-x-pos: 653.669947
-y-pos: 458.892119
-z-pos: 225.344841
-x-rot: -0.234000
-y-rot: 0.000000
-z-rot: 0.000000
-Net Linear Force (x): 0.099988
-Net Linear Force (y): -0.000007
-Net Linear Force (z): -0.000000
-Gravitational Force (x): 0.000000
-Gravitational Force (y): 0.000000
-Gravitational Force (z): 0.000000
-Thrust (x): 0.100000
-Thrust (y): 0.000000
-Thrust (z): 0.000000
-Drag (x): 0.000000
-Drag (y): 0.000000
-Drag (z): 0.000000
-Lift (x): 0.000000
-Lift (y): 0.000000
-Lift (z): 0.000000
-Downforce (x): 0.000000
-Downforce (y): 0.000000
-Downforce (z): 0.000000
-Linear Velocity (x): 0.293075
-Linear Velocity (y): -0.000061
-Linear Velocity (z): -0.000000
-Linear Acceleration (x): 0.000100
-Linear Acceleration (y): -0.000000
-Linear Acceleration (z): -0.000000
-Linear Momentum (x): 292.974852
-Linear Momentum (y): -0.061274
-Linear Momentum (z): -0.000090
-Torque (x): 0.000000
-Torque (y): 0.000000
-Torque (z): 0.000000
-Angular Velocity (x): 0.000000
-Angular Velocity (y): 0.000000
-Angular Velocity (z): 0.000000
-Angular Acceleration (x): 0.000000
-Angular Acceleration (y): 0.000000
-Angular Acceleration (z): 0.000000
-Angular Momentum (x): 0.000000
-Angular Momentum (y): 0.000000
-Angular Momentum (z): 0.000000
-
-Fri Feb 26 19:29:15 2021
-Mass: 1000.000000
-Inertia: 25000.000000
-x-pos: 806.571006
-y-pos: 458.861933
-z-pos: 225.344796
-x-rot: -0.234000
-y-rot: 0.000000
-z-rot: 0.000000
-Net Linear Force (x): 0.099990
-Net Linear Force (y): -0.000004
-Net Linear Force (z): -0.000000
-Gravitational Force (x): 0.000000
-Gravitational Force (y): 0.000000
-Gravitational Force (z): 0.000000
-Thrust (x): 0.100000
-Thrust (y): 0.000000
-Thrust (z): 0.000000
-Drag (x): 0.000000
-Drag (y): 0.000000
-Drag (z): 0.000000
-Lift (x): 0.000000
-Lift (y): 0.000000
-Lift (z): 0.000000
-Downforce (x): 0.000000
-Downforce (y): 0.000000
-Downforce (z): 0.000000
-Linear Velocity (x): 0.341270
-Linear Velocity (y): -0.000064
-Linear Velocity (z): -0.000000
-Linear Acceleration (x): 0.000100
-Linear Acceleration (y): -0.000000
-Linear Acceleration (z): -0.000000
-Linear Momentum (x): 341.169583
-Linear Momentum (y): -0.063757
-Linear Momentum (z): -0.000094
-Torque (x): 0.000000
-Torque (y): 0.000000
-Torque (z): 0.000000
-Angular Velocity (x): 0.000000
-Angular Velocity (y): 0.000000
-Angular Velocity (z): 0.000000
-Angular Acceleration (x): 0.000000
-Angular Acceleration (y): 0.000000
-Angular Acceleration (z): 0.000000
-Angular Momentum (x): 0.000000
-Angular Momentum (y): 0.000000
-Angular Momentum (z): 0.000000
-
-Fri Feb 26 19:29:16 2021
-Mass: 1000.000000
-Inertia: 25000.000000
-x-pos: 908.647782
-y-pos: 458.843484
-z-pos: 225.344769
-x-rot: -0.234000
-y-rot: 0.000000
-z-rot: 0.000000
-Net Linear Force (x): 0.099991
-Net Linear Force (y): -0.000003
-Net Linear Force (z): -0.000000
-Gravitational Force (x): 0.000000
-Gravitational Force (y): 0.000000
-Gravitational Force (z): 0.000000
-Thrust (x): 0.100000
-Thrust (y): 0.000000
-Thrust (z): 0.000000
-Drag (x): 0.000000
-Drag (y): 0.000000
-Drag (z): 0.000000
-Lift (x): 0.000000
-Lift (y): 0.000000
-Lift (z): 0.000000
-Downforce (x): 0.000000
-Downforce (y): 0.000000
-Downforce (z): 0.000000
-Linear Velocity (x): 0.369967
-Linear Velocity (y): -0.000065
-Linear Velocity (z): -0.000000
-Linear Acceleration (x): 0.000100
-Linear Acceleration (y): -0.000000
-Linear Acceleration (z): -0.000000
-Linear Momentum (x): 369.866912
-Linear Momentum (y): -0.064750
-Linear Momentum (z): -0.000095
+Linear Momentum (x): 0.000000
+Linear Momentum (y): -20.976964
+Linear Momentum (z): 2.097696
 Torque (x): 0.000000
 Torque (y): 0.000000
 Torque (z): 0.000000

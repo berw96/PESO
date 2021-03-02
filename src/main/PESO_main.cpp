@@ -151,5 +151,6 @@ int main(int argc, char* args[]) {
 	files->PESO_WriteFile(physics->PESO_GetSessionData(), *Satellite);
 #pragma endregion
 	SDL_Quit();	// quit remaining subsystems
+	system("PAUSE");
 	return 0;
 }

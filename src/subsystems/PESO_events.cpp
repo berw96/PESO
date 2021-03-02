@@ -138,6 +138,7 @@ PESO_Data PESO_Events::PESO_CreateObjectData(std::shared_ptr<PESO_Object> Earth)
 
 	std::string SatelliteName;
 
+	double mass;
 	double xDistance, yDistance, zDistance;
 	double roll, yaw, pitch;
 	double xThrust, yThrust, zThrust;
@@ -146,6 +147,8 @@ PESO_Data PESO_Events::PESO_CreateObjectData(std::shared_ptr<PESO_Object> Earth)
 	std::cout << "Welcome to PESO!" << std::endl;
 	std::cout << "Name your satellite: ";
 	std::getline(std::cin, SatelliteName);
+	std::cout << "Set mass of satellite: ";
+	mass = PESO_CalculateValueFromDigits();
 	std::cout << "Set X distance from Earth: ";
 	xDistance = PESO_CalculateValueFromDigits();
 	std::cout << "Set Y distance from Earth: ";
@@ -174,7 +177,7 @@ PESO_Data PESO_Events::PESO_CreateObjectData(std::shared_ptr<PESO_Object> Earth)
 	return PESO_Data(
 		Vector3d(),
 		Vector3d(),
-		1000.0,
+		mass,
 		PESO_Transform(
 			Vector3d(
 				Earth->getPosition().x + xDistance,

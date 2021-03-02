@@ -19,7 +19,7 @@ PESO_Data::PESO_Data(const Vector3d& centre, Vector3d pivotPoint, double mass, P
 
 #pragma region PESO_OBJECT
 PESO_Object::PESO_Object() {};
-PESO_Object::PESO_Object(PESO_Data data) : objectData(data){};
+PESO_Object::PESO_Object(PESO_Data data) : objectData(data) { setMass(data.mass); };
 #pragma endregion
 
 #pragma region PESO_PHYSICS

@@ -15,7 +15,7 @@ int main(int argc, char* args[]) {
 	PESO_Timer* timer		= new PESO_Timer();
 	PESO_FileManager* files	= new PESO_FileManager();
 
-	std::shared_ptr<PESO_Object> Earth{
+	std::shared_ptr<PESO_Object> Planet{
 		new PESO_Object(PESO_Data(
 			Vector3d(),
 			Vector3d(),
@@ -25,14 +25,14 @@ int main(int argc, char* args[]) {
 				Vector3d()
 			),
 			50.0,
-			"Earth"
+			"Planet"
 		))
 	};
 
-	std::shared_ptr<PESO_Object> Satellite{ new PESO_Object(events->PESO_CreateObjectData(Earth)) };
+	std::shared_ptr<PESO_Object> Satellite{ new PESO_Object(events->PESO_CreateObjectData(Planet)) };
 
 	physics->PESO_RegisterObject(Satellite);
-	physics->PESO_RegisterObject(Earth);
+	physics->PESO_RegisterObject(Planet);
 #pragma endregion
 
 #pragma region GRAPHICAL_REP
@@ -51,19 +51,19 @@ int main(int argc, char* args[]) {
 		Satellite->getPosition().y
 	};
 	
-	Point2d EarthPointXY = {
-		Earth->getPosition().x,
-		Earth->getPosition().y
+	Point2d PlanetPointXY = {
+		Planet->getPosition().x,
+		Planet->getPosition().y
 	};
 
-	Point2d EarthPointXZ = {
-		Earth->getPosition().x,
-		Earth->getPosition().z
+	Point2d PlanetPointXZ = {
+		Planet->getPosition().x,
+		Planet->getPosition().z
 	};
 
-	Point2d EarthPointYZ = {
-		Earth->getPosition().z,
-		Earth->getPosition().y
+	Point2d PlanetPointYZ = {
+		Planet->getPosition().z,
+		Planet->getPosition().y
 	};
 
 	//init graphics subsystem
@@ -113,12 +113,12 @@ int main(int argc, char* args[]) {
 			SatellitePointYZ.horizontal = Satellite->getTransform().position.z;
 			SatellitePointYZ.vertical	= Satellite->getTransform().position.y;
 			
-			EarthPointXY.horizontal		= Earth->getTransform().position.x;
-			EarthPointXY.vertical		= Earth->getTransform().position.y;
-			EarthPointXZ.horizontal		= Earth->getTransform().position.x;
-			EarthPointXZ.vertical		= Earth->getTransform().position.z;
-			EarthPointYZ.horizontal		= Earth->getTransform().position.z;
-			EarthPointYZ.vertical		= Earth->getTransform().position.y;
+			PlanetPointXY.horizontal	= Planet->getTransform().position.x;
+			PlanetPointXY.vertical		= Planet->getTransform().position.y;
+			PlanetPointXZ.horizontal	= Planet->getTransform().position.x;
+			PlanetPointXZ.vertical		= Planet->getTransform().position.z;
+			PlanetPointYZ.horizontal	= Planet->getTransform().position.z;
+			PlanetPointYZ.vertical		= Planet->getTransform().position.y;
 #pragma endregion
 
 #pragma region TIMER
@@ -133,15 +133,15 @@ int main(int argc, char* args[]) {
 #pragma region GRAPHICS
 		graphics->PESO_DrawSimulationData(Satellite);
 		graphics->PESO_DrawTag(Satellite);
-		graphics->PESO_DrawTag(Earth);
+		graphics->PESO_DrawTag(Planet);
 
 		graphics->PESO_DrawEllipseXY(SatellitePointXY, Satellite->getRadius(), Satellite->getRadius());
 		graphics->PESO_DrawEllipseXZ(SatellitePointXZ, Satellite->getRadius(), Satellite->getRadius());
 		graphics->PESO_DrawEllipseYZ(SatellitePointYZ, Satellite->getRadius(), Satellite->getRadius());
 
-		graphics->PESO_DrawEllipseXY(EarthPointXY, Earth->getRadius(), Earth->getRadius());
-		graphics->PESO_DrawEllipseXZ(EarthPointXZ, Earth->getRadius(), Earth->getRadius());
-		graphics->PESO_DrawEllipseYZ(EarthPointYZ, Earth->getRadius(), Earth->getRadius());
+		graphics->PESO_DrawEllipseXY(PlanetPointXY, Planet->getRadius(), Planet->getRadius());
+		graphics->PESO_DrawEllipseXZ(PlanetPointXZ, Planet->getRadius(), Planet->getRadius());
+		graphics->PESO_DrawEllipseYZ(PlanetPointYZ, Planet->getRadius(), Planet->getRadius());
 #pragma endregion
 
 		//show results

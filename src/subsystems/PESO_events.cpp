@@ -134,7 +134,7 @@ double PESO_Events::PESO_CalculateValueFromDigits() {
 	return input_value;
 }
 
-PESO_Data PESO_Events::PESO_CreateObjectData(std::shared_ptr<PESO_Object> Earth) {
+PESO_Data PESO_Events::PESO_CreateObjectData(std::shared_ptr<PESO_Object> Planet) {
 
 	std::string SatelliteName;
 
@@ -149,11 +149,11 @@ PESO_Data PESO_Events::PESO_CreateObjectData(std::shared_ptr<PESO_Object> Earth)
 	std::getline(std::cin, SatelliteName);
 	std::cout << "Set mass of satellite: ";
 	mass = PESO_CalculateValueFromDigits();
-	std::cout << "Set X distance from Earth: ";
+	std::cout << "Set X distance from Planet: ";
 	xDistance = PESO_CalculateValueFromDigits();
-	std::cout << "Set Y distance from Earth: ";
+	std::cout << "Set Y distance from Planet: ";
 	yDistance = PESO_CalculateValueFromDigits();
-	std::cout << "Set Z distance from Earth: ";
+	std::cout << "Set Z distance from Planet: ";
 	zDistance = PESO_CalculateValueFromDigits();
 	std::cout << "Set Roll (X angle): ";
 	roll = PESO_CalculateValueFromDigits();
@@ -180,9 +180,9 @@ PESO_Data PESO_Events::PESO_CreateObjectData(std::shared_ptr<PESO_Object> Earth)
 		mass,
 		PESO_Transform(
 			Vector3d(
-				Earth->getPosition().x + xDistance,
-				Earth->getPosition().y + yDistance,
-				Earth->getPosition().z + zDistance
+				Planet->getPosition().x + xDistance,
+				Planet->getPosition().y + yDistance,
+				Planet->getPosition().z + zDistance
 			),
 			Vector3d(roll, yaw, pitch)
 		),

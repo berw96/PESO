@@ -176,7 +176,34 @@ void PESO_Physics::PESO_CalculateLinMomentum(PESO_Object& object) {
 };
 
 void PESO_Physics::PESO_CalculateCentreOfMass(PESO_Object& object) {
-	
+	double netx = 0, nety = 0, netz = 0;
+	double netMass = 0;
+
+	if (object.children.capacity() > 0) {
+		for (auto child : object.children) {
+			netMass += child.objectData.mass;
+			netx += child.objectData.mass * child.objectData.transform.position.x;
+			nety += child.objectData.mass * child.objectData.transform.position.y;
+			netz += child.objectData.mass * child.objectData.transform.position.z;
+		}	
+	}
+	netMass += object.objectData.mass;
+	netx += object.objectData.mass * object.objectData.transform.position.x;
+	nety += object.objectData.mass * object.objectData.transform.position.y;
+	netz += object.objectData.mass * object.objectData.transform.position.z;
+
+	double COMx = 0, COMy = 0, COMz = 0;
+
+	COMx = netx / netMass;
+	COMy = nety / netMass;
+	COMz = netz / netMass;
+
+	if (object.children.capacity() > 0) {
+		for (auto child : object.children) {
+			child.objectData.centreOfMass = Vector3d(COMx, COMy, COMz);
+		}
+	}
+	object.objectData.centreOfMass = Vector3d(COMx, COMy, COMz);
 };
 
 void PESO_Physics::PESO_CalculateInertia(PESO_Object& object) {

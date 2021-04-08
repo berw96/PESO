@@ -32,11 +32,8 @@ void PESO_Events::PESO_UpdateKeyBooleans(const SDL_Keycode& key, bool triggered)
 	Key keyIndex;
 
 	switch (key) {
-	case SDLK_p:
-		keyIndex = Key::P;
-		break;
-	case SDLK_r:
-		keyIndex = Key::R;
+	case SDLK_SPACE:
+		keyIndex = Key::SPACE;
 		break;
 	case SDLK_ESCAPE:
 		keyIndex = Key::ESC;
@@ -54,7 +51,7 @@ void PESO_Events::PESO_CheckInput() {
 
 	char ch = '\0';
 	// iterate through contents of buffer until EOF and newline
-	for (;std::cin.peek() != EOF &&
+	for (; std::cin.peek() != EOF &&
 		std::cin.peek() != '\n';) {
 		// if buffer contains newline and is EOF, break from loop
 		if (std::cin.peek() == EOF &&
@@ -72,12 +69,10 @@ void PESO_Events::PESO_CheckInput() {
 			ch != '.') {
 			// ignore if not a digit, a negative flag, or a decimal
 			std::cin.ignore();
-			std::cout << "Removed " << ch << " from input\n";
 		}
 		else {
 			// keep if a digit, sign flag or decimal
 			input.push_back(ch);
-			std::cout << "Found: " << ch << "\n";
 			// dispose from buffer after use
 			std::cin.ignore();
 		}
@@ -128,36 +123,53 @@ double PESO_Events::PESO_CalculateValueFromDigits() {
 	digits.clear();
 
 	// reset flags for next use
-	isNegative			= false;
-	decimal_index_set	= false;
-	decimal_index		= 0;
-	
+	isNegative = false;
+	decimal_index_set = false;
+	decimal_index = 0;
+
 	std::cout << "Value entered was determined to be: " << input_value << "\n";
 
 	return input_value;
 }
 
-PESO_Data PESO_Events::PESO_CreateObjectData(std::shared_ptr<PESO_Object> Planet) {
+void PESO_Events::PESO_SelectNumberOfObjects(PESO_Physics& physics) {
+	int number_of_objects = 0;
 
-	std::string SatelliteName;
+	std::cout << "\nSpecify number of objects for simulation:";
+
+	std::cin >> std::ws >> number_of_objects;
+
+	if (number_of_objects <= 1)
+		number_of_objects = 1;
+
+	for (int i = 0; i < number_of_objects; i++) {
+		std::cout << "\n[Object " << (i + 1) << " of " << number_of_objects << "]";
+		std::shared_ptr<PESO_Object> object{ new PESO_Object(PESO_CreateObjectData()) };
+		physics.PESO_RegisterObject(object);
+	}
+}
+
+PESO_Data PESO_Events::PESO_CreateObjectData() {
+
+	std::string name;
 
 	double mass;
-	double xDistance, yDistance, zDistance;
+	double xPos, yPos, zPos;
 	double roll, yaw, pitch;
 	double xThrust, yThrust, zThrust;
 	double xTorque, yTorque, zTorque;
 
-	std::cout << "Welcome to PESO!" << std::endl;
-	std::cout << "Name your satellite: ";
-	std::getline(std::cin, SatelliteName);
-	std::cout << "Set mass of satellite: ";
+	std::cout << "\nName object: ";
+	std::cin.ignore();
+	std::getline(std::cin, name);
+	std::cout << "Set mass: ";
 	mass = PESO_CalculateValueFromDigits();
-	std::cout << "Set X distance from Planet: ";
-	xDistance = PESO_CalculateValueFromDigits();
-	std::cout << "Set Y distance from Planet: ";
-	yDistance = PESO_CalculateValueFromDigits();
-	std::cout << "Set Z distance from Planet: ";
-	zDistance = PESO_CalculateValueFromDigits();
+	std::cout << "Set X position: ";
+	xPos = PESO_CalculateValueFromDigits();
+	std::cout << "Set Y position: ";
+	yPos = PESO_CalculateValueFromDigits();
+	std::cout << "Set Z position: ";
+	zPos = PESO_CalculateValueFromDigits();
 	std::cout << "Set Roll (X angle): ";
 	roll = PESO_CalculateValueFromDigits();
 	std::cout << "Set Yaw (Y angle): ";
@@ -183,14 +195,14 @@ PESO_Data PESO_Events::PESO_CreateObjectData(std::shared_ptr<PESO_Object> Planet
 		mass,
 		PESO_Transform(
 			Vector3d(
-				Planet->getPosition().x + xDistance,
-				Planet->getPosition().y + yDistance,
-				Planet->getPosition().z + zDistance
+				xPos + _DEFAULT_WINDOW_WIDTH_ / 2, 
+				yPos + _DEFAULT_WINDOW_WIDTH_ / 2,
+				zPos + _DEFAULT_WINDOW_WIDTH_ / 2
 			),
 			Vector3d(roll, yaw, pitch)
 		),
-		5.0,
-		SatelliteName,
+		10.0,
+		name,
 		Vector3d(xThrust, yThrust, zThrust),
 		Vector3d(xTorque, yTorque, zTorque)
 	);

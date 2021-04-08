@@ -21,8 +21,8 @@ PESO_Graphics::PESO_Graphics() : drawColor({ WHITE }), clearingColor({ BLACK }) 
 		"PESO Simulation XY (SIDE VIEW)",
 		_DEFAULT_WINDOW_POS_X_,
 		_DEFAULT_WINDOW_POS_Y_,
-		_DEFAULT_WINDOW_WIDTH_ / 2,
-		_DEFAULT_WINDOW_HEIGHT_ / 2,
+		_DEFAULT_WINDOW_WIDTH_,
+		_DEFAULT_WINDOW_HEIGHT_,
 		SDL_WINDOW_SHOWN
 	);
 
@@ -37,9 +37,9 @@ PESO_Graphics::PESO_Graphics() : drawColor({ WHITE }), clearingColor({ BLACK }) 
 	xzViewport = SDL_CreateWindow(
 		"PESO Simulation XZ (TOP-DOWN VIEW)",
 		_DEFAULT_WINDOW_POS_X_,
-		_DEFAULT_WINDOW_POS_Y_ + _DEFAULT_WINDOW_HEIGHT_ / 2,
-		_DEFAULT_WINDOW_WIDTH_ / 2,
-		_DEFAULT_WINDOW_HEIGHT_ / 2,
+		_DEFAULT_WINDOW_POS_Y_ + _DEFAULT_WINDOW_HEIGHT_,
+		_DEFAULT_WINDOW_WIDTH_,
+		_DEFAULT_WINDOW_HEIGHT_,
 		SDL_WINDOW_SHOWN
 	);
 
@@ -53,10 +53,10 @@ PESO_Graphics::PESO_Graphics() : drawColor({ WHITE }), clearingColor({ BLACK }) 
 #pragma region YZ
 	yzViewport = SDL_CreateWindow(
 		"PESO Simulation YZ (FRONT VIEW)",
-		_DEFAULT_WINDOW_POS_X_,
-		_DEFAULT_WINDOW_POS_Y_ + _DEFAULT_WINDOW_HEIGHT_,
-		_DEFAULT_WINDOW_WIDTH_ / 2,
-		_DEFAULT_WINDOW_HEIGHT_ / 2,
+		_DEFAULT_WINDOW_POS_X_ + _DEFAULT_WINDOW_HEIGHT_,
+		_DEFAULT_WINDOW_POS_Y_,
+		_DEFAULT_WINDOW_WIDTH_,
+		_DEFAULT_WINDOW_HEIGHT_,
 		SDL_WINDOW_SHOWN
 	);
 
@@ -70,10 +70,10 @@ PESO_Graphics::PESO_Graphics() : drawColor({ WHITE }), clearingColor({ BLACK }) 
 #pragma region DATA
 	dataViewport = SDL_CreateWindow(
 		"PESO Simulation Data",
-		(_DEFAULT_WINDOW_POS_X_ + 1100),
+		_DEFAULT_WINDOW_POS_X_ + (_DEFAULT_WINDOW_WIDTH_ * 2),
 		_DEFAULT_WINDOW_POS_Y_,
-		_DEFAULT_WINDOW_WIDTH_ / 2,
-		_DEFAULT_WINDOW_HEIGHT_ / 2,
+		_DEFAULT_WINDOW_WIDTH_,
+		_DEFAULT_WINDOW_HEIGHT_,
 		SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
 	);
 
@@ -136,10 +136,10 @@ void PESO_Graphics::PESO_DrawLineSegmentXZ(const Line2i& line) {
 void PESO_Graphics::PESO_DrawLineSegmentYZ(const Line2i& line) {
 	SDL_RenderDrawLine(
 		yzRenderer,
-		line.startPoint.vertical,
 		line.startPoint.horizontal,
-		line.endPoint.vertical,
-		line.endPoint.horizontal
+		line.startPoint.vertical,
+		line.endPoint.horizontal,
+		line.endPoint.vertical
 	);
 }
 
@@ -170,7 +170,7 @@ void PESO_Graphics::PESO_DrawEllipseYZ(const Point2d& centre, const double& radi
 	}
 }
 
-void PESO_Graphics::PESO_DrawData(const std::string& text, const double& x, const double& y) {
+void PESO_Graphics::PESO_DrawText(const std::string& text, const double& x, const double& y) {
 	SDL_Surface* textSurface = TTF_RenderText_Blended(font, text.c_str(), drawColor);
 	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(dataRenderer, textSurface);
 	
@@ -258,28 +258,52 @@ void PESO_Graphics::PESO_DrawTag(std::shared_ptr<PESO_Object> obj) {
 }
 
 void PESO_Graphics::PESO_DrawSimulationData(std::shared_ptr<PESO_Object> obj) {
-	PESO_DrawData("Object Tag:", 10.0 , 10.0);
-	PESO_DrawData(obj->getTag(), 150.0 , 10.0);
+	PESO_DrawText("Object Tag:", 10.0 , 10.0);
+	PESO_DrawText(obj->getTag(), 150.0 , 10.0);
 #pragma region TRANSFORM
-	PESO_DrawData("Position:", 10.0 , 40.0);	
-	PESO_DrawData(std::to_string(obj->getPosition().x - _DEFAULT_WINDOW_WIDTH_ /2), 150.0 , 40.0);
-	PESO_DrawData(std::to_string(obj->getPosition().y - _DEFAULT_WINDOW_WIDTH_ /2), 250.0, 40.0);
-	PESO_DrawData(std::to_string(obj->getPosition().z - _DEFAULT_WINDOW_WIDTH_ /2), 350.0 , 40.0);
-	PESO_DrawData("Rotation:", 10.0 , 70.0);	
-	PESO_DrawData(std::to_string(obj->getRotation().x), 150.0 , 70.0);
-	PESO_DrawData(std::to_string(obj->getRotation().y), 250.0 , 70.0);
-	PESO_DrawData(std::to_string(obj->getRotation().z), 350.0 , 70.0);
+	PESO_DrawText("Position:", 10.0 , 40.0);	
+	PESO_DrawText(std::to_string(obj->getPosition().x), 150.0 , 40.0);
+	PESO_DrawText(std::to_string(obj->getPosition().y), 250.0, 40.0);
+	PESO_DrawText(std::to_string(obj->getPosition().z), 350.0 , 40.0);
+	PESO_DrawText("Rotation:", 10.0 , 70.0);	
+	PESO_DrawText(std::to_string(obj->getRotation().x), 150.0 , 70.0);
+	PESO_DrawText(std::to_string(obj->getRotation().y), 250.0 , 70.0);
+	PESO_DrawText(std::to_string(obj->getRotation().z), 350.0 , 70.0);
 #pragma endregion
 #pragma region DYNAMICS
-	PESO_DrawData("Linear Velocity:", 10.0, 110.0);
-	PESO_DrawData(std::to_string(obj->getLinVelocity().x), 150.0, 110.0);
-	PESO_DrawData(std::to_string(obj->getLinVelocity().y), 250.0, 110.0);
-	PESO_DrawData(std::to_string(obj->getLinVelocity().z), 350.0, 110.0);
-	PESO_DrawData("Linear Acceleration:", 10.0, 150.0);
-	PESO_DrawData(std::to_string(obj->getLinAcceleration().x), 150.0, 150.0);
-	PESO_DrawData(std::to_string(obj->getLinAcceleration().y), 250.0, 150.0);
-	PESO_DrawData(std::to_string(obj->getLinAcceleration().z), 350.0, 150.0);
+	PESO_DrawText("Linear Velocity:", 10.0, 110.0);
+	PESO_DrawText(std::to_string(obj->getLinVelocity().x), 150.0, 110.0);
+	PESO_DrawText(std::to_string(obj->getLinVelocity().y), 250.0, 110.0);
+	PESO_DrawText(std::to_string(obj->getLinVelocity().z), 350.0, 110.0);
+	PESO_DrawText("Linear Acceleration:", 10.0, 150.0);
+	PESO_DrawText(std::to_string(obj->getLinAcceleration().x), 150.0, 150.0);
+	PESO_DrawText(std::to_string(obj->getLinAcceleration().y), 250.0, 150.0);
+	PESO_DrawText(std::to_string(obj->getLinAcceleration().z), 350.0, 150.0);
 #pragma endregion
+}
+
+void PESO_Graphics::PESO_DrawObjectGraphics(PESO_Physics& physics) {
+	for (auto obj : physics.PESO_GetSessionObjects()) {
+		Point2d ObjectPointXY = {
+			obj->getPosition().x,
+			obj->getPosition().y
+		};
+
+		Point2d ObjectPointXZ = {
+			obj->getPosition().x,
+			obj->getPosition().z
+		};
+
+		Point2d ObjectPointYZ = {
+			obj->getPosition().z,
+			obj->getPosition().y
+		};
+
+		PESO_DrawTag(obj);
+		PESO_DrawEllipseXY(ObjectPointXY, obj->getRadius(), obj->getRadius());
+		PESO_DrawEllipseXZ(ObjectPointXZ, obj->getRadius(), obj->getRadius());
+		PESO_DrawEllipseYZ(ObjectPointYZ, obj->getRadius(), obj->getRadius());
+	}
 }
 
 void PESO_Graphics::PESO_ClearScreen() {

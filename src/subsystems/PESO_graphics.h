@@ -23,8 +23,8 @@
 
 #define _DEFAULT_WINDOW_POS_X_		(50)
 #define _DEFAULT_WINDOW_POS_Y_		(50)
-#define _DEFAULT_WINDOW_WIDTH_		(900)
-#define _DEFAULT_WINDOW_HEIGHT_		(900)
+#define _DEFAULT_WINDOW_WIDTH_		(450)
+#define _DEFAULT_WINDOW_HEIGHT_		(450)
 #define _TAG_OFFSET_				(10.0)
 
 static const SDL_Color RED		= {0xFF, 0, 0};
@@ -74,6 +74,8 @@ public:
 	void PESO_DrawEllipseXZ(const Point2d& centre, const double& radiusX, const double& radiusZ);
 	void PESO_DrawEllipseYZ(const Point2d& centre, const double& radiusY, const double& radiusZ);
 
+	void PESO_DrawObjectGraphics(PESO_Physics& physics);
+
 	static SDL_Texture* PESO_CreateTextureFromSurface(SDL_Renderer* rdr, SDL_Surface* surface);
 	static SDL_Texture* PESO_CreateTextureFromString(SDL_Renderer* rdr, const std::string& textureString, TTF_Font* font, SDL_Color color);
 	
@@ -82,7 +84,7 @@ public:
 	void PESO_DrawTagXY(const std::string& text, const double& horz, const double& vert);
 	void PESO_DrawTagXZ(const std::string& text, const double& horz, const double& vert);
 	void PESO_DrawTagYZ(const std::string& text, const double& horz, const double& vert);
-	void PESO_DrawData(const std::string& text, const double& x, const double& y);
+	void PESO_DrawText(const std::string& text, const double& x, const double& y);
 	void PESO_SetDrawColor(const SDL_Color& color);
 	void PESO_SetClearingColor(const SDL_Color& color);
 };

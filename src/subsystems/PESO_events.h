@@ -16,9 +16,10 @@
 #include <SDL.h>
 
 #include "PESO_physics.h"
+#include "PESO_graphics.h"
 
 enum Key {
-	P, R, ESC, LAST
+	SPACE, ESC, LAST
 };
 
 class PESO_Events {
@@ -39,13 +40,14 @@ public:
 	~PESO_Events();
 
 	void PESO_PollEvents();
-	PESO_Data PESO_CreateObjectData(std::shared_ptr<PESO_Object> Earth);
+	PESO_Data PESO_CreateObjectData();
 
 	bool PESO_KeyIsPressed(Key key)	const { return keyBooleans[key]; }
 	void PESO_KeySetPressed(Key key) { keyBooleans[key] = true; }
 	void PESO_CheckInput();
 	void PESO_ExtractDigitsFromInput();
 	double PESO_CalculateValueFromDigits();
+	void PESO_SelectNumberOfObjects(PESO_Physics& physics);
 };
 
 #endif

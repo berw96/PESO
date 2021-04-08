@@ -11,19 +11,20 @@
 PESO_FileManager::PESO_FileManager() {};
 PESO_FileManager::~PESO_FileManager() {};
 
-void PESO_FileManager::PESO_WriteFile(std::vector<PESO_Data>& sessionData, PESO_Object& satellite) {
+void PESO_FileManager::PESO_WriteFile(std::vector<PESO_Data>& sessionData) {
 	if (sessionData.size() > 0) {
 		if ((output_file = fopen(directory, mode)) != NULL) {
 			fprintf(stdout, "Opened %s" " successfully.\n", directory);
-			if ((fprintf(output_file, "Simulation data of: %s" "\n", satellite.getTag().c_str()) == -1)) {
-				fprintf(stderr, "Error writing \"%s\"" " to file.\n", satellite.getTag().c_str());
-			}
+			
 			// iterate through contents of session data and print to output file.
 			for (auto data_set : sessionData) {
 				if ((fprintf(output_file, "\n" "%s", ctime(&data_set.timestamp))) == -1) {
 					fprintf(stderr, "Error writing timestamp to file.\n");
 				}
 #pragma region MISC
+				if ((fprintf(output_file, "Tag: %s" "\n", data_set.tag.c_str())) == -1) {
+					fprintf(stderr, "Error writing Tag to file.\n");
+				}
 				if ((fprintf(output_file, "Mass: %Ls" "\n", std::to_string(data_set.mass).c_str())) == -1) {
 					fprintf(stderr, "Error writing Mass to file.\n");
 				}

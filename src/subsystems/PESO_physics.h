@@ -8,7 +8,7 @@
 
 #ifndef _PHYSICS_
 #define _PHYSICS_
-#define _UNIVERSAL_CONST_GRAVITATION_	(0.00000000006674000000)
+#define _UNIVERSAL_CONST_GRAVITATION_	(0.00005)
 #define _DEFAULT_INIT_MASS_				(1)
 #define _DEFAULT_TAG_					("")
 #define _DEFAULT_RADIUS_				(10)
@@ -57,6 +57,8 @@ public:
 	void PESO_RegisterObject(std::shared_ptr<PESO_Object> object);
 	void PESO_LogData(PESO_Data objectData);
 	std::vector<PESO_Data> PESO_GetSessionData() const { return this->sessionData; };
+	std::vector<std::shared_ptr<PESO_Object>> PESO_GetSessionObjects() const { return this->objects; };
+	std::shared_ptr<PESO_Object> PESO_GetSessionObjects(int index) const { return this->objects[index]; };
 	void PESO_ApplyLinearMechanics();
 	void PESO_ApplyRotationMechanics();
 #pragma endregion

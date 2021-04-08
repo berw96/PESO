@@ -22,7 +22,7 @@ public:
 	PESO_FileManager();
 	~PESO_FileManager();
 
-	void PESO_WriteFile(std::vector<PESO_Data>& sessionData, PESO_Object& satellite);
+	void PESO_WriteFile(std::vector<PESO_Data>& sessionData);
 };
 
 #endif

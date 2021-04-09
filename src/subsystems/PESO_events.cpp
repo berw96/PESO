@@ -137,7 +137,7 @@ void PESO_Events::PESO_SelectNumberOfObjects(PESO_Physics& physics) {
 
 	std::cout << "\nSpecify number of objects for simulation:";
 
-	std::cin >> std::ws >> number_of_objects;
+	number_of_objects = (int)PESO_CalculateValueFromDigits();
 
 	if (number_of_objects <= 1)
 		number_of_objects = 1;
@@ -163,31 +163,31 @@ PESO_Data PESO_Events::PESO_CreateObjectData() {
 	std::cin.ignore();
 	std::getline(std::cin, name);
 	std::cout << "Set mass: ";
-	mass = PESO_CalculateValueFromDigits();
+	mass	= (double)PESO_CalculateValueFromDigits();
 	std::cout << "Set X position: ";
-	xPos = PESO_CalculateValueFromDigits();
+	xPos	= (double)PESO_CalculateValueFromDigits();
 	std::cout << "Set Y position: ";
-	yPos = PESO_CalculateValueFromDigits();
+	yPos	= (double)PESO_CalculateValueFromDigits();
 	std::cout << "Set Z position: ";
-	zPos = PESO_CalculateValueFromDigits();
+	zPos	= (double)PESO_CalculateValueFromDigits();
 	std::cout << "Set Roll (X angle): ";
-	roll = PESO_CalculateValueFromDigits();
+	roll	= (double)PESO_CalculateValueFromDigits();
 	std::cout << "Set Yaw (Y angle): ";
-	yaw = PESO_CalculateValueFromDigits();
+	yaw		= (double)PESO_CalculateValueFromDigits();
 	std::cout << "Set Pitch (Z angle): ";
-	pitch = PESO_CalculateValueFromDigits();
+	pitch	= (double)PESO_CalculateValueFromDigits();
 	std::cout << "Set X thrust: ";
-	xThrust = PESO_CalculateValueFromDigits();
+	xThrust = (double)PESO_CalculateValueFromDigits();
 	std::cout << "Set Y thrust: ";
-	yThrust = PESO_CalculateValueFromDigits();
+	yThrust = (double)PESO_CalculateValueFromDigits();
 	std::cout << "Set Z thrust: ";
-	zThrust = PESO_CalculateValueFromDigits();
+	zThrust = (double)PESO_CalculateValueFromDigits();
 	std::cout << "Set X torque: ";
-	xTorque = PESO_CalculateValueFromDigits();
+	xTorque = (double)PESO_CalculateValueFromDigits();
 	std::cout << "Set Y torque: ";
-	yTorque = PESO_CalculateValueFromDigits();
+	yTorque = (double)PESO_CalculateValueFromDigits();
 	std::cout << "Set Z torque: ";
-	zTorque = PESO_CalculateValueFromDigits();
+	zTorque = (double)PESO_CalculateValueFromDigits();
 
 	return PESO_Data(
 		Vector3d(),

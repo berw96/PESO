@@ -46,6 +46,8 @@ int main(int argc, char* args[]) {
 		}
 		if (events->PESO_KeyIsPressed(Key::ESC)) {
 			std::cout << "Exiting PESO...\n";
+			// pause simulation
+			paused = true;
 			// quit PESO subsystems using SDL
 			graphics->~PESO_Graphics();
 			events->~PESO_Events();

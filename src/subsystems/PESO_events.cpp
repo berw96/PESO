@@ -105,7 +105,20 @@ double PESO_Events::PESO_CalculateValueFromDigits() {
 
 	double input_value = 0;
 
-	if (isNegative) {
+	if (!isNegative && decimal_index_set) {
+		int non_digits = 1;
+		for (int i = 0; i < digits.size(); i++) {
+			input_value += digits[i] * pow(10, decimal_index - (i + non_digits));
+		}
+	}
+	else if (isNegative && !decimal_index_set) {
+		for (int i = 0; i < digits.size(); i++) {
+			if (digits[i] != 0)
+				input_value += digits[i] * pow(10, digits.size() - (i + 1));
+		}
+		input_value *= -1;
+	}
+	else if (isNegative && decimal_index_set) {
 		int non_digits = 2;
 		for (int i = 0; i < digits.size(); i++) {
 			input_value += digits[i] * pow(10, decimal_index - (i + non_digits));
@@ -113,12 +126,12 @@ double PESO_Events::PESO_CalculateValueFromDigits() {
 		input_value *= -1;
 	}
 	else {
-		int non_digits = 1;
 		for (int i = 0; i < digits.size(); i++) {
-			input_value += digits[i] * pow(10, decimal_index - (i + non_digits));
+			if (digits[i] != 0)
+				input_value += digits[i] * pow(10, digits.size() - (i + 1));
 		}
 	}
-
+	
 	// clear digits buffer once contents have been used to set input_value
 	digits.clear();
 

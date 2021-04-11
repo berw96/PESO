@@ -64,7 +64,6 @@ public:
 #pragma endregion
 
 #pragma region FORMULAE
-	Vector3d PESO_CalculateGravForce(PESO_Object& target, PESO_Object& satellite);
 	Vector3d PESO_CalculateNetGravForce(PESO_Object& satellite);
 
 	Vector3d PESO_CalculateNetAero(PESO_Object& satellite);

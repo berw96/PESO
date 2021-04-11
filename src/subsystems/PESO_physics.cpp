@@ -88,11 +88,11 @@ void PESO_Physics::PESO_ApplyRotationMechanics() {
 		if (obj->objectData.transform.rotation.x >= 360.0 ||
 			obj->objectData.transform.rotation.x <= -360.0)
 			obj->objectData.transform.rotation.x = 0.0;
-		
+
 		if (obj->objectData.transform.rotation.y >= 360.0 ||
-			obj->objectData.transform.rotation.y <= -360.0) 
+			obj->objectData.transform.rotation.y <= -360.0)
 			obj->objectData.transform.rotation.y = 0.0;
-		
+
 		if (obj->objectData.transform.rotation.z >= 360.0 ||
 			obj->objectData.transform.rotation.z <= -360.0)
 			obj->objectData.transform.rotation.z = 0.0;
@@ -115,28 +115,22 @@ void PESO_Physics::PESO_ApplyRotationMechanics() {
 	}
 };
 
-Vector3d PESO_Physics::PESO_CalculateGravForce(PESO_Object& target, PESO_Object& satellite) {
-	double gravForce = ((target.objectData.mass * satellite.objectData.mass * _UNIVERSAL_CONST_GRAVITATION_) / pow(PESO_CalculateRange(target, satellite), 2));
-	Vector3d satellite_to_target (
-		(target.objectData.transform.position.x - satellite.objectData.transform.position.x) * gravForce,
-		(target.objectData.transform.position.y - satellite.objectData.transform.position.y) * gravForce,
-		(target.objectData.transform.position.z - satellite.objectData.transform.position.z) * gravForce
-	);
-	return satellite_to_target;
-};
-
 Vector3d PESO_Physics::PESO_CalculateNetGravForce(PESO_Object& satellite) {
-	double gravForce = 0.0;
-	Vector3d satellite_to_target = Vector3d();
+	double tempGravForce = 0.0;
+	Vector3d satellite_to_focus = Vector3d();
 	for (auto obj : objects) {
 		if (obj->getTag() != satellite.getTag()) {
-			gravForce += ((obj->objectData.mass * satellite.objectData.mass * _UNIVERSAL_CONST_GRAVITATION_) / pow(PESO_CalculateRange(*obj, satellite), 2));
-			satellite_to_target.x += (obj->objectData.transform.position.x - satellite.objectData.transform.position.x) * gravForce;
-			satellite_to_target.y += (obj->objectData.transform.position.y - satellite.objectData.transform.position.y) * gravForce;
-			satellite_to_target.z += (obj->objectData.transform.position.z - satellite.objectData.transform.position.z) * gravForce;
+			tempGravForce += ((obj->objectData.mass * satellite.objectData.mass * _UNIVERSAL_CONST_GRAVITATION_) / pow(PESO_CalculateRange(*obj, satellite), 2));
+			satellite_to_focus.x += (obj->objectData.transform.position.x - satellite.objectData.transform.position.x) * tempGravForce;
+			satellite_to_focus.y += (obj->objectData.transform.position.y - satellite.objectData.transform.position.y) * tempGravForce;
+			satellite_to_focus.z += (obj->objectData.transform.position.z - satellite.objectData.transform.position.z) * tempGravForce;
 		}
 	}
-	return satellite_to_target;
+	satellite.objectData.gravForce.x = satellite_to_focus.x;
+	satellite.objectData.gravForce.y = satellite_to_focus.y;
+	satellite.objectData.gravForce.z = satellite_to_focus.z;
+
+	return satellite.objectData.gravForce;
 };
 
 void PESO_Physics::PESO_CalculateNetLinForce(PESO_Object& object) {

@@ -84,36 +84,6 @@ void PESO_FileManager::PESO_WriteFile(std::vector<PESO_Data>& sessionData) {
 					fprintf(stderr, "Error writing Thrust (z) to file.\n");
 				}
 
-				if ((fprintf(output_file, "Drag (x): %+Ls" "\n", std::to_string(data_set.drag.x).c_str())) == -1) {
-					fprintf(stderr, "Error writing Drag (x) to file.\n");
-				}
-				if ((fprintf(output_file, "Drag (y): %+Ls" "\n", std::to_string(data_set.drag.y).c_str())) == -1) {
-					fprintf(stderr, "Error writing Drag (y) to file.\n");
-				}
-				if ((fprintf(output_file, "Drag (z): %+Ls" "\n", std::to_string(data_set.drag.z).c_str())) == -1) {
-					fprintf(stderr, "Error writing Drag (z) to file.\n");
-				}
-
-				if ((fprintf(output_file, "Lift (x): %+Ls" "\n", std::to_string(data_set.lift.x).c_str())) == -1) {
-					fprintf(stderr, "Error writing Lift (x) to file.\n");
-				}
-				if ((fprintf(output_file, "Lift (y): %+Ls" "\n", std::to_string(data_set.lift.y).c_str())) == -1) {
-					fprintf(stderr, "Error writing Lift (y) to file.\n");
-				}
-				if ((fprintf(output_file, "Lift (z): %+Ls" "\n", std::to_string(data_set.lift.z).c_str())) == -1) {
-					fprintf(stderr, "Error writing Lift (z) to file.\n");
-				}
-
-				if ((fprintf(output_file, "Downforce (x): %+Ls" "\n", std::to_string(data_set.downforce.x).c_str())) == -1) {
-					fprintf(stderr, "Error writing Downforce (x) to file.\n");
-				}
-				if ((fprintf(output_file, "Downforce (y): %+Ls" "\n", std::to_string(data_set.downforce.y).c_str())) == -1) {
-					fprintf(stderr, "Error writing Downforce (y) to file.\n");
-				}
-				if ((fprintf(output_file, "Downforce (z): %+Ls" "\n", std::to_string(data_set.downforce.z).c_str())) == -1) {
-					fprintf(stderr, "Error writing Downforce (z) to file.\n");
-				}
-
 				if ((fprintf(output_file, "Linear Velocity (x): %+Ls" "\n", std::to_string(data_set.linVelocity.x).c_str())) == -1) {
 					fprintf(stderr, "Error writing Linear Speed (x) to file.\n");
 				}

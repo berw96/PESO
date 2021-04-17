@@ -26,10 +26,13 @@
 #define _DEFAULT_WINDOW_WIDTH_		(450)
 #define _DEFAULT_WINDOW_HEIGHT_		(450)
 #define _TAG_OFFSET_				(10.0)
+#define _DATA_OFFSET_X_				(100)
+#define _DATA_OFFSET_Y_				(30)
 
 static const SDL_Color RED		= {0xFF, 0, 0};
 static const SDL_Color GREEN	= {0, 0xFF, 0};
 static const SDL_Color BLUE		= {0, 0, 0xFF};
+static const SDL_Color CYAN		= {0, 0xFF, 0xFF};
 static const SDL_Color YELLOW	= {0xFF, 0xFF, 0};
 static const SDL_Color WHITE	= {0xFF, 0xFF, 0xFF};
 static const SDL_Color BLACK	= {0, 0, 0};

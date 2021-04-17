@@ -162,7 +162,7 @@ void PESO_Graphics::PESO_DrawEllipseXZ(const Point2d& centre, const double& radi
 }
 
 void PESO_Graphics::PESO_DrawEllipseYZ(const Point2d& centre, const double& radiusY, const double& radiusZ) {
-	SDL_SetRenderDrawColor(yzRenderer, 0x00, 0x00, 0xFF, 0xFF);
+	SDL_SetRenderDrawColor(yzRenderer, 0x00, 0xFF, 0xFF, 0xFF);
 	for (float theta = 0.f; theta < 2 * M_PI; theta += _PI_OVER_180_) {
 		int width = (int)(centre.horizontal + radiusY * cos(theta));
 		int height = (int)(centre.vertical + radiusZ * sin(theta));
@@ -260,25 +260,50 @@ void PESO_Graphics::PESO_DrawTag(std::shared_ptr<PESO_Object> obj) {
 void PESO_Graphics::PESO_DrawSimulationData(std::shared_ptr<PESO_Object> obj) {
 	PESO_DrawText("Object Tag:", 10.0 , 10.0);
 	PESO_DrawText(obj->getTag(), 150.0 , 10.0);
+	PESO_DrawText("Mass:", 10.0, 40.0);
+	PESO_DrawText(std::to_string(obj->getMass()), 150.0, 40.0);
+	PESO_DrawText("[X]", 150.0, 70.0);
+	PESO_DrawText("[Y]", 250.0, 70.0);
+	PESO_DrawText("[Z]", 350.0, 70.0);
 #pragma region TRANSFORM
-	PESO_DrawText("Position:", 10.0 , 40.0);	
-	PESO_DrawText(std::to_string(obj->getPosition().x), 150.0 , 40.0);
-	PESO_DrawText(std::to_string(obj->getPosition().y), 250.0, 40.0);
-	PESO_DrawText(std::to_string(obj->getPosition().z), 350.0 , 40.0);
-	PESO_DrawText("Rotation:", 10.0 , 70.0);	
-	PESO_DrawText(std::to_string(obj->getRotation().x), 150.0 , 70.0);
-	PESO_DrawText(std::to_string(obj->getRotation().y), 250.0 , 70.0);
-	PESO_DrawText(std::to_string(obj->getRotation().z), 350.0 , 70.0);
+	PESO_DrawText("Position:", 10.0 , 100.0);	
+	PESO_DrawText(std::to_string(obj->getPosition().x - _DEFAULT_WINDOW_WIDTH_ / 2), 150.0 , 100.0);
+	PESO_DrawText(std::to_string(obj->getPosition().y - _DEFAULT_WINDOW_WIDTH_ / 2), 250.0, 100.0);
+	PESO_DrawText(std::to_string(obj->getPosition().z - _DEFAULT_WINDOW_WIDTH_ / 2), 350.0 , 100.0);
+	PESO_DrawText("Rotation:", 10.0 , 130.0);	
+	PESO_DrawText(std::to_string(obj->getRotation().x), 150.0 , 130.0);
+	PESO_DrawText(std::to_string(obj->getRotation().y), 250.0 , 130.0);
+	PESO_DrawText(std::to_string(obj->getRotation().z), 350.0 , 130.0);
 #pragma endregion
 #pragma region DYNAMICS
-	PESO_DrawText("Linear Velocity:", 10.0, 110.0);
-	PESO_DrawText(std::to_string(obj->getLinVelocity().x), 150.0, 110.0);
-	PESO_DrawText(std::to_string(obj->getLinVelocity().y), 250.0, 110.0);
-	PESO_DrawText(std::to_string(obj->getLinVelocity().z), 350.0, 110.0);
-	PESO_DrawText("Linear Acceleration:", 10.0, 150.0);
-	PESO_DrawText(std::to_string(obj->getLinAcceleration().x), 150.0, 150.0);
-	PESO_DrawText(std::to_string(obj->getLinAcceleration().y), 250.0, 150.0);
-	PESO_DrawText(std::to_string(obj->getLinAcceleration().z), 350.0, 150.0);
+	PESO_DrawText("Gravity:", 10.0, 160.0);
+	PESO_DrawText(std::to_string(obj->getGravForce().x), 150.0, 160.0);
+	PESO_DrawText(std::to_string(obj->getGravForce().y), 250.0, 160.0);
+	PESO_DrawText(std::to_string(obj->getGravForce().z), 350.0, 160.0);
+	PESO_DrawText("Thrust:", 10.0, 190.0);
+	PESO_DrawText(std::to_string(obj->getThrust().x), 150.0, 190.0);
+	PESO_DrawText(std::to_string(obj->getThrust().y), 250.0, 190.0);
+	PESO_DrawText(std::to_string(obj->getThrust().z), 350.0, 190.0);
+	PESO_DrawText("Torque:", 10.0, 220.0);
+	PESO_DrawText(std::to_string(obj->getTorque().x), 150.0, 220.0);
+	PESO_DrawText(std::to_string(obj->getTorque().y), 250.0, 220.0);
+	PESO_DrawText(std::to_string(obj->getTorque().z), 350.0, 220.0);
+	PESO_DrawText("Lin Velocity:", 10.0, 250.0);
+	PESO_DrawText(std::to_string(obj->getLinVelocity().x), 150.0, 250.0);
+	PESO_DrawText(std::to_string(obj->getLinVelocity().y), 250.0, 250.0);
+	PESO_DrawText(std::to_string(obj->getLinVelocity().z), 350.0, 250.0);
+	PESO_DrawText("Lin Acceleration:", 10.0, 280.0);
+	PESO_DrawText(std::to_string(obj->getLinAcceleration().x), 150.0, 280.0);
+	PESO_DrawText(std::to_string(obj->getLinAcceleration().y), 250.0, 280.0);
+	PESO_DrawText(std::to_string(obj->getLinAcceleration().z), 350.0, 280.0);
+	PESO_DrawText("Ang Velocity:", 10.0, 310.0);
+	PESO_DrawText(std::to_string(obj->getAngVelocity().x), 150.0, 310.0);
+	PESO_DrawText(std::to_string(obj->getAngVelocity().y), 250.0, 310.0);
+	PESO_DrawText(std::to_string(obj->getAngVelocity().z), 350.0, 310.0);
+	PESO_DrawText("Ang Acceleration:", 10.0, 340.0);
+	PESO_DrawText(std::to_string(obj->getAngAcceleration().x), 150.0, 340.0);
+	PESO_DrawText(std::to_string(obj->getAngAcceleration().y), 250.0, 340.0);
+	PESO_DrawText(std::to_string(obj->getAngAcceleration().z), 350.0, 340.0);
 #pragma endregion
 }
 
@@ -300,6 +325,7 @@ void PESO_Graphics::PESO_DrawObjectGraphics(PESO_Physics& physics) {
 		};
 
 		PESO_DrawTag(obj);
+
 		PESO_DrawEllipseXY(ObjectPointXY, obj->getRadius(), obj->getRadius());
 		PESO_DrawEllipseXZ(ObjectPointXZ, obj->getRadius(), obj->getRadius());
 		PESO_DrawEllipseYZ(ObjectPointYZ, obj->getRadius(), obj->getRadius());

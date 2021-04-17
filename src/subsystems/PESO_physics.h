@@ -173,6 +173,7 @@ public:
 	Vector3d getNetAngForce()		const { return objectData.netAngForce; };
 	Vector3d getGravForce()			const { return objectData.gravForce; };
 	Vector3d getThrust()			const { return objectData.thrust; };
+	Vector3d getTorque()			const { return objectData.torque; };
 	Vector3d getLinAcceleration()	const { return objectData.linAcceleration; };
 	Vector3d getAngAcceleration()	const { return objectData.angAcceleration; };
 	Vector3d getLinVelocity()		const { return objectData.linVelocity; };

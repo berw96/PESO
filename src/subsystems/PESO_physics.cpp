@@ -134,9 +134,9 @@ Vector3d PESO_Physics::PESO_CalculateNetGravForce(PESO_Object& satellite) {
 };
 
 void PESO_Physics::PESO_CalculateNetLinForce(PESO_Object& object) {
-	object.objectData.netLinForce.x = PESO_CalculateNetGravForce(object).x + (object.objectData.thrust.x * cos(object.objectData.transform.rotation.y) * cos(object.objectData.transform.rotation.z));
-	object.objectData.netLinForce.y = PESO_CalculateNetGravForce(object).y + (object.objectData.thrust.y * cos(object.objectData.transform.rotation.x) * cos(object.objectData.transform.position.z));
-	object.objectData.netLinForce.z = PESO_CalculateNetGravForce(object).z + (object.objectData.thrust.z * cos(object.objectData.transform.rotation.x) * cos(object.objectData.transform.rotation.y));
+	object.objectData.netLinForce.x = PESO_CalculateNetGravForce(object).x + object.objectData.thrust.x;
+	object.objectData.netLinForce.y = PESO_CalculateNetGravForce(object).y + object.objectData.thrust.y;
+	object.objectData.netLinForce.z = PESO_CalculateNetGravForce(object).z + object.objectData.thrust.z;
 };
 
 void PESO_Physics::PESO_CalculateNetAngForce(PESO_Object& object) {

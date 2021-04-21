@@ -84,18 +84,21 @@ void PESO_Physics::PESO_ApplyRotationMechanics() {
 		PESO_CalculateInertia(*obj);
 		PESO_CalculateNetAngForce(*obj);
 
-		// Reset rotation if a full cycle has been achieved
-		if (obj->objectData.transform.rotation.x >= 360.0 ||
-			obj->objectData.transform.rotation.x <= -360.0)
+		// Reset rotation if a full cycle has been achieved in either direction
+		if (obj->objectData.transform.rotation.x > 360.0)
 			obj->objectData.transform.rotation.x = 0.0;
+		if (obj->objectData.transform.rotation.x < 0)
+			obj->objectData.transform.rotation.x = 360.0;
 
-		if (obj->objectData.transform.rotation.y >= 360.0 ||
-			obj->objectData.transform.rotation.y <= -360.0)
+		if (obj->objectData.transform.rotation.y > 360.0)
 			obj->objectData.transform.rotation.y = 0.0;
+		if (obj->objectData.transform.rotation.y < 0.0)
+			obj->objectData.transform.rotation.y = 360.0;
 
-		if (obj->objectData.transform.rotation.z >= 360.0 ||
-			obj->objectData.transform.rotation.z <= -360.0)
+		if (obj->objectData.transform.rotation.z > 360.0)
 			obj->objectData.transform.rotation.z = 0.0;
+		if (obj->objectData.transform.rotation.z < 0.0)
+			obj->objectData.transform.rotation.z = 360.0;
 
 		obj->objectData.angAcceleration.x = obj->objectData.netAngForce.x / obj->objectData.inertia;
 		obj->objectData.angAcceleration.y = obj->objectData.netAngForce.y / obj->objectData.inertia;

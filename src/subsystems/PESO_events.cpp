@@ -183,11 +183,11 @@ PESO_Data PESO_Events::PESO_CreateObjectData() {
 	yPos	= (double)PESO_CalculateValueFromDigits();
 	std::cout << "Set Z position: ";
 	zPos	= (double)PESO_CalculateValueFromDigits();
-	std::cout << "Set Roll (X angle): ";
+	std::cout << "Set X angle: ";
 	roll	= (double)PESO_CalculateValueFromDigits();
-	std::cout << "Set Yaw (Y angle): ";
+	std::cout << "Set Y angle: ";
 	yaw		= (double)PESO_CalculateValueFromDigits();
-	std::cout << "Set Pitch (Z angle): ";
+	std::cout << "Set Z angle: ";
 	pitch	= (double)PESO_CalculateValueFromDigits();
 	std::cout << "Set X thrust: ";
 	xThrust = (double)PESO_CalculateValueFromDigits();

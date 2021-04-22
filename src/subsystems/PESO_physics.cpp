@@ -83,6 +83,7 @@ void PESO_Physics::PESO_ApplyRotationMechanics() {
 	for (auto obj : objects) {
 		PESO_CalculateInertia(*obj);
 		PESO_CalculateNetAngForce(*obj);
+		PESO_CalculateAngMomentum(*obj);
 
 		// Reset rotation if a full cycle has been achieved in either direction
 		if (obj->objectData.transform.rotation.x > 360.0)
@@ -170,6 +171,12 @@ void PESO_Physics::PESO_CalculateLinMomentum(PESO_Object& object) {
 	object.objectData.linMomentum.x = object.objectData.linVelocity.x * object.objectData.mass;
 	object.objectData.linMomentum.y = object.objectData.linVelocity.y * object.objectData.mass;
 	object.objectData.linMomentum.z = object.objectData.linVelocity.z * object.objectData.mass;
+};
+
+void PESO_Physics::PESO_CalculateAngMomentum(PESO_Object& object) {
+	object.objectData.angMomentum.x = object.objectData.angVelocity.x * object.objectData.inertia;
+	object.objectData.angMomentum.y = object.objectData.angVelocity.y * object.objectData.inertia;
+	object.objectData.angMomentum.z = object.objectData.angVelocity.z * object.objectData.inertia;
 };
 
 void PESO_Physics::PESO_CalculateCentreOfMass(PESO_Object& object) {

@@ -82,6 +82,7 @@ public:
 	void PESO_CalculateOrbitPeriod(PESO_Object& target, PESO_Object& satellite);
 	void PESO_CalculateReqLinVelocity(PESO_Object& target, PESO_Object& satllite);
 	void PESO_CalculateLinMomentum(PESO_Object& object);
+	void PESO_CalculateAngMomentum(PESO_Object& object);
 	void PESO_CalculateNetLinForce(PESO_Object& object);
 	void PESO_CalculateNetAngForce(PESO_Object& object);
 	void PESO_CalculateCentreOfMass(PESO_Object& object);
